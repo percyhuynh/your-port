@@ -1,0 +1,642 @@
+/* *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --dark: #111111;
+        --white: #ffffff;
+        --gray: #555555;
+        --muted: #888888;
+      } */
+
+      /* html,
+      body {
+        background: #181818;
+        font-family: "DM Sans", sans-serif;
+        color: var(--white);
+        overflow-x: hidden;
+      } */
+
+/* SECTION WORK */
+/* ============================================================
+/* ============================================================
+   PATCH: SECTION WORK — thay thế toàn bộ phần brand-grid/card
+   Dán đè vào cuối file style-side-nav.css
+   ============================================================ */
+
+/* ── WORK SECTION WRAPPER ── */
+.section.work {
+  margin-top: 0;
+  padding: 0;
+  overflow: visible;
+  /* Không dùng flex ở đây — để 3 phần con tự xếp dọc */
+  display: block;
+}
+
+/* ══ MÀN HÌNH 1: WORK HEADER ══ */
+.work-header {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  /* Chiếm trọn 1 màn hình */
+  height: 100vh;
+  /* Căn nội dung giữa */
+  display: flex;
+  flex-direction: column;
+  
+  justify-content: center;
+  align-items: center;
+  padding: 0 60px;
+  box-sizing: border-box;
+  will-change: transform, opacity;
+}
+.work-header h2 {
+    /* font-size: clamp(1rem, 4vw, 3rem); */
+    font-size: 28px;
+  font-weight: bold;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.work-header p {
+  /* font-size: clamp(1rem, 2vw, 1.2rem); */
+  font-size: 14px;
+  max-width: 500px;
+  font-weight: 200;
+  /* line-height: 1.6; */
+  /* opacity: 0.5; */
+  color: #0a0a0a;
+}
+
+/* ══ MÀN HÌNH 2: BRAND GRID ══ */
+.brand-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 14px;
+  max-width: 860px;
+  width: calc(100% - 80px);
+  height: 360px;
+  /* Căn giữa ngang + dọc trong 100vh */
+  margin: 0 auto;
+  /* Đẩy grid ra giữa màn hình: (100vh - 360px) / 2 */
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Bọc brand-grid trong 1 wrapper 100vh */
+.brand-grid-screen {
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* ══ MÀN HÌNH 3: SCROLL SPACE ══ */
+/* scroll-space đã có height riêng do GSAP pinSpacing tự thêm */
+
+/* ── BRAND CARD ── */
+.brand-card {
+  position: relative;
+  cursor: pointer;
+  min-height: 0;
+}
+
+/* ── BG PARALLAX ── */
+.card-bg {
+  position: absolute;
+  inset: -8%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transform: scale(1.1);
+  transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  border-radius: 12px;
+  z-index: 0;
+}
+
+.brand-card:hover .card-bg {
+  opacity: 0.18;
+  transform: scale(1.0);
+}
+
+/* ── CARD LOGO (thân card) ── */
+.card-logo {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: #181818;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  transition: border-color 0.3s ease, box-shadow 0.4s ease;
+  overflow: hidden;
+}
+
+.brand-card:hover .card-logo {
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.55);
+}
+
+.card-logo img {
+  max-width: 70%;
+  max-height: 70%;
+  object-fit: contain;
+  opacity: 0.80;
+  transition: opacity 0.3s ease, transform 0.4s ease;
+}
+
+.brand-card:hover .card-logo img {
+  opacity: 1;
+  transform: scale(1.06);
+}
+
+/* ── PILL BADGE ── */
+.card-pill {
+  position: absolute;
+  z-index: 3;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(255, 255, 255, 0.10);
+  color: rgba(255, 255, 255, 0.75);
+  font-family: Georgia, serif;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  padding: 4px 11px;
+  border-radius: 99px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0;
+  transform: translateY(5px);
+  transition: opacity 0.3s ease 0.08s, transform 0.4s cubic-bezier(0.34, 1.45, 0.64, 1) 0.08s;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.brand-card:hover .card-pill {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card-pill.always-on {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── TESTIMONIAL PANEL ──
+   Nguyên tắc:
+   - Panel nằm phía TRÊN card (bottom: 100%)
+   - Tâm xoay: bottom right của chính panel (transform-origin: bottom right)
+   - Đóng: xoay -90deg theo trục Z → panel "dựng đứng" nghiêng sang phải
+   - Mở (hover): xoay về 0deg → nằm ngang phía trên card
+   - Chiều cao panel = chiều cao card → khi mở sẽ vừa chạm cạnh trên card
+*/
+.card-testimonial {
+  position: absolute;
+  /* Đặt đáy panel sát đáy card để khi xoay từ đáy-phải sẽ khớp */
+  bottom: 0;
+  left: 0;
+  right: 0;
+  /* Chiều cao bằng card → khi rotate(0) panel nằm ngay phía trên card */
+  height: 100%;
+  z-index: 10;
+
+  background: rgba(20, 20, 20, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  padding: 18px 20px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  /* Xoay quanh góc dưới bên phải */
+  transform-origin: bottom right;
+  transform: rotate(-90deg);
+  /* trạng thái đóng: dựng đứng sang phải */
+  opacity: 0;
+  pointer-events: none;
+
+  transition:
+    transform 0.52s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.28s ease;
+
+  /* Đảm bảo backdrop blur hoạt động */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.brand-card:hover .card-testimonial {
+  transform: rotate(0deg);
+  /* mở ra nằm ngang, chạm đúng cạnh trên card */
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ── NỘI DUNG TESTIMONIAL (text only, bỏ avatar) ── */
+.testimonial-quote {
+  font-family: Georgia, serif;
+  font-size: 12px;
+  line-height: 1.7;
+  color: #ffffff;
+  font-style: italic;
+  font-weight: 400;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.testimonial-divider {
+  width: 32px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.25);
+  margin: 10px 0;
+  flex-shrink: 0;
+}
+
+.testimonial-author {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+/* Ẩn avatar hoàn toàn */
+.testimonial-avatar {
+  display: none;
+}
+
+.testimonial-name {
+  font-family: Georgia, serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.testimonial-role {
+  font-family: Georgia, serif;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* ── SCROLL ANIMATION: cards bắt đầu ẩn (GSAP xử lý) ── */
+.brand-card {
+  will-change: transform, opacity;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .work-header {
+    padding: 0 30px;
+  }
+  .brand-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 12px;
+    max-width: 480px;
+    width: calc(100% - 40px);
+    height: 480px;
+  }
+}
+
+@media (max-width: 500px) {
+  .work-header {
+    padding: 0 20px;
+  }
+  .brand-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 8px;
+    max-width: 100%;
+    width: calc(100% - 32px);
+    height: auto;
+  }
+
+  .card-testimonial {
+    padding: 14px;
+  }
+
+  .testimonial-quote {
+    font-size: 11px;
+  }
+}
+
+      .spacer {
+        height: 60vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--gray);
+      }
+
+      /* ─── PIN ANCHOR ─── */
+#pin-anchor {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+
+#scroll-space {
+  position: relative;
+  background: transparent !important;
+  position: relative;
+  min-height: 800vh;
+
+}
+
+#scroll-space::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(0, 0, 0, 0.2) 10%,
+    rgba(0, 0, 0, 0.5) 50%,
+    rgba(0, 0, 0, 0.2) 90%,
+    transparent
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+      /* ─── CARD ─── */
+      .card {
+        width: min(1300px, 94vw);
+        height: min(720px, 60vw);
+        min-height: 440px;
+        border-radius: 18px;
+        overflow: hidden;
+        display: grid;
+        grid-template-columns: 50% 50%;
+        background: var(--dark);
+        /* box-shadow: 0 32px 100px rgba(0, 0, 0, 0.75); */
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1) !important;
+      }
+
+      /* ─────────────────────────────
+   LEFT — image panel
+───────────────────────────── */
+      .img-panel {
+        position: relative;
+        overflow: hidden;
+        /* background: #000; */
+        background: transparent; 
+      }
+
+      /* All images stacked absolutely */
+      .img-panel img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        will-change: transform, opacity;
+        transform-origin: center center;
+      }
+
+      /* ─────────────────────────────
+   RIGHT — text panel
+───────────────────────────── */
+      .text-panel {
+        height: 100%; 
+        background: var(--dark);
+        display: flex;
+        flex-direction: column;
+        padding: 26px 42px 26px 42px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0;
+        flex-shrink: 0;
+      }
+
+      .top-bar-left {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 0.7rem;
+        color: var(--muted);
+        letter-spacing: 0.01em;
+      }
+      .top-bar-left svg {
+        width: 11px;
+        height: 11px;
+        stroke: var(--muted);
+        flex-shrink: 0;
+      }
+      .top-bar-right {
+        font-size: 0.7rem;
+        color: var(--gray);
+        letter-spacing: 0.05em;
+      }
+
+      /* content area */
+      .content-area {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* heading wrapper — clipping box */
+      .heading-clip {
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* Each heading is absolute (first one sets height) */
+      .slide-heading {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        will-change: transform, opacity;
+      }
+      .slide-heading:first-child {
+        position: relative;
+        visibility: hidden;
+      } /* height ghost */
+
+      h2.slide-title {
+        font-family: "Syne", sans-serif;
+        font-size: clamp(1.45rem, 3vw, 2.45rem);
+        font-weight: 800;
+        line-height: 1.07;
+        letter-spacing: -0.025em;
+        color: var(--white);
+      }
+      .sym {
+        font-weight: 700;
+        opacity: 0.8;
+      }
+
+      /* desc wrapper — NO overflow hidden so translate-up is visible */
+      .desc-clip {
+        margin-top: 18px;
+        position: relative;
+        min-height: 5em;
+      }
+
+      .slide-desc {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        font-size: 0.82rem;
+        line-height: 1.72;
+        color: var(--muted);
+        max-width: 100%;
+        will-change: transform, opacity;
+      }
+      .slide-desc:first-child {
+        position: relative;
+        visibility: hidden;
+      }
+
+      /* CTA */
+      .cta-wrap {
+        margin-top: 24px;
+        flex-shrink: 0;
+      }
+
+      .cta-btn {
+        display: inline-flex;
+        align-items: center;
+        /* Nền tối có border sáng — sang hơn nền trắng flat */
+        background: transparent;
+        color: var(--white);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.75rem;
+        font-weight: 400;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 13px 28px;
+        border-radius: 100px;
+        text-decoration: none;
+        cursor: pointer;
+        overflow: hidden;
+        width: fit-content;
+        position: relative;
+        /* Glow mờ phía sau */
+        box-shadow:
+          inset 0 1px 0 rgba(255,255,255,0.08),
+          0 0 0 0 rgba(255,255,255,0);
+        transition:
+          border-color 0.4s ease,
+          box-shadow 0.4s ease,
+          background 0.4s ease;
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+      }
+
+      .cta-btn:hover {
+        border-color: rgba(255, 255, 255, 0.6);
+        background: #f0eddf;
+        box-shadow:
+          inset 0 1px 0 rgba(255,255,255,0.12),
+          0 0 24px rgba(255,255,255,0.08);
+      }
+
+      .cta-track {
+        display: inline-flex;
+        flex-direction: column;
+        height: 1.1em;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .cta-line {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        white-space: nowrap;
+        line-height: 1.1;
+        transition:
+          transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+          opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .cta-line-b {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        opacity: 0;
+        transform: translate(-5px, 0);
+        transition:
+          transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+          opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .cta-btn:hover .cta-line-a {
+        transform: translate(6px, -100%);
+        opacity: 0;
+      }
+      .cta-btn:hover .cta-line-b {
+        transform: translate(0, -100%);
+        opacity: 1;
+      }
+
+      /* dots + counter */
+      .dots {
+        display: flex;
+        gap: 5px;
+        margin-top: 18px;
+        flex-shrink: 0;
+      } 
+      .dot {
+        height: 2px;
+        width: 16px;
+        border-radius: 2px;
+        background: rgba(255, 255, 255, 0.13);
+        cursor: pointer;
+        transition:
+          width 0.4s ease,
+          background 0.4s ease;
+      }
+      .dot.active {
+        width: 30px;
+        background: #f0eddf;
+      }
+
+      .counter {
+        position: absolute;
+        bottom: 26px;
+        right: 42px;
+        font-family: "Syne", sans-serif;
+        font-size: 0.63rem;
+        color: var(--gray);
+        letter-spacing: 0.1em;
+      }
