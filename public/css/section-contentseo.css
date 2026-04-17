@@ -1,7 +1,7 @@
 
 /* 1. overflow:hidden trên #cs-portfolio phá sticky → dùng clip */
 #cs-portfolio {
-  overflow-x: clip; /* clip ≠ hidden: không tạo stacking context mới */
+  overflow-x: clip;
 }
 
 /* 2. Wrapper phải full-width, không có max-width/margin
@@ -854,3 +854,23 @@
     display: none;
   }
 }
+
+/* ── DARK THEME ── */
+.section.s2 {
+  background: #0d0d0d;
+}
+#cs-portfolio {
+  background: #0d0d0d;
+  color: #e8e2d8;
+  --cs-ivory: #111111;
+  --cs-ivory-deep: #161616;
+  --cs-dark: #e8e2d8;
+  --cs-burgundy: #d4899a;
+  --cs-burgundy-lt: #e8b0bc;
+  --cs-glass: rgba(255, 255, 255, 0.06);
+  --cs-glass-border: rgba(255, 255, 255, 0.12);
+}
+#cs-portfolio .cs__desc        { color: rgba(232, 226, 216, 0.62); }
+#cs-portfolio .cs__stat-label  { color: rgba(232, 226, 216, 0.48); }
+#cs-portfolio .cs__cta-sub     { color: rgba(232, 226, 216, 0.58); }
+#cs-portfolio .cs__cta-strip::before { color: rgba(212, 137, 154, 0.035); }

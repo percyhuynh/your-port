@@ -8,7 +8,7 @@
 
       :root {
         --bg: #d5d2c6;
-        /* --fg: #0f0f0e; */
+        --fg: #0f0f0e;
         --radius: 22px;
         /* Main frame — centred, leaves space left for thumb TL, right for text */
         --frame-w: 47vw;
@@ -178,14 +178,16 @@
         opacity: 0;
         pointer-events: none;
         will-change: opacity, transform;
-        
+        background: #f0ece4;
+        border-radius: 12px;
+        padding: 22px 24px;
       }
       .text-panel-tech p {
         font-size: clamp(0.9rem, 1.3vw, 1.15rem);
         transform: translateX(-12px);
         font-weight: 700;
         line-height: 1.45;
-        color: var(--fg);
+        color: #1a1612;
         margin-bottom: 1.4rem;
         letter-spacing: -0.01em;
       }
@@ -194,7 +196,7 @@
         font-size: 0.65rem;
         letter-spacing: 0.15em;
         text-transform: uppercase;
-        color: var(--fg);
+        color: #6b1a1a;
         text-decoration: underline;
         text-underline-offset: 4px;
         pointer-events: auto;

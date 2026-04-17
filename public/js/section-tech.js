@@ -20,13 +20,13 @@ document.addEventListener('DOMContentLoaded', function() {
       /* Colour snap */
       const SNAP_PROGRESS = 0.148;
       let snapped = false;
-      function applyColour(isRed) {
-        if (isRed === snapped) return;
-        snapped = isRed;
-        stage.style.backgroundColor = isRed ? "#6b1a1a" : "#edeade";
-        heading.style.color = isRed ? "#e8e2cc" : "#0f0f0e";
-        navLeft.style.color = isRed ? "#e8e2cc" : "#0f0f0e";
-        navRight.style.color = isRed ? "#e8e2cc" : "#0f0f0e";
+      function applyColour(isBlack) {
+        if (isBlack === snapped) return;
+        snapped = isBlack;
+        stage.style.backgroundColor = isBlack ? "#000000" : "#f0ece4";
+        heading.style.color = isRed ? "#f0ece4" : "#0f0f0e";
+        navLeft.style.color = isRed ? "#f0ece4" : "#0f0f0e";
+        navRight.style.color = isRed ? "#f0ece4" : "#0f0f0e";
       }
 
       /*

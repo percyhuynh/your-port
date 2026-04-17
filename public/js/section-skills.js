@@ -49,13 +49,6 @@
     }
 
     _tick() {
-      /* ~30 fps throttle — skip 1 of every 2 RAF calls */
-      this._raf++;
-      if (this._raf % 2 !== 0) {
-        this.frameRequest = requestAnimationFrame(this._tick);
-        return;
-      }
-
       let out = '';
       let complete = 0;
 
