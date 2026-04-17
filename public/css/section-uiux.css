@@ -1,218 +1,423 @@
 *,
 *::before,
 *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 html {
-    scroll-behavior: auto;
+  scroll-behavior: auto;
 }
 
 body {
-    background: #f0eddf;
-    color: #1a1a18;
-    font-family: "DM Mono", monospace;
-    overflow-x: hidden;
+  background: #f0eddf;
+  color: #1a1a18;
+  font-family: "DM Mono", monospace;
+  overflow-x: hidden;
 }
 .section.s3 {
-  justify-content: flex-start;
-  padding-top: 50px;
+  display: block;
+  padding: 50px 0 0 0;
+  min-height: auto; /* override 1300vh — GSAP pin-spacer tự tạo đủ scroll space */
+  overflow: visible; /* tránh clip cắt pin-spacer khi GSAP tính height */
+}
+
+/* Giữ indent cho các text đầu section — dùng margin để không ảnh hưởng max-width */
+.section.s3 > .lbl,
+.section.s3 > .ttl,
+.section.s3 > .body {
+  margin-left: 13vw;
+  margin-right: 13vw;
 }
 
 /* Vùng trước/sau section để test scroll tự nhiên */
 .spacer {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: .7rem;
-    letter-spacing: .2em;
-    text-transform: uppercase;
-    color: #8a8878;
-    border-bottom: 1px solid #c8b89a;
-}
-
-
-.hs-section {
-    --hs-cream: #f0eddf;
-    --hs-ink: #1a1a18;
-    --hs-mid: #8a8878;
-    --hs-accent: #c8b89a;
-    --hs-card-bg: #ede9d8;
-    --hs-radius: 28px;
-    --hs-np: 6;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #8a8878;
+  border-bottom: 1px solid #c8b89a;
 }
 
 .hs-section {
-    overflow: hidden;
-    position: relative;
-    
+  --hs-cream: #f0eddf;
+  --hs-ink: #1a1a18;
+  --hs-mid: #8a8878;
+  --hs-accent: #c8b89a;
+  --hs-card-bg: #ede9d8;
+  --hs-radius: 28px;
+  --hs-np: 6;
+}
+
+.hs-section {
+  overflow: hidden;
+  position: relative;
+  height: 100vh; /* block flow cần explicit height để pin-spacer tính đúng */
+  width: 100%;
 }
 
 .hs-track {
-    /* display: flex;
+  /* display: flex;
     width: calc(var(--hs-np) * 100vw); */
-        display: flex;
-    width: max-content;
-    height: 100vh;
-    will-change: transform;
-    
+  display: flex;
+  width: max-content;
+  height: 100vh;
+  will-change: transform;
 }
 
 .hs-panel {
-    width: 90vw;
-    height: 100vh;
-    flex-shrink: 0;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 5vh 6vw;
-    border-right: 1px solid rgba(26, 26, 24, .1);
+  width: 90vw;
+  height: 100vh;
+  flex-shrink: 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5vh 6vw;
+  border-right: 1px solid rgba(26, 26, 24, 0.1);
 }
 
 .hs-fig {
-    position: absolute;
-    top: 2rem;
-    left: 2.8rem;
-    font-size: .6rem;
-    letter-spacing: .16em;
-    text-transform: uppercase;
-    color: var(--hs-mid);
-    display: flex;
-    align-items: center;
-    gap: .55rem;
-    font-family: "DM Mono", monospace;
+  position: absolute;
+  top: 2rem;
+  left: 2.8rem;
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--hs-mid);
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: "DM Mono", monospace;
 }
 
 .hs-fig::before {
-    content: "";
-    display: block;
-    width: 20px;
-    height: 1px;
-    background: var(--hs-mid);
+  content: "";
+  display: block;
+  width: 20px;
+  height: 1px;
+  background: var(--hs-mid);
 }
 
 .hs-fig span {
-    font-size: .6rem;
-    letter-spacing: .1em;
-    color: var(--hs-mid);
-    padding-left: .8rem;
-    border-left: 1px solid var(--hs-accent);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: var(--hs-mid);
+  padding-left: 0.8rem;
+  border-left: 1px solid var(--hs-accent);
 }
 
 .hs-card {
-    width: 85%;
-    height: 100%;
-    background: var(--hs-card-bg);
-    border-radius: var(--hs-radius);
-    border: 1px solid rgba(26, 26, 24, .1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    position: relative;
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, .6),
-        0 2px 32px rgba(26, 26, 24, .06);
+  width: 85%;
+  height: 100%;
+  background: var(--hs-card-bg);
+  border-radius: var(--hs-radius);
+  border: 1px solid rgba(26, 26, 24, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    0 2px 32px rgba(26, 26, 24, 0.06);
 }
 
 .hs-card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 /* Placeholder khi chưa có ảnh */
 .hs-card img[src=""] {
-    display: none;
+  display: none;
 }
 
 .hs-card-placeholder {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: .8rem;
-    opacity: .25;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  opacity: 0.25;
 }
 
-.hs-card img[src=""]~.hs-card-placeholder {
-    display: flex;
+.hs-card img[src=""] ~ .hs-card-placeholder {
+  display: flex;
 }
 
-.hs-card img:not([src=""])~.hs-card-placeholder {
-    display: none;
+.hs-card img:not([src=""]) ~ .hs-card-placeholder {
+  display: none;
 }
 
 .hs-placeholder-icon {
-    width: 48px;
-    height: 48px;
-    border: 1.5px solid #1a1a18;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 48px;
+  height: 48px;
+  border: 1.5px solid #1a1a18;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .hs-placeholder-text {
-    font-size: .58rem;
-    letter-spacing: .14em;
-    text-transform: uppercase;
-    color: #1a1a18;
-    font-family: "DM Mono", monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #1a1a18;
+  font-family: "DM Mono", monospace;
 }
 
 .hs-caption {
-    position: absolute;
-    bottom: 1.6rem;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: .58rem;
-    letter-spacing: .14em;
-    text-transform: uppercase;
-    color: var(--hs-mid);
-    white-space: nowrap;
-    font-family: "DM Mono", monospace;
+  position: absolute;
+  bottom: 1.6rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--hs-mid);
+  white-space: nowrap;
+  font-family: "DM Mono", monospace;
 }
 
 .hs-progress {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 2px;
-    background: var(--hs-ink);
-    width: 0%;
-    z-index: 200;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity .4s;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: var(--hs-ink);
+  width: 0%;
+  z-index: 200;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s;
 }
 
 .hs-dots {
-    position: fixed;
-    bottom: 2.2rem;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: .65rem;
-    z-index: 200;
-    opacity: 0;
-    transition: opacity .4s;
+  position: fixed;
+  bottom: 2.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.65rem;
+  z-index: 200;
+  opacity: 0;
+  transition: opacity 0.4s;
 }
 
 .hs-dots .hs-dot {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--hs-mid);
-    transition: background .3s, transform .3s;
-    cursor: pointer;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--hs-mid);
+  transition:
+    background 0.3s,
+    transform 0.3s;
+  cursor: pointer;
 }
 
 .hs-dots .hs-dot.active {
-    background: var(--hs-ink);
-    transform: scale(1.6);
+  background: var(--hs-ink);
+  transform: scale(1.6);
+}
+
+/* PHASE 2 */
+
+.pf-section *,
+.pf-section *::before,
+.pf-section *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.pf-section {
+  /* ↓↓ CHỈNH ĐỘ RỘNG: tăng số vw để hẹp hơn, giảm để rộng hơn ↓↓ */
+  padding: 0 13vw 80px; /* trái/phải: 13vw — khớp indent chung của site */
+  /* ↑↑ ————————————————————————————————————————————————— ↑↑ */
+  margin-top: 80px;     /* khoảng cách với hs-section bên trên */
+}
+
+.pf-section .pf-design-label {
+  display: block;
+  font-size: 1.1rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #1a1a18;
+  font-family: "DM Mono", monospace;
+  margin-bottom: 32px;
+}
+
+.pf-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.pf-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pf-col:nth-child(1) {
+  margin-top: 0px;
+}
+.pf-col:nth-child(2) {
+  margin-top: 100px;
+}
+.pf-col:nth-child(3) {
+  margin-top: 50px;
+}
+
+.pf-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  cursor: pointer;
+  background: #111;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+
+  opacity: 0;
+  transform: translateY(60px) scale(0.88);
+  transform-origin: bottom center;
+  transition:
+    opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pf-card.pf-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.pf-col:nth-child(1) .pf-card:nth-child(1) {
+  transition-delay: 0s;
+}
+.pf-col:nth-child(1) .pf-card:nth-child(2) {
+  transition-delay: 0.12s;
+}
+.pf-col:nth-child(1) .pf-card:nth-child(3) {
+  transition-delay: 0.24s;
+}
+.pf-col:nth-child(2) .pf-card:nth-child(1) {
+  transition-delay: 0.08s;
+}
+.pf-col:nth-child(2) .pf-card:nth-child(2) {
+  transition-delay: 0.2s;
+}
+.pf-col:nth-child(2) .pf-card:nth-child(3) {
+  transition-delay: 0.32s;
+}
+.pf-col:nth-child(3) .pf-card:nth-child(1) {
+  transition-delay: 0.16s;
+}
+.pf-col:nth-child(3) .pf-card:nth-child(2) {
+  transition-delay: 0.28s;
+}
+.pf-col:nth-child(3) .pf-card:nth-child(3) {
+  transition-delay: 0.4s;
+}
+
+.pf-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(100%);
+  transition:
+    filter 0.5s ease,
+    transform 0.55s ease;
+  display: block;
+}
+
+.pf-card:hover img {
+  filter: grayscale(0%);
+  transform: scale(1.06);
+}
+
+/* ── Lightbox ── */
+.pf-lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  background: rgba(240, 237, 223, 0.08);
+  backdrop-filter: blur(22px) saturate(1.2);
+  -webkit-backdrop-filter: blur(22px) saturate(1.2);
+  cursor: pointer;
+}
+.pf-lightbox.pf-open {
+  display: flex;
+  animation: pf-fi 0.22s ease;
+}
+@keyframes pf-fi {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.pf-lb-inner {
+  width: 900px;
+  height: 600px;
+  max-width: 92vw;
+  max-height: 86vh;
+  border-radius: 18px;
+  overflow: hidden;
+  cursor: default;
+  animation: pf-si 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  flex-shrink: 0;
+}
+@keyframes pf-si {
+  from {
+    transform: scale(0.88);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.pf-lb-inner img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 700px) {
+  .pf-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .pf-col:nth-child(2) {
+    margin-top: 60px;
+  }
+  .pf-col:nth-child(3) {
+    display: none;
+  }
+}
+@media (max-width: 420px) {
+  .pf-grid {
+    grid-template-columns: 1fr;
+  }
+  .pf-col:nth-child(n) {
+    margin-top: 0;
+  }
+  .pf-col:nth-child(3) {
+    display: flex;
+  }
 }

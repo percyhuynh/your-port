@@ -42,12 +42,9 @@
 /* ── Layout: left nav | center image | right text ── */
 .ps-layout {
   display: grid;
-  grid-template-columns: 1fr clamp(220px, 22vw, 340px) 1fr;
+  grid-template-columns: 1fr clamp(300px, 40vw, 580px) 1fr; /* center = image */
   align-items: center;
   width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 40px;
   gap: 48px;
 }
 
@@ -88,7 +85,7 @@
 }
 .ps-nav-item.active {
   color: var(--dark);
-  font-weight: 700;
+  /* font-weight: 700 — bỏ bold, tránh layout shift khi chuyển tab */
 }
 .ps-nav-item.active::before {
   opacity: 1;
@@ -107,8 +104,8 @@
 
 .ps-image-frame {
   width: 100%;
-  aspect-ratio: 3/4;
-  max-height: 82vh;
+  aspect-ratio: 3/4;   /* giữ hình chữ nhật */
+  max-height: 90vh;    /* to hơn, căn giữa theo cột */
   border-radius: 20px;
   overflow: hidden;
   position: relative;
@@ -137,8 +134,9 @@
 .ps-right {
   position: relative;
   min-height: 140px;
-  justify-self: start;
+  justify-self: stretch;
   align-self: center;
+  text-align: right;
 }
 .ps-panel {
   position: absolute;
@@ -162,7 +160,7 @@
   color: #555;
   margin-bottom: 24px;
   font-weight: 300;
-  max-width: 220px;
+  /* max-width: 220px — đã bỏ để text trải dài theo cột */
 }
 .ps-panel h3 {
   font-family: Georgia, serif;

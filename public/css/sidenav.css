@@ -486,8 +486,12 @@ header * {
   border: 2px solid #fff;
   color: #fff;
   margin-right: 10px;
-  transition: 0.3s;
-  display: inline-block;
+  transition: border-color 0.4s ease, background 0.4s ease, color 0.4s ease;
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  text-decoration: none;
 }
 
 .btn.active {
@@ -497,6 +501,16 @@ header * {
 
 .btn:hover {
   background: rgba(255, 255, 255, 0.2);
+}
+
+/* cta slide animation — khớp với .cta-btn trong section-work.css */
+.btn-group .btn:hover .cta-line-a {
+  transform: translate(6px, -100%);
+  opacity: 0;
+}
+.btn-group .btn:hover .cta-line-b {
+  transform: translate(0, -100%);
+  opacity: 1;
 }
 
 .social {

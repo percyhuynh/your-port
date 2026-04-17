@@ -53,3 +53,61 @@
     section.style.setProperty("--hs-np", N);
   });
 })();
+
+
+// PHASE 2
+
+ (function () {
+        /* ── Scroll reveal ── */
+        var cards = document.querySelectorAll(".pf-card");
+
+        if ("IntersectionObserver" in window) {
+          var io = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add("pf-visible");
+                  io.unobserve(entry.target);
+                }
+              });
+            },
+            { threshold: 0.12 },
+          );
+
+          cards.forEach(function (card) {
+            io.observe(card);
+          });
+        } else {
+          cards.forEach(function (card) {
+            card.classList.add("pf-visible");
+          });
+        }
+
+        /* ── Lightbox ── */
+        var lb = document.getElementById("pfLightbox");
+        var inner = document.getElementById("pfLbInner");
+        var img = document.getElementById("pfLbImg");
+
+        cards.forEach(function (card) {
+          card.addEventListener("click", function () {
+            img.src = card.querySelector("img").src;
+            lb.classList.add("pf-open");
+            document.body.style.overflow = "hidden";
+          });
+        });
+
+        function closeLB() {
+          lb.classList.remove("pf-open");
+          document.body.style.overflow = "";
+          img.src = "";
+        }
+
+        /* click ra ngoài ảnh (vùng backdrop) thì đóng */
+        lb.addEventListener("click", function (e) {
+          if (!inner.contains(e.target)) closeLB();
+        });
+
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") closeLB();
+        });
+      })();

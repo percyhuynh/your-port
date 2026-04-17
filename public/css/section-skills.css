@@ -1,0 +1,84 @@
+/* ══════════════════════════════════
+   SKILLS SECTION  (#sk-root)
+   Scoped: all selectors prefixed sk-
+══════════════════════════════════ */
+
+#sk-root {
+  margin-top: 72px;
+  padding: 36px 40px 42px;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  border-radius: 22px;
+  background: rgba(0, 0, 0, 0.025);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* — header block (eyebrow + title) */
+.sk-head {
+  margin-bottom: 28px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.sk-eyebrow {
+  display: block;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.42);
+  margin-bottom: 10px;
+}
+
+.sk-title {
+  font-family: 'Merriweather', serif;
+  font-weight: 400;
+  font-size: clamp(1.4rem, 2.2vw, 1.8rem);
+  letter-spacing: -0.01em;
+  color: #1a1a1a;
+  line-height: 1.15;
+}
+
+/* — pill cloud */
+.sk-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* — single pill */
+.sk-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 22px;
+  border-radius: 100px;
+  border: 1px solid rgba(0, 0, 0, 0.22);
+  background: transparent;
+  color: #1a1a1a;
+  font-family: 'Nunito', sans-serif;
+  font-size: clamp(0.82rem, 1vw, 0.94rem);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  cursor: default;
+  user-select: none;
+  white-space: nowrap;
+  transition:
+    background 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.18s ease;
+}
+
+.sk-pill:hover {
+  background: #6b1a1a;
+  border-color: #6b1a1a;
+  color: #fff;
+}
+
+/* — scramble random-char accent */
+.sk-scramble-char {
+  opacity: 0.5;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.82em;
+}
