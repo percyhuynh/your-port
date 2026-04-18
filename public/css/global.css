@@ -1,8 +1,19 @@
-*, *::before, *::after,
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+*,
 html, body, button, input, select, textarea {
-  font-family: Georgia, serif !important;
+  font-family: 'Courier Prime', monospace !important;
 }
 
 h1, h2, h3, h4, h5, h6, p, a, span, div, li, td {
-  font-family: Georgia, serif !important;
+  font-family: 'Courier Prime', monospace !important;
+}
+
+body { background: #000; }
+
+/* Restore Font Awesome glyph font on pseudo-elements */
+[class^="fa-"]::before,
+[class*=" fa-"]::before,
+.fab::before, .fas::before, .far::before, .fal::before, .fad::before {
+  font-family: var(--fa-family) !important;
 }

@@ -1,0 +1,450 @@
+/* ═══════════════════════════════════════════════════
+   ABOUT SECTION — scoped under .section.about
+═══════════════════════════════════════════════════ */
+
+.section.about {
+  background: #000;
+}
+
+/* ══════════════════════════════════════════════════
+   GALLERY — 2 children
+══════════════════════════════════════════════════ */
+
+/* ── Child 1: ABOUT ME heading screen ── */
+.ab-lbl-screen {
+  height: 100vh;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ab-lbl-text {
+  font-family: "Courier Prime", monospace;
+  font-size: 64px;
+  color: #6b1a1a;
+  font-weight: 200;
+  white-space: nowrap;
+  letter-spacing: 0.12em;
+}
+
+/* ── Child 2: Painting screen — tall scroll container ── */
+.ab-painting-screen {
+  height: 300vh; /* scroll space: frame sticks, spotlight scrubs in */
+  position: relative;
+  background: #050505;
+}
+
+/* Sticky shell — stays at center while parent scrolls */
+.ab-painting-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.ab-painting-wrap {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Wooden frame */
+.ab-painting-frame {
+  position: relative;
+  width: 320px;
+  max-width: 78vw;
+  padding: 18px;
+  background: linear-gradient(
+    145deg,
+    #3e2a10 0%,
+    #1c1208 45%,
+    #2e1e0c 75%,
+    #3e2a10 100%
+  );
+  box-shadow:
+    inset 0 2px 6px rgba(255, 210, 120, 0.12),
+    inset 0 -2px 6px rgba(0, 0, 0, 0.5),
+    inset -2px 0 6px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(0, 0, 0, 0.9),
+    0 30px 100px rgba(0, 0, 0, 0.95);
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.ab-painting-img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: 1px;
+  filter: grayscale(1);
+  transition: filter 1.4s ease;
+}
+
+.ab-painting-frame:hover .ab-painting-img {
+  filter: grayscale(0);
+}
+
+/* Museum wall plaque */
+.ab-painting-plaque {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 10px 22px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.ab-pp-title {
+  display: block;
+  font-family: "Courier Prime", monospace;
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: rgba(255, 255, 255, 0.25);
+  text-transform: uppercase;
+}
+
+.ab-pp-sub {
+  display: block;
+  font-family: "Courier Prime", monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.12);
+  text-transform: uppercase;
+}
+
+/* Ceiling beam — tapered cone from top, opacity driven by JS */
+.ab-spot-beam {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 58%;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 238, 180, 0.07) 0%,
+    rgba(255, 225, 140, 0.025) 55%,
+    transparent 100%
+  );
+  clip-path: polygon(28% 0%, 72% 0%, 100% 100%, 0% 100%);
+  opacity: 0;
+}
+
+/* Darkness overlay — scroll-driven radial gradient hole */
+.ab-spot-dark {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.97);
+}
+
+/* Warm glow overlay — screen blend adds golden warmth */
+.ab-spot-glow {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background: transparent;
+}
+
+/* ══════════════════════════════════════════════════
+   SCROLL TEXT BLOCK
+══════════════════════════════════════════════════ */
+.ab-text-block {
+  background: #000;
+  padding: 80px 0 60px;
+}
+
+.ab-text-inner {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.ab-line {
+  display: block;
+  font-family: "Courier Prime", monospace;
+  font-size: 15px;
+  line-height: 1.9;
+  color: rgba(255, 255, 255, 0.15);
+  transition: color 0.4s ease;
+  will-change: color;
+}
+
+.ab-line.ab-revealed {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.ab-line-name {
+  font-size: 38px;
+  line-height: 1.15;
+  margin-bottom: 6px;
+  color: rgba(255, 255, 255, 0.1);
+  font-weight: 400;
+}
+
+.ab-line-name.ab-revealed {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.ab-role-wrap {
+  font-family: "Courier Prime", monospace;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.3);
+  margin-bottom: 32px;
+  letter-spacing: 0.05em;
+  display: block;
+  transition: color 0.4s ease;
+}
+
+.ab-role-wrap.ab-revealed {
+  color: rgba(255, 220, 160, 0.75);
+}
+
+/* Typed text always visible white */
+.ab-role-wrap .input {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.ab-spacer {
+  display: block;
+  height: 24px;
+}
+
+/* ══════════════════════════════════════════════════
+   ACTIONS — CV, Contact, Social
+══════════════════════════════════════════════════ */
+.ab-actions {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
+}
+
+.ab-actions.ab-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.ab-btn-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.ab-btn {
+  padding: 10px 28px;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: rgba(255, 255, 255, 0.75);
+  font-family: "Courier Prime", monospace;
+  font-size: 13px;
+  text-decoration: none;
+  background: transparent;
+  cursor: pointer;
+  transition:
+    border-color 0.3s ease,
+    background 0.3s ease,
+    color 0.3s ease;
+  overflow: hidden;
+  position: relative;
+}
+
+.ab-btn.ab-btn-primary {
+  background: rgba(255, 255, 255, 0.9);
+  color: #111;
+  border-color: transparent;
+}
+
+.ab-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.6);
+  color: #fff;
+}
+
+.ab-btn.ab-btn-primary:hover {
+  background: #fff;
+  color: #000;
+}
+
+.ab-social {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+}
+
+.ab-social a {
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 18px;
+  text-decoration: none;
+  transition:
+    color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.ab-social a:hover {
+  color: rgba(255, 240, 180, 0.85);
+  transform: translateY(-4px);
+}
+
+/* ══════════════════════════════════════════════════
+   SKILLS BLOCK
+══════════════════════════════════════════════════ */
+#sk-root {
+  margin-top: 0;
+  padding: 56px 40px 60px;
+  background: #0a0a0a;
+  border: none;
+  border-radius: 0;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+#sk-root .sk-head {
+  margin-bottom: 28px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+#sk-root .sk-title {
+  font-family: "Courier Prime", monospace;
+  font-weight: 400;
+  font-size: clamp(1.2rem, 2vw, 1.5rem);
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.2;
+}
+
+#sk-root .sk-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+#sk-root .sk-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 20px;
+  border-radius: 100px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: "Courier Prime", monospace;
+  font-size: clamp(0.78rem, 1vw, 0.9rem);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  cursor: default;
+  user-select: none;
+  white-space: nowrap;
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    color 0.25s ease;
+}
+
+#sk-root .sk-pill:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* ── GRADIENT BRIDGE ── */
+.ab-bridge {
+  display: block;
+  width: 100%;
+  height: 60px;
+  background: #000;
+  pointer-events: none;
+}
+
+/* ══════════════════════════════════════════════════
+   PH-ROOT / PH-WRAP / PH-CANVAS
+══════════════════════════════════════════════════ */
+#ph-root {
+  all: initial;
+  display: block;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  margin-left: -50vw;
+  margin-top: 0;
+  box-sizing: border-box;
+  background: #000;
+}
+#ph-root * {
+  box-sizing: border-box;
+}
+
+#ph-wrap {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  padding: 60px 0;
+  overflow: hidden;
+  position: relative;
+  background: #000;
+}
+
+#ph-wrap::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.55)),
+    url("../images/background-port.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+#ph-canvas {
+  display: block;
+  max-width: 100%;
+  cursor: crosshair;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .ab-lbl-screen {
+    padding: 6vh 6vw;
+  }
+
+  .ab-lbl-text {
+    font-size: clamp(3.5rem, 22vw, 8rem);
+  }
+
+  .ab-text-inner {
+    padding: 0 24px;
+  }
+
+  .ab-line-name {
+    font-size: 28px;
+  }
+
+  #sk-root {
+    padding: 44px 24px 48px;
+  }
+}

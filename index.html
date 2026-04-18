@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" />
 
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+  <link rel="stylesheet" href="public/fonts/fa/css/all.min.css" />
 
   <!-- GSAP + plugins — load 1 lần duy nhất, trước tất cả component JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -33,7 +33,7 @@
   <link rel="stylesheet" href="public/css/section-uiux.css">
   <link rel="stylesheet" href="public/css/section-tech.css">
   <link rel="stylesheet" href="public/css/section-others.css">
-  <link rel="stylesheet" href="public/css/section-skills.css">
+  <link rel="stylesheet" href="public/css/section-about.css">
 </head>
 
 <body>
@@ -119,76 +119,122 @@
 
   <!-- SECTIONS -->
   <section class="section about" id="about">
-    <div class="lbl">
-      <h2>ABOUT ME</h2>
+
+  <!-- ── GALLERY: 2 children ── -->
+  <div class="ab-gallery">
+
+    <!-- Child 1: ABOUT ME heading — scroll past to reach painting -->
+    <div class="ab-lbl-screen">
+      <h2 class="ab-lbl-text">ABOUT ME</h2>
     </div>
-    <div class="container">
-      <div class="hero-text">
-        <p>Hi I'm <span class="input">SEO Strategy</span></p>
-        <p>Percy Huynh</p>
-        <div class="hero-text1">
-          <p>
-            I would like to submit my profile for your consideration, with the hope of opening up opportunities for
-            long-term collaboration.<br>
-            My full name is Huynh Man Dat (Percy Huynh), and I hold a Bachelor's degree in Business Administration from
-            the University of Finance and Marketing. With nearly 2 years of hands-on experience in SEO, along with over
-            3 years of experience in Content SEO across various industries, including B2C, B2B, travel, and sports.<br>
-            I strongly believe that I can bring valuable contributions aligned with your company's expectations, and I
-            look forward to the opportunity to work together.
-          </p>
+
+    <!-- Child 2: Museum painting — sticky scroll spotlight + B&W → color on hover -->
+    <div class="ab-painting-screen" id="ab-painting-screen">
+      <div class="ab-painting-sticky">
+        <div class="ab-painting-wrap">
+          <div class="ab-painting-frame" id="ab-pframe">
+            <img
+              src="https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=900&q=85"
+              alt=""
+              class="ab-painting-img"
+            />
+          </div>
+          <div class="ab-painting-plaque">
+            <span class="ab-pp-title">About Me</span>
+            <span class="ab-pp-sub">Percy Huynh · Portfolio</span>
+          </div>
         </div>
-        <div class="btn-group">
-          <a href="#" class="btn active"><div class="cta-track"><span class="cta-line cta-line-a">CV</span><span class="cta-line cta-line-b">CV</span></div></a>
-          <a href="#" class="btn"><div class="cta-track"><span class="cta-line cta-line-a">Contact</span><span class="cta-line cta-line-b">Contact</span></div></a>
+        <div class="ab-spot-beam"></div>
+        <div class="ab-spot-dark" id="ab-spot-dark"></div>
+        <div class="ab-spot-glow" id="ab-spot-glow"></div>
+      </div>
+    </div>
+
+  </div>
+ 
+  <!-- ── 2. SCROLL TEXT BLOCK ── -->
+  <div class="ab-text-block">
+    <div class="ab-text-inner">
+ 
+      <!-- Role typed -->
+      <span class="ab-line ab-role-wrap" id="ab-role">
+        — <span class="input">SEO Strategy</span>
+      </span>
+ 
+      <!-- Tên lớn -->
+      <span class="ab-line ab-line-name" data-ab>Percy Huynh</span>
+      <span class="ab-spacer"></span>
+ 
+      <!-- Bio dạng từng dòng để reveal -->
+      <span class="ab-line" data-ab>I would like to submit my profile for your consideration,</span>
+      <span class="ab-line" data-ab>with the hope of opening up opportunities for long-term collaboration.</span>
+      <span class="ab-spacer"></span>
+      <span class="ab-line" data-ab>My full name is Huynh Man Dat (Percy Huynh), and I hold a Bachelor's degree</span>
+      <span class="ab-line" data-ab>in Business Administration from the University of Finance and Marketing.</span>
+      <span class="ab-spacer"></span>
+      <span class="ab-line" data-ab>With nearly 2 years of hands-on experience in SEO,</span>
+      <span class="ab-line" data-ab>along with over 3 years of experience in Content SEO</span>
+      <span class="ab-line" data-ab>across B2C, B2B, travel, and sports industries.</span>
+      <span class="ab-spacer"></span>
+      <span class="ab-line" data-ab>I strongly believe I can bring valuable contributions aligned</span>
+      <span class="ab-line" data-ab>with your company's expectations.</span>
+ 
+      <!-- Actions: CV, Contact, Social -->
+      <div class="ab-actions" id="ab-actions">
+        <div class="ab-btn-row">
+          <a href="#" class="ab-btn ab-btn-primary">CV</a>
+          <a href="#" class="ab-btn">Contact</a>
         </div>
-        <div class="social">
+        <div class="ab-social">
           <a href="#"><i class="fa-solid fa-envelope"></i></a>
           <a href="#"><i class="fa-brands fa-linkedin"></i></a>
           <a href="#"><i class="fa-brands fa-telegram"></i></a>
           <a href="#"><i class="fa-solid fa-phone"></i></a>
           <a href="#"><i class="fa-brands fa-instagram"></i></a>
-
         </div>
       </div>
-      <div class="hero-pic-wrap">
-        <img class="hero-pic-bg" src="profile-pic-1.png" alt="">
-        <div class="hero-pic">
-          <img src="profile-pic-1.png" alt="profile pic">
-        </div>
-      </div>
+ 
     </div>
-
-    <!-- SKILLS -->
-    <div id="sk-root">
-      <div class="sk-head">
-        <!-- <span class="sk-eyebrow">— expertise</span> -->
-        <h3 class="sk-title">Skills &amp; Expertise</h3>
-      </div>
-      <div class="sk-pills">
-        <span class="sk-pill" data-val="On-page SEO">On-page SEO</span>
-        <span class="sk-pill" data-val="Technical SEO">Technical SEO</span>
-        <span class="sk-pill" data-val="Keyword Research">Keyword Research</span>
-        <span class="sk-pill" data-val="Link Building">Link Building</span>
-        <span class="sk-pill" data-val="SERP Analysis">SERP Analysis</span>
-        <span class="sk-pill" data-val="Content Strategy">Content Strategy</span>
-        <span class="sk-pill" data-val="Editorial Planning">Editorial Planning</span>
-        <span class="sk-pill" data-val="Copywriting">Copywriting</span>
-        <span class="sk-pill" data-val="B2B / B2C Content">B2B / B2C Content</span>
-        <span class="sk-pill" data-val="Brand Storytelling">Brand Storytelling</span>
-        <span class="sk-pill" data-val="Google Analytics 4">Google Analytics 4</span>
-        <span class="sk-pill" data-val="Search Console">Search Console</span>
-        <span class="sk-pill" data-val="Ahrefs / SEMrush">Ahrefs / SEMrush</span>
-        <span class="sk-pill" data-val="Screaming Frog">Screaming Frog</span>
-        <span class="sk-pill" data-val="Figma / Canva">Figma / Canva</span>
-      </div>
-    </div>
-
-    <div id="ph-root">
-  <div id="ph-wrap">
-    <canvas id="ph-canvas"></canvas>
   </div>
-</div>
-  </section>
+ 
+  <!-- ── 3. SKILLS ── (giữ nguyên HTML, bỏ scramble JS) -->
+  <div id="sk-root">
+    <div class="sk-head">
+      <h3 class="sk-title">Skills &amp; Expertise</h3>
+    </div>
+    <div class="sk-pills">
+      <span class="sk-pill" data-val="On-page SEO">On-page SEO</span>
+      <span class="sk-pill" data-val="Technical SEO">Technical SEO</span>
+      <span class="sk-pill" data-val="Keyword Research">Keyword Research</span>
+      <span class="sk-pill" data-val="Link Building">Link Building</span>
+      <span class="sk-pill" data-val="SERP Analysis">SERP Analysis</span>
+      <span class="sk-pill" data-val="Content Strategy">Content Strategy</span>
+      <span class="sk-pill" data-val="Editorial Planning">Editorial Planning</span>
+      <span class="sk-pill" data-val="Copywriting">Copywriting</span>
+      <span class="sk-pill" data-val="B2B / B2C Content">B2B / B2C Content</span>
+      <span class="sk-pill" data-val="Brand Storytelling">Brand Storytelling</span>
+      <span class="sk-pill" data-val="Google Analytics 4">Google Analytics 4</span>
+      <span class="sk-pill" data-val="Search Console">Search Console</span>
+      <span class="sk-pill" data-val="Ahrefs / SEMrush">Ahrefs / SEMrush</span>
+      <span class="sk-pill" data-val="Screaming Frog">Screaming Frog</span>
+      <span class="sk-pill" data-val="Figma / Canva">Figma / Canva</span>
+    </div>
+  </div>
+ 
+  <!-- ── 4. GRADIENT BRIDGE đen → kem ── -->
+  <div class="ab-bridge"></div>
+ 
+  <!-- ── 5. CANVAS (giữ nguyên, k đụng CSS) ── -->
+  <div id="ph-root">
+    <div id="ph-wrap">
+      <canvas id="ph-canvas"></canvas>
+    </div>
+  </div>
+ 
+</section>
+
+
+<!-- ---SECTION WORK--- -->
 
   <section class="section work" id="work">
 
@@ -1139,7 +1185,7 @@
             Leave city congestion behind and choose a stress-free commute
             through the clouds.
           </p>
-          <a href="#">Discover the Experience</a>
+          
         </div>
 
         <!-- ══ SLIDE 2 ══ -->
@@ -1168,7 +1214,7 @@
             Sit back and enjoy. Breathtaking views come standard with every
             seat.
           </p>
-          <a href="#">Discover the Experience</a>
+          
         </div>
 
         <!-- ══ SLIDE 3 ══ -->
@@ -1197,7 +1243,7 @@
             Enjoy seamless travel with a choreographed rideshare to the
             vertiport.
           </p>
-          <a href="#">Discover the Experience</a>
+          
         </div>
 
         <!-- ══ SLIDE 4 ══ -->
@@ -1223,7 +1269,7 @@
         </div>
         <div class="text-panel-tech" id="text4">
           <p>The city glows below. Arrive refreshed, every single time.</p>
-          <a href="#">Discover the Experience</a>
+          
         </div>
 
         <!-- ══ SLIDE 5 ══ -->
@@ -1245,7 +1291,7 @@
           <p>
             Start your morning above it all. A new way to move, built for you.
           </p>
-          <a href="#">Discover the Experience</a>
+          
         </div>
 
         <div class="nav-labels">
@@ -1293,13 +1339,13 @@
                   <img
                     class="ps-slide show"
                     data-index="0"
-                    src="anhtest-1.jpg"
+                    src="./public/images/anhtest-4.jpg"
                   />
-                  <img class="ps-slide" data-index="1" src="anhtest-2.jpg" />
-                  <img class="ps-slide" data-index="2" src="anhtest-3.jpg" />
-                  <img class="ps-slide" data-index="3" src="anhtest-1.jpg" />
-                  <img class="ps-slide" data-index="4" src="anhtest-3.jpg" />
-                  <img class="ps-slide" data-index="5" src="anhtest-4.jpg" />
+                  <img class="ps-slide" data-index="1" src="./public/images/anhtest-1.jpg" />
+                  <img class="ps-slide" data-index="2" src="./public/images/anhtest-2.jpg" />
+                  <img class="ps-slide" data-index="3" src="./public/images/anhtest-3.jpg" />
+                  <img class="ps-slide" data-index="4" src="./public/images/anhtest-4.jpg" />
+                  <img class="ps-slide" data-index="5" src="./public/images/anhtest-1.jpg" />
                 </div>
               </div>
               <!-- /.ps-image-frame -->
@@ -1442,7 +1488,7 @@
 <script src="public/js/section-uiux.js"></script>
 <script src="public/js/section-tech.js"></script>
 <script src="public/js/section-others.js"></script>
-<script src="public/js/section-skills.js"></script>
+<script src="public/js/section-about.js"></script>
 
 </body>
 </html>

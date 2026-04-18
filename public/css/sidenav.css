@@ -7,12 +7,12 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: Georgia, serif;
+  font-family: 'Courier Prime', monospace;
   text-decoration: none;
 }
 
 :root {
-  --clr-bg: #f0ece4;
+  --clr-bg: #000;
   --clr-ink: #1a1612;
   --clr-muted: #ffffff;
   --clr-accent: #605d5d;
@@ -54,22 +54,6 @@ body {
   min-height: 100vh;
 }
 
-/* ── BLURRED PAGE BG ──
-   position:fixed không bị ảnh hưởng bởi overflow-x:hidden của body,
-   không xung đột sticky/transform/banner. inset:-20px tránh viền nhạt khi blur.
-   Viewport tự clip phần nhô ra ngoài. ── */
-body::before {
-  content: '';
-  position: fixed;
-  inset: -20px;
-  z-index: 0;
-  background-image: url('../images/background-port.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  filter: blur(6px);
-  pointer-events: none;
-}
 
 /* ═══════════════════════════════════════════════════
    HEADER
@@ -240,6 +224,7 @@ header * {
 .banner-scroll-wrapper {
   height: 200vh;
   position: relative;
+  background: #000;
 }
 
 .hero-header {
@@ -300,7 +285,7 @@ header * {
 /* Part A — enormous ghost outline: last name as architectural element */
 .cb-title-a {
   display: block;
-  font-family: 'Bebas Neue', sans-serif !important;
+  font-family: 'Courier Prime', monospace !important;
   font-size: clamp(5.5rem, 28vw, 26rem);
   color: transparent;
   -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.88);
@@ -313,7 +298,7 @@ header * {
 /* Part B — solid fill, right-flush, separated by a thin rule */
 .cb-title-b {
   display: block;
-  font-family: 'Bebas Neue', sans-serif !important;
+  font-family: 'Courier Prime', monospace !important;
   font-size: clamp(1.8rem, 6.5vw, 6rem);
   color: #fff;
   letter-spacing: 0.28em;
@@ -412,7 +397,7 @@ header * {
 }
 
 .lbl {
-  font-family: Georgia, serif;
+  font-family: 'Courier Prime', monospace;
   font-size: 14px;
   color: #6b1a1a;
   font-weight: 300;
@@ -422,7 +407,7 @@ header * {
 }
 
 .ttl {
-  font-family: Georgia, serif;
+  font-family: 'Courier Prime', monospace;
   font-size: clamp(38px, 6vw, 84px);
   font-weight: 200;
   line-height: 1.07;
@@ -443,7 +428,7 @@ header * {
   position: absolute;
   right: 8vw;
   bottom: 6vh;
-  font-family: 'Unbounded', sans-serif;
+  font-family: 'Courier Prime', monospace;
   font-size: clamp(80px, 15vw, 200px);
   font-weight: 200;
   opacity: 0.04;
@@ -451,139 +436,6 @@ header * {
   line-height: 1;
   color: currentColor;
   pointer-events: none;
-}
-
-/* ═══════════════════════════════════════════════════
-   ABOUT SECTION
-═══════════════════════════════════════════════════ */
-.container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.hero-text {
-  max-width: 500px;
-  color: #fff;
-  font-size: 16px;
-  font-weight: 400;
-  opacity: 0.8;
-}
-
-.hero-text span {
-  color: #000;
-  font-weight: 600;
-}
-
-.hero-text p {
-  font-family: Georgia, serif;
-  font-size: 30px;
-  margin: 10px 0;
-  line-height: 1.2;
-}
-
-.hero-text1 p {
-  font-size: 14px;
-  line-height: 1.6;
-  opacity: 0.9;
-  color: #000;
-  text-align: justify;
-  text-align-last: left;
-}
-
-.btn-group {
-  margin: 40px 0;
-}
-
-.btn-group .btn {
-  padding: 12px 30px;
-  border-radius: 30px;
-  border: 2px solid #fff;
-  color: #fff;
-  margin-right: 10px;
-  transition: border-color 0.4s ease, background 0.4s ease, color 0.4s ease;
-  display: inline-flex;
-  align-items: center;
-  overflow: hidden;
-  position: relative;
-  text-decoration: none;
-}
-
-.btn.active {
-  background: #fff;
-  color: #5e8567;
-}
-
-.btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-/* cta slide animation — khớp với .cta-btn trong section-work.css */
-.btn-group .btn:hover .cta-line-a {
-  transform: translate(6px, -100%);
-  opacity: 0;
-}
-.btn-group .btn:hover .cta-line-b {
-  transform: translate(0, -100%);
-  opacity: 1;
-}
-
-.social {
-  display: flex;
-  gap: 15px;
-}
-
-.social i {
-  color: #fff;
-  font-size: 20px;
-  transition: 0.4s;
-  cursor: pointer;
-}
-
-.social i:hover {
-  transform: translateY(-5px) rotate(360deg);
-  color: #2a2a28;
-}
-
-/* ═══════════════════════════════════════════════════
-   PROFILE PIC
-═══════════════════════════════════════════════════ */
-.hero-pic-wrap {
-  position: relative;
-  width: 260px;
-  height: 340px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.hero-pic-bg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: blur(14px) brightness(0.8);
-  transform: scale(1.08);
-  border-radius: 8px;
-  z-index: 0;
-}
-
-.hero-pic {
-  position: relative;
-  z-index: 1;
-  width: 160px;
-  height: 300px;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.75);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-  border-radius: 7px;
-}
-
-.hero-pic img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 /* ═══════════════════════════════════════════════════
@@ -819,71 +671,4 @@ nav {
   line-height: 1.6;
   font-size: 0.9rem;
   opacity: 0.8;
-}
-
-/* ═══════════════════════════════════════════════════
-   RESPONSIVE
-═══════════════════════════════════════════════════ */
-@media (max-width: 768px) {
-  .container {
-    flex-direction: column;
-    text-align: center;
-    padding-top: 2rem;
-  }
-
-  .hero-text {
-    padding: 40px 0;
-  }
-
-  .social {
-    justify-content: center;
-  }
-}
-
-
-  /* ── PH-ROOT: full-width strip ở đáy section about ── */
-  #ph-root {
-    all: initial;
-    display: block;
-    width: 100vw;
-    position: relative;
-    left: 50%;
-    margin-left: -50vw;
-    margin-top: 180px;          /* khoảng cách với social icons */
-    box-sizing: border-box;
-  }
-  #ph-root * { box-sizing: border-box; }
-
-  #ph-wrap {
-    width: 100%;
-    background: none;          /* bỏ caro; bg thật ở ::before */
-    border-radius: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 200px;
-    padding: 60px 0;
-    overflow: hidden;
-    position: relative;
-  }
-  /* Bg thật không blur + lớp tối — tách biệt khỏi section about & work */
-  #ph-wrap::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    background-image:
-      linear-gradient(rgba(8, 4, 2, 0.38), rgba(8, 4, 2, 0.15)),
-      url('../images/background-port.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
-
-  #ph-canvas {
-    display: block;
-    max-width: 100%;
-    cursor: crosshair;
-    position: relative;
-    z-index: 1;
-  }
+}

@@ -22,7 +22,7 @@
 
 /* .sk-eyebrow {
   display: block;
-  font-family: 'Nunito', sans-serif;
+  font-family: 'Courier Prime', monospace;
   font-size: 0.72rem;
   font-weight: 500;
   letter-spacing: 0.22em;
@@ -32,7 +32,7 @@
 } */
 
 .sk-title {
-  font-family: "Merriweather", serif;
+  font-family: 'Courier Prime', monospace;
   font-weight: 400;
   font-size: clamp(1.4rem, 2.2vw, 1.8rem);
   letter-spacing: -0.01em;
@@ -57,7 +57,7 @@
   border: 1px solid rgba(0, 0, 0, 0.22);
   background: transparent;
   color: #1a1a1a;
-  font-family: "Nunito", sans-serif;
+  font-family: 'Courier Prime', monospace;
   font-size: clamp(0.82rem, 1vw, 0.94rem);
   font-weight: 500;
   letter-spacing: 0.01em;
@@ -79,6 +79,6 @@
 /* — scramble random-char accent */
 .sk-scramble-char {
   opacity: 0.5;
-  font-family: "DM Mono", monospace;
+  font-family: 'Courier Prime', monospace;
   font-size: 0.82em;
 }

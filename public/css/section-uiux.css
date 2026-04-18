@@ -11,9 +11,9 @@ html {
 }
 
 body {
-  background: #f0eddf;
+  background: #fff;
   color: #1a1a18;
-  font-family: "DM Mono", monospace;
+  font-family: 'Courier Prime', monospace;
   overflow-x: hidden;
 }
 .section.s3 {
@@ -45,11 +45,11 @@ body {
 }
 
 .hs-section {
-  --hs-cream: #f0eddf;
+  --hs-cream: #fff;
   --hs-ink: #1a1a18;
   --hs-mid: #8a8878;
   --hs-accent: #c8b89a;
-  --hs-card-bg: #ede9d8;
+  --hs-card-bg: #fff;
   --hs-radius: 28px;
   --hs-np: 6;
 }
@@ -93,7 +93,7 @@ body {
   display: flex;
   align-items: center;
   gap: 0.55rem;
-  font-family: "DM Mono", monospace;
+  font-family: 'Courier Prime', monospace;
 }
 
 .hs-fig::before {
@@ -171,7 +171,7 @@ body {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: #1a1a18;
-  font-family: "DM Mono", monospace;
+  font-family: 'Courier Prime', monospace;
 }
 
 .hs-caption {
@@ -184,7 +184,7 @@ body {
   text-transform: uppercase;
   color: var(--hs-mid);
   white-space: nowrap;
-  font-family: "DM Mono", monospace;
+  font-family: 'Courier Prime', monospace;
 }
 
 .hs-progress {
@@ -251,7 +251,7 @@ body {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: #1a1a18;
-  font-family: "DM Mono", monospace;
+  font-family: 'Courier Prime', monospace;
   margin-bottom: 32px;
 }
 

@@ -5,7 +5,7 @@ html { scroll-behavior: auto; }
    SEO-STRATEGY – scoped styles (prefix: st__)
 ═══════════════════════════════════════════════ */
 #seo-trangy {
-  --st-cream: #f0ece4;
+  --st-cream: #fff;
   --st-red: #6b1a1a;
   --st-black: #0d0d0d;
   --st-white: #ffffff;
@@ -14,7 +14,7 @@ html { scroll-behavior: auto; }
   /* ─── PADDING ĐIỀU CHỈNH ─── */
   --st-pad-x: 120px;
   /* ──────────────────────────────────────────────────────────────── */
-  font-family: Georgia, serif;
+  font-family: 'Courier Prime', monospace;
   background: transparent;
   color: var(--st-black);
 }
@@ -47,7 +47,7 @@ html { scroll-behavior: auto; }
 }
 .st__hero-ghost {
   position: absolute;
-  font-family: Georgia, serif;
+  font-family: 'Courier Prime', monospace;
   font-size: clamp(160px, 26vw, 360px);
   color: rgba(232, 0, 13, 0.045);
   line-height: 1;
@@ -81,7 +81,7 @@ html { scroll-behavior: auto; }
   background: var(--st-red);
 }
 .st__hero-title {
-  font-family: Georgia, serif;
+  font-family: 'Courier Prime', monospace;
   font-size: 64px;
   line-height: 0.9;
   letter-spacing: -1px;
@@ -95,7 +95,7 @@ html { scroll-behavior: auto; }
   font-style: normal;
 }
 .st__hero-sub {
-  font-family: Georgia, serif;
+  font-family: 'Courier Prime', monospace;
   font-style: italic;
   font-size: clamp(15px, 1.7vw, 21px);
   color: var(--st-muted);
@@ -209,7 +209,7 @@ html { scroll-behavior: auto; }
   background: #252525;
   border-radius: 4px;
   padding: 3px 10px;
-  font-family: Georgia, serif;
+  font-family: 'Courier Prime', monospace;
 }
 
 .st__gsc-body { padding: 16px 18px; }
@@ -233,7 +233,7 @@ html { scroll-behavior: auto; }
   justify-content: center;
   padding: 40px 60px 40px 50px; 
   gap: 16px;
-  background: #d5d2c6; /* Thêm nền trắng để phân biệt rõ với viền cream của body (nếu có) */
+  background: #fff;
 }
 
 .st__stats-eyebrow {
@@ -245,7 +245,7 @@ html { scroll-behavior: auto; }
 }
 
 .st__stats-heading {
-  font-family: Georgia, serif;
+  font-family: 'Courier Prime', monospace;
   font-size: clamp(24px, 2.8vw, 36px);
   line-height: 1.15;
   color: var(--st-black);
@@ -269,7 +269,7 @@ html { scroll-behavior: auto; }
 .st__stat-row:first-child { border-top: 1px solid var(--st-border); }
 
 .st__stat-num {
-  font-family: Georgia, serif;
+  font-family: 'Courier Prime', monospace;
   font-size: clamp(34px, 4vw, 52px); 
   line-height: 1;
   letter-spacing: -1px;
@@ -297,7 +297,7 @@ html { scroll-behavior: auto; }
   margin-bottom: 12px;
 }
 .st__proof-title {
-  font-family: Georgia, serif;
+  font-family: 'Courier Prime', monospace;
   font-size: clamp(26px, 3.2vw, 44px);
   line-height: 1.1;
   color: var(--st-black);
@@ -465,7 +465,7 @@ html { scroll-behavior: auto; }
   background: var(--st-red);
 }
 .st__proj2-maintitle {
-  font-family: Georgia, serif;
+  font-family: 'Courier Prime', monospace;
   font-size: clamp(40px, 6vw, 80px);
   line-height: 0.95;
   letter-spacing: -1px;
@@ -573,7 +573,7 @@ html { scroll-behavior: auto; }
   border: 1px solid rgba(232,0,13,0.3);
 }
 .st__p2-overlay-title {
-  font-family: Georgia, serif;
+  font-family: 'Courier Prime', monospace;
   font-size: 18px;
   color: #fff;
   line-height: 1.2;
@@ -607,7 +607,7 @@ html { scroll-behavior: auto; }
   gap: 6px;
 }
 .st__p2-metric-num {
-  font-family: Georgia, serif;
+  font-family: 'Courier Prime', monospace;
   font-size: clamp(36px, 4vw, 52px);
   line-height: 1;
   letter-spacing: -1px;
@@ -712,7 +712,7 @@ html { scroll-behavior: auto; }
     min-height: 100vh;
     background: none;
     padding: 48px var(--st-pad-x) 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Courier Prime', monospace;
     overflow: hidden;
   }
   .nfa-heading {
@@ -721,7 +721,7 @@ html { scroll-behavior: auto; }
     color: #111;
     letter-spacing: -1px;
     line-height: 1.08;
-    font-family: Georgia, serif;
+    font-family: 'Courier Prime', monospace;
     margin-bottom: 30px;
     opacity: 0;
     transform: translateY(30px);
@@ -813,7 +813,7 @@ html { scroll-behavior: auto; }
     margin-top: 14px;
     text-align: center;
     opacity: 0.8;
-    font-family: Arial, sans-serif;
+    font-family: 'Courier Prime', monospace;
   }
   .nfa-lb-x {
     position: absolute;

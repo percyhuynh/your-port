@@ -23,10 +23,10 @@ document.addEventListener('DOMContentLoaded', function() {
       function applyColour(isBlack) {
         if (isBlack === snapped) return;
         snapped = isBlack;
-        stage.style.backgroundColor = isBlack ? "#000000" : "#f0ece4";
-        heading.style.color = isRed ? "#f0ece4" : "#0f0f0e";
-        navLeft.style.color = isRed ? "#f0ece4" : "#0f0f0e";
-        navRight.style.color = isRed ? "#f0ece4" : "#0f0f0e";
+        stage.style.backgroundColor = isBlack ? "#000000" : "#fff";
+        heading.style.color = isWhite ? "#ffffff" : "#000000";
+        navLeft.style.color = isRed ? "#fff" : "#0f0f0e";
+        navRight.style.color = isRed ? "#fff" : "#0f0f0e";
       }
 
       /*
