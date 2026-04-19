@@ -4,7 +4,9 @@
       "Bash(python3 -c ' *)",
       "Bash(python -c ' *)",
       "Bash(node -e ' *)",
-      "Bash(npm install *)"
+      "Bash(npm install *)",
+      "Bash(head -n 844 public/css/section-seo.css)",
+      "Bash(mv /tmp/seo_css_fixed.css public/css/section-seo.css)"
     ]
   }
 }

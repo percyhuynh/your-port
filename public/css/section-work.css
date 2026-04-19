@@ -34,7 +34,7 @@
   padding: 0;
   overflow: visible;
   display: block;
-  background: #0d0d0d;
+  background: #000;
 }
 
 /* ══ MÀN HÌNH 1: WORK HEADER ══ */
@@ -57,7 +57,7 @@
 .work-header h2 {
   font-size: 64px;
   font-weight: bold;
-  color: #f0ece4;
+  color: #6b1a1a;
   line-height: 1;
   letter-spacing: -0.03em;
 }
@@ -68,7 +68,7 @@
   font-weight: 200;
   /* line-height: 1.6; */
   /* opacity: 0.5; */
-  color: rgba(240, 236, 228, 0.55);
+  color: rgba(255, 255, 255, 0.55);
 }
 
 /* ══ MÀN HÌNH 2: BRAND GRID ══ */
@@ -366,9 +366,9 @@
 
 #scroll-space {
   position: relative;
-  background: #fff !important;
+  background: #000 !important;
   min-height: 800vh;
-  color: #1a1612;
+  color: #fff;
 }
 
 /* ─── CARD ─── */

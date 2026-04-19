@@ -157,7 +157,7 @@ body {
 /* Next slide preview → bottom-right of screen */
 .thumb-br {
   bottom: 20px;
-  right: 300px;
+  right: 260px;
   transform-origin: bottom right;
 }
 .thumb-frame img {

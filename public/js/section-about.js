@@ -7,21 +7,34 @@ new Typed('.input', {
   loop: true
 });
 
-// AB-PAINTING-SCREEN — sticky scroll spotlight + hover B&W→color
+// AB-PAINTING-SCREEN — museum spotlight reveal + hover B&W→color
 (function () {
   var screen = document.getElementById('ab-painting-screen');
   var dark   = document.getElementById('ab-spot-dark');
   var glow   = document.getElementById('ab-spot-glow');
   var frame  = document.getElementById('ab-pframe');
+  var wrap   = screen ? screen.querySelector('.ab-painting-wrap') : null;
   var beam   = screen ? screen.querySelector('.ab-spot-beam') : null;
-  if (!screen || !dark || !glow) return;
+  if (!screen || !dark || !glow || !wrap) return;
 
-  // Adjust: how much of the 300vh scroll is "lighting up" vs "exit buffer"
-  // 0 → 0.80 = spotlight opens fully
-  // 0.80 → 0.95 = fully lit, frame grows slightly
-  // 0.95 → 1.00 = short pause before next section
+  // Timeline (scroll progress):
+  // 0.00 → 0.06  : complete darkness
+  // 0.06 → 0.20  : ceiling beam fades in
+  // 0.18 → 0.86  : spotlight opens from pinpoint → full
+  // 0.86 → 0.96  : fully lit, frame scales up slightly
+  // 0.96 → 1.00  : exit buffer
+
+  // ease-out: spotlight bùng mở nhanh rồi chậm dần
+  function easeOut(t) {
+    return 1 - Math.pow(1 - t, 2.5);
+  }
+
+  function norm(p, a, b) {
+    return p <= a ? 0 : p >= b ? 1 : easeOut((p - a) / (b - a));
+  }
 
   if (typeof ScrollTrigger !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger);
     ScrollTrigger.create({
       trigger: screen,
       start: 'top top',
@@ -30,41 +43,42 @@ new Typed('.input', {
       onUpdate: function (self) {
         var p = Math.min(1, self.progress);
 
-        // --- BEAM ---
-        if (beam) beam.style.opacity = Math.min(1, p / 0.12).toFixed(3);
+        // --- PAINTING FADE-IN: 14% → 72% (đồng thời với spotlight) ---
+        wrap.style.opacity = norm(p, 0.14, 0.72).toFixed(3);
 
-        // --- LIGHT PROGRESS (0→1 over first 80% of scroll) ---
-        var lp = Math.min(1, p / 0.80);
+        // --- SPOTLIGHT: 10% → 88% ---
+        var lp = norm(p, 0.10, 0.88);
 
-        if (lp < 0.01) {
-          dark.style.background = 'rgba(0,0,0,0.97)';
+        if (lp < 0.004) {
+          dark.style.background = '#000';
           glow.style.background = 'transparent';
         } else {
-          var radius = Math.round(60 + lp * 270);
-          var rH     = Math.round(radius * 1.35);
-          var dC     = Math.max(0.04, 0.97 - lp * 0.88).toFixed(2);
-          var dM     = Math.max(0.28, 0.97 - lp * 0.52).toFixed(2);
-          var gA     = (lp * 0.09).toFixed(3);
-          var gA2    = (lp * 0.04).toFixed(3);
+          // ease-out → tại lp=0.3 đã mở tới ~59% → pinpoint bùng sáng rất nhanh
+          var r  = Math.round(8 + lp * 310);   // 8px → 318px
+          var rH = Math.round(r * 1.42);
+
+          var dc = Math.max(0.02, 0.99 - lp * 0.97).toFixed(2);
+          var dm = Math.max(0.25, 0.99 - lp * 0.58).toFixed(2);
 
           dark.style.background =
-            'radial-gradient(ellipse ' + radius + 'px ' + rH + 'px at 50% 46%,' +
-            'rgba(0,0,0,' + dC + ') 0%,' +
-            'rgba(0,0,0,' + dM + ') 42%,' +
-            'rgba(0,0,0,0.97) 68%,' +
-            'rgba(0,0,0,0.99) 100%)';
+            'radial-gradient(ellipse ' + r + 'px ' + rH + 'px at 50% 44%,' +
+            'rgba(0,0,0,' + dc + ') 0%,' +
+            'rgba(0,0,0,' + dm + ') 45%,' +
+            'rgba(0,0,0,0.97) 70%,' +
+            'rgba(0,0,0,1) 100%)';
 
+          var gA  = (lp * 0.14).toFixed(3);
+          var gA2 = (lp * 0.055).toFixed(3);
           glow.style.background =
-            'radial-gradient(ellipse ' + Math.round(radius * 0.7) + 'px ' + Math.round(rH * 0.7) + 'px at 50% 46%,' +
-            'rgba(255,218,110,' + gA + ') 0%,' +
-            'rgba(255,192,70,' + gA2 + ') 40%,' +
-            'transparent 65%)';
+            'radial-gradient(ellipse ' + Math.round(r * 0.68) + 'px ' + Math.round(rH * 0.68) + 'px at 50% 44%,' +
+            'rgba(255,222,125,' + gA + ') 0%,' +
+            'rgba(255,195,75,' + gA2 + ') 42%,' +
+            'transparent 68%)';
         }
 
-        // --- FRAME SCALE: grows 80%→95% of scroll (adjust 0.08 to taste) ---
+        // --- FRAME SCALE: 88% → 97% ---
         if (frame) {
-          var scaleP  = p > 0.80 ? Math.min(1, (p - 0.80) / 0.15) : 0;
-          var scale   = 1 + scaleP * 0.08; /* ← change 0.08 to resize */
+          var scale = 1 + norm(p, 0.88, 0.97) * 0.06;
           frame.style.transform = 'scale(' + scale.toFixed(4) + ')';
         }
       }

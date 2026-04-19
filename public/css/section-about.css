@@ -30,7 +30,7 @@
 
 /* ── Child 2: Painting screen — tall scroll container ── */
 .ab-painting-screen {
-  height: 300vh; /* scroll space: frame sticks, spotlight scrubs in */
+  height: 450vh;
   position: relative;
   background: #050505;
 }
@@ -44,6 +44,7 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  isolation: isolate;
 }
 
 .ab-painting-wrap {
@@ -53,6 +54,7 @@
   flex-direction: column;
   align-items: center;
   gap: 20px;
+  opacity: 0;
 }
 
 /* Wooden frame */
@@ -85,7 +87,7 @@
   object-fit: cover;
   border-radius: 1px;
   filter: grayscale(1);
-  transition: filter 1.4s ease;
+  transition: filter 0.6s ease;
 }
 
 .ab-painting-frame:hover .ab-painting-img {
@@ -120,24 +122,9 @@
   text-transform: uppercase;
 }
 
-/* Ceiling beam — tapered cone from top, opacity driven by JS */
+/* Ceiling beam — disabled */
 .ab-spot-beam {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 200px;
-  height: 58%;
-  z-index: 1;
-  pointer-events: none;
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 238, 180, 0.07) 0%,
-    rgba(255, 225, 140, 0.025) 55%,
-    transparent 100%
-  );
-  clip-path: polygon(28% 0%, 72% 0%, 100% 100%, 0% 100%);
-  opacity: 0;
+  display: none;
 }
 
 /* Darkness overlay — scroll-driven radial gradient hole */
@@ -171,6 +158,7 @@
   max-width: 640px;
   margin: 0 auto;
   padding: 0 40px;
+  text-align: center;
 }
 
 .ab-line {
@@ -181,6 +169,7 @@
   color: rgba(255, 255, 255, 0.15);
   transition: color 0.4s ease;
   will-change: color;
+  text-align: justify;
 }
 
 .ab-line.ab-revealed {
@@ -193,6 +182,7 @@
   margin-bottom: 6px;
   color: rgba(255, 255, 255, 0.1);
   font-weight: 400;
+  text-align: justify;
 }
 
 .ab-line-name.ab-revealed {
@@ -207,6 +197,7 @@
   letter-spacing: 0.05em;
   display: block;
   transition: color 0.4s ease;
+  text-align: justify;
 }
 
 .ab-role-wrap.ab-revealed {
@@ -402,20 +393,54 @@
   padding: 60px 0;
   overflow: hidden;
   position: relative;
-  background: #000;
+  background: linear-gradient(
+    to bottom,
+    #000000  0%,
+    #0a0a0a 12%,
+    #303030 26%,
+    #909090 38%,
+    #c8c8c8 46%,
+    #e0e0e0 50%,
+    #c8c8c8 54%,
+    #909090 62%,
+    #303030 74%,
+    #141414 86%,
+    #0d0d0d 100%
+  );
 }
 
 #ph-wrap::before {
   content: "";
   position: absolute;
-  inset: 0;
-  z-index: 0;
-  background-image:
-    linear-gradient(rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.55)),
-    url("../images/background-port.png");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40%;
+  z-index: 2;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.3) 50%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  pointer-events: none;
+}
+
+#ph-wrap::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40%;
+  z-index: 2;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.3) 50%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  pointer-events: none;
 }
 
 #ph-canvas {
