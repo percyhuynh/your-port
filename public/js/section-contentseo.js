@@ -25,19 +25,20 @@
   }
 
   /* ─────────────────────────────────────────
-     1. HEADING REVEAL
+     1. HEADER TEXT SCROLL REVEAL
+        Same mechanic as ab-line in section-about
   ───────────────────────────────────────── */
-  const headingLines = gsap.utils.toArray("#cs-portfolio .cs__heading-line span");
-  gsap.from(headingLines, {
-    scrollTrigger: { trigger: "#cs-main-heading", start: "top 82%" },
-    y: 60, opacity: 0, duration: 0.9,
-    ease: "power3.out", stagger: 0.12,
-  });
-  gsap.from("#cs-header-desc", {
-    scrollTrigger: { trigger: "#cs-header-desc", start: "top 85%" },
-    y: 30, opacity: 0, duration: 0.8,
-    ease: "power2.out", delay: 0.3,
-  });
+  const hdrLines = sec.querySelectorAll('.cs__hdr-line[data-csl]');
+  function csHdrReveal() {
+    const pt = window.innerHeight * 0.82;
+    hdrLines.forEach(function (el) {
+      if (el.getBoundingClientRect().top < pt) el.classList.add('cs-revealed');
+    });
+  }
+  if (hdrLines.length) {
+    window.addEventListener('scroll', csHdrReveal, { passive: true });
+    csHdrReveal();
+  }
 
   /* ─────────────────────────────────────────
      2. STATS STAGGER
@@ -98,6 +99,20 @@
     scrollTrigger: { trigger: "#cs-cta-strip", start: "top 80%" },
     y: 40, opacity: 0, duration: 0.9, ease: "power2.out",
   });
+
+  /* ─────────────────────────────────────────
+     6b. SCROLL LIGHT — zoom heading + dark-label
+  ───────────────────────────────────────── */
+  (function () {
+    var slEls = sec.querySelectorAll('[data-sl]');
+    if (!slEls.length) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('sl-lit'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.3 });
+    slEls.forEach(function (el) { io.observe(el); });
+  }());
 
   /* ═══════════════════════════════════════════════════════════════
      7. PROCESS STICKY – rebuilt

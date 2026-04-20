@@ -12,8 +12,8 @@ html {
 
 body {
   background: #fff;
-  color: #1a1a18;
-  font-family: 'Courier Prime', monospace;
+  color: #6b1a1a;
+  font-family: "Courier Prime", monospace;
   overflow-x: hidden;
 }
 .section.s3 {
@@ -29,6 +29,16 @@ body {
 .section.s3 > .body {
   margin-left: 13vw;
   margin-right: 13vw;
+}
+
+.section.s3 > .ttl {
+  font-family: "Courier Prime", monospace;
+  font-size: 64px;
+  font-weight: 200;
+  color: #6b1a1a;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+  line-height: 1;
 }
 
 /* Vùng trước/sau section để test scroll tự nhiên */
@@ -93,7 +103,7 @@ body {
   display: flex;
   align-items: center;
   gap: 0.55rem;
-  font-family: 'Courier Prime', monospace;
+  font-family: "Courier Prime", monospace;
 }
 
 .hs-fig::before {
@@ -171,7 +181,7 @@ body {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: #1a1a18;
-  font-family: 'Courier Prime', monospace;
+  font-family: "Courier Prime", monospace;
 }
 
 .hs-caption {
@@ -184,7 +194,7 @@ body {
   text-transform: uppercase;
   color: var(--hs-mid);
   white-space: nowrap;
-  font-family: 'Courier Prime', monospace;
+  font-family: "Courier Prime", monospace;
 }
 
 .hs-progress {
@@ -242,17 +252,19 @@ body {
   /* ↓↓ CHỈNH ĐỘ RỘNG: tăng số vw để hẹp hơn, giảm để rộng hơn ↓↓ */
   padding: 0 13vw 80px; /* trái/phải: 13vw — khớp indent chung của site */
   /* ↑↑ ————————————————————————————————————————————————— ↑↑ */
-  margin-top: 80px;     /* khoảng cách với hs-section bên trên */
+  margin-top: 80px; /* khoảng cách với hs-section bên trên */
 }
 
 .pf-section .pf-design-label {
   display: block;
-  font-size: 1.1rem;
+  font-family: "Courier Prime", monospace;
+  font-size: 64px;
+  font-weight: 200;
+  color: #6b1a1a;
   letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #1a1a18;
-  font-family: 'Courier Prime', monospace;
-  margin-bottom: 32px;
+  white-space: nowrap;
+  line-height: 1;
+  margin-bottom: 40px;
 }
 
 .pf-grid {

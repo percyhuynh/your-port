@@ -42,7 +42,7 @@
   --cs-ivory-deep: #fff;
   --cs-burgundy: #6b1a1a;
   --cs-burgundy-lt: #6b1a1a;
-  --cs-gold: #c9a84c;
+  --cs-gold: #6b1a1a;
   --cs-dark: #0e0a08;
   --cs-glass: rgba(255, 255, 255, 0.07);
   --cs-glass-border: rgba(255, 255, 255, 0.14);
@@ -53,70 +53,66 @@
   overflow-x: clip; /* clip không phá sticky context, khác hidden */
 }
 
-/* ─── HEADER AREA (ivory) ─── */
-.cs__header {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 100px 32px 80px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 48px;
-  align-items: end;
-}
-.cs__eyebrow {
-  display: inline-flex;
+/* ─── HEADER — full-screen centered ─── */
+#cs-portfolio .cs__header {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 10px;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--cs-burgundy);
-  margin-bottom: 20px;
+  justify-content: center;
+  padding: 60px 40px;
+  gap: 72px;
+  text-align: center;
 }
-.cs__eyebrow::before {
-  content: "";
-  display: block;
-  width: 32px;
-  height: 2px;
-  background: var(--cs-ivory);
-}
-.cs__heading {
+
+#cs-portfolio .cs__hdr-title {
   font-family: "Courier Prime", monospace;
-  font-size: clamp(2.6rem, 5.5vw, 5rem);
-  font-weight: 900;
-  line-height: 1.06;
-  color: var(--cs-burgundy);
-  overflow: hidden;
+  font-size: 64px;
+  font-weight: 200;
+  color: #6b1a1a;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+  line-height: 1;
+  margin-bottom: 16px;
 }
-.cs__heading em {
-  font-style: italic;
-  color: var(--cs-burgundy);
+
+#cs-portfolio .cs__hdr-body {
+  max-width: 620px;
+  width: 100%;
+  padding: 0;
+  text-align: left;
 }
-.cs__heading-line {
-  overflow: hidden;
+
+#cs-portfolio .cs__hdr-line {
   display: block;
+  font-family: "Courier Prime", monospace;
+  font-size: 15px;
+  line-height: 2.4;
+  color: rgba(255, 255, 255, 0.12);
+  transition: color 0.4s ease;
+  will-change: color;
+  text-align: justify;
 }
-.cs__heading-line span {
+
+#cs-portfolio .cs__hdr-line.cs-revealed {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+#cs-portfolio .cs__hdr-spacer {
   display: block;
-}
-.cs__desc {
-  font-size: 1.05rem;
-  font-weight: 300;
-  line-height: 1.8;
-  color: #5a4a3a;
-  max-width: 420px;
-  align-self: end;
-  padding-bottom: 8px;
+  height: 24px;
 }
 
 /* ─── STATS STRIP ─── */
 .cs__stats-strip {
-  max-width: 1100px;
-  margin: 0 auto 80px;
-  padding: 0 32px;
+  width: 100%;
+  max-width: 700px;
+  margin: 0;
+  padding: 0;
   display: flex;
-  gap: 48px;
+  gap: 0;
+  justify-content: space-between;
+  align-items: center;
 }
 .cs__stat-item {
   display: flex;
@@ -135,12 +131,12 @@
   font-size: 0.78rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #9c7f6a;
+  color: rgba(255, 255, 255, 0.45);
 }
 .cs__stat-divider {
   width: 1px;
   height: 56px;
-  background: linear-gradient(to bottom, transparent, #c9a84c55, transparent);
+  background: linear-gradient(to bottom, transparent, rgba(107, 26, 26, 0.45), transparent);
   align-self: center;
 }
 
@@ -188,7 +184,7 @@
   font-size: clamp(2rem, 3.6vw, 3.4rem);
   font-weight: 900;
   line-height: 1.08;
-  color: var(--cs-dark);
+  color: #e8e2d8;
   margin-bottom: 28px;
 }
 .cs__process-heading em {
@@ -199,7 +195,7 @@
   font-size: 0.98rem;
   font-weight: 300;
   line-height: 1.8;
-  color: #5a4a3a;
+  color: rgba(255, 255, 255, 0.65);
   max-width: 380px;
 }
 
@@ -248,7 +244,7 @@
   font-size: 0.88rem;
   font-weight: 300;
   line-height: 1.75;
-  color: #6a5040;
+  color: rgba(255, 255, 255, 0.6);
 }
 /* ─── ZOOM FRAMES (proof placeholders – zoom on scroll) ─── */
 .cs__zoom-wrap {
@@ -303,7 +299,7 @@
 }
 .cs__zoom-hint {
   font-size: 0.78rem;
-  color: #9c7f6a;
+  color: rgba(255, 255, 255, 0.5);
   text-align: center;
   max-width: 160px;
   line-height: 1.6;
@@ -359,7 +355,7 @@
   content: "";
   width: 28px;
   height: 2px;
-  background: var(--cs-ivory);
+  background: var(--cs-burgundy);
 }
 .cs__zoom-section-title {
   font-family: "Courier Prime", monospace;
@@ -426,7 +422,7 @@
   content: "";
   flex: 1;
   height: 1px;
-  background: rgba(201, 168, 76, 0.3);
+  background: rgba(107, 26, 26, 0.45);
 }
 
 /* ─── CARDS ─── */
@@ -457,7 +453,7 @@
   transform: translateY(-6px) scale(1);
   box-shadow:
     0 24px 60px rgba(0, 0, 0, 0.5),
-    0 0 0 1px rgba(201, 168, 76, 0.35);
+    0 0 0 1px rgba(107, 26, 26, 0.4);
 }
 .cs__card-image-wrap {
   position: relative;
@@ -515,7 +511,7 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: rgba(201, 168, 76, 0.85);
+  background: #6b1a1a;
   backdrop-filter: blur(4px);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23fff' stroke-width='2.2' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M21 21l-4.35-4.35M11 8v6M8 11h6'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
@@ -542,7 +538,7 @@
   font-size: 0.75rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: rgba(201, 168, 76, 0.5);
+  color: rgba(255, 255, 255, 0.4);
   border-bottom: 1px solid var(--cs-glass-border);
 }
 .cs__card--featured .cs__card-image-placeholder {
@@ -558,8 +554,8 @@
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--cs-ivory);
-  background: rgba(201, 168, 76, 0.12);
-  border: 1px solid rgba(201, 168, 76, 0.25);
+  background: rgba(107, 26, 26, 0.15);
+  border: 1px solid rgba(107, 26, 26, 0.35);
   border-radius: 4px;
   padding: 3px 10px;
   margin-bottom: 14px;
@@ -664,7 +660,7 @@
 }
 .cs__cta-sub {
   font-size: 1rem;
-  color: #6b5040;
+  color: rgba(255, 255, 255, 0.6);
   margin-bottom: 36px;
   font-weight: 300;
 }
@@ -723,7 +719,7 @@
   overflow: hidden;
   box-shadow:
     0 40px 100px rgba(0, 0, 0, 0.7),
-    0 0 0 1px rgba(201, 168, 76, 0.2);
+    0 0 0 1px rgba(107, 26, 26, 0.3);
   transform: scale(0.88) translateY(40px);
 }
 #cs-lb-img {
@@ -735,7 +731,7 @@
 }
 #cs-lb-caption {
   background: rgba(14, 10, 8, 0.97);
-  border-top: 1px solid rgba(201, 168, 76, 0.18);
+  border-top: 1px solid rgba(107, 26, 26, 0.3);
   padding: 20px 28px;
   display: flex;
   align-items: center;
@@ -776,8 +772,8 @@
   flex-shrink: 0;
 }
 #cs-lb-close:hover {
-  background: rgba(201, 168, 76, 0.2);
-  border-color: var(--cs-ivory);
+  background: rgba(107, 26, 26, 0.25);
+  border-color: rgba(107, 26, 26, 0.5);
 }
 .cs-lb-nav {
   position: absolute;
@@ -826,9 +822,18 @@
     grid-template-columns: 1fr;
     gap: 24px;
   }
+  #cs-portfolio .cs__header {
+    gap: 40px;
+    padding: 40px 24px;
+  }
+  #cs-portfolio .cs__hdr-title {
+    white-space: normal;
+    font-size: clamp(2rem, 10vw, 3rem);
+  }
   .cs__stats-strip {
     flex-wrap: wrap;
-    gap: 28px;
+    gap: 24px;
+    justify-content: center;
   }
   .cs__stat-divider {
     display: none;
@@ -857,7 +862,7 @@
 #cs-portfolio {
   background: #0d0d0d;
   color: #e8e2d8;
-  --cs-ivory: #111111;
+  --cs-ivory: rgba(255, 255, 255, 0.82);
   --cs-ivory-deep: #161616;
   --cs-dark: #e8e2d8;
   --cs-glass: rgba(255, 255, 255, 0.06);
@@ -874,4 +879,36 @@
 }
 #cs-portfolio .cs__cta-strip::before {
   color: rgba(212, 137, 154, 0.035);
+}
+
+/* ── SCROLL LIGHT — zoom heading + dark-label ── */
+#cs-portfolio .cs__zoom-eyebrow[data-sl],
+#cs-portfolio .cs__zoom-section-title[data-sl],
+#cs-portfolio .cs__dark-label[data-sl] {
+  transition: color 0.65s ease;
+}
+#cs-portfolio .cs__zoom-eyebrow[data-sl] {
+  color: rgba(107, 26, 26, 0.2);
+}
+#cs-portfolio .cs__zoom-section-title[data-sl] {
+  color: rgba(232, 226, 216, 0.1);
+}
+#cs-portfolio .cs__zoom-section-title[data-sl] em {
+  color: rgba(107, 26, 26, 0.15);
+  transition: color 0.65s ease;
+}
+#cs-portfolio .cs__dark-label[data-sl] {
+  color: rgba(255, 255, 255, 0.1);
+}
+#cs-portfolio .cs__zoom-eyebrow[data-sl].sl-lit {
+  color: var(--cs-burgundy);
+}
+#cs-portfolio .cs__zoom-section-title[data-sl].sl-lit {
+  color: #e8e2d8;
+}
+#cs-portfolio .cs__zoom-section-title[data-sl].sl-lit em {
+  color: var(--cs-burgundy);
+}
+#cs-portfolio .cs__dark-label[data-sl].sl-lit {
+  color: rgba(255, 255, 255, 0.65);
 }

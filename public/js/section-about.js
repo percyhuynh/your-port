@@ -287,16 +287,19 @@ new Typed('.input', {
 
   function revealCheck() {
     var winH = window.innerHeight;
-    var revealPoint = winH * 0.82;
+    var revealPoint = winH * 0.82;   // light on when crossing upward
+    var dimPoint    = winH * 0.88;   // light off when crossing downward (scroll up)
 
     allTargets.forEach(function (el) {
-      var rect = el.getBoundingClientRect();
-      if (rect.top < revealPoint) el.classList.add('ab-revealed');
+      var top = el.getBoundingClientRect().top;
+      if (top < revealPoint)  el.classList.add('ab-revealed');
+      if (top > dimPoint)     el.classList.remove('ab-revealed');
     });
 
     if (actions) {
-      var lastRect = lines[lines.length - 1].getBoundingClientRect();
-      if (lastRect.top < winH * 0.9) actions.classList.add('ab-revealed');
+      var lastTop = lines[lines.length - 1].getBoundingClientRect().top;
+      if (lastTop < winH * 0.9)  actions.classList.add('ab-revealed');
+      if (lastTop > winH * 0.95) actions.classList.remove('ab-revealed');
     }
   }
 

@@ -1,1007 +1,1321 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Percy</title>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Percy</title>
+    <!-- Preconnect để tăng tốc load font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-  <!-- Preconnect để tăng tốc load font -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Google Fonts — gộp tất cả vào 1 request duy nhất -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Serif+Display:ital@0;1&family=Inter:wght@100..900&family=Playfair+Display:wght@700;900&family=Syne:wght@400;700;800&family=Syne+Mono&family=Unbounded:wght@200;300;400&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+    />
 
-  <!-- Google Fonts — gộp tất cả vào 1 request duy nhất -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Serif+Display:ital@0;1&family=Inter:wght@100..900&family=Playfair+Display:wght@700;900&family=Syne:wght@400;700;800&family=Syne+Mono&family=Unbounded:wght@200;300;400&display=swap" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="public/fonts/fa/css/all.min.css" />
 
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="public/fonts/fa/css/all.min.css" />
+    <!-- GSAP + plugins — load 1 lần duy nhất, trước tất cả component JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.10/typed.min.js"></script>
 
-  <!-- GSAP + plugins — load 1 lần duy nhất, trước tất cả component JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.10/typed.min.js"></script>
+    <!-- Local CSS -->
+    <link rel="stylesheet" href="public/css/global.css" />
+    <!-- <link rel="stylesheet" href="public/css/intro.css" /> -->
+    <link rel="stylesheet" href="public/css/sidenav.css" />
+    <link rel="stylesheet" href="public/css/section-work.css" />
+    <link rel="stylesheet" href="public/css/section-seo.css" />
+    <link rel="stylesheet" href="public/css/section-contentseo.css" />
+    <link rel="stylesheet" href="public/css/section-uiux.css" />
+    <link rel="stylesheet" href="public/css/section-tech.css" />
+    <link rel="stylesheet" href="public/css/section-others.css" />
+    <link rel="stylesheet" href="public/css/section-about.css" />
+  </head>
 
-  <!-- Local CSS -->
-  <link rel="stylesheet" href="public/css/global.css">
-  <link rel="stylesheet" href="public/css/intro.css">
-  <link rel="stylesheet" href="public/css/sidenav.css">
-  <link rel="stylesheet" href="public/css/section-work.css">
-  <link rel="stylesheet" href="public/css/section-seo.css">
-  <link rel="stylesheet" href="public/css/section-contentseo.css">
-  <link rel="stylesheet" href="public/css/section-uiux.css">
-  <link rel="stylesheet" href="public/css/section-tech.css">
-  <link rel="stylesheet" href="public/css/section-others.css">
-  <link rel="stylesheet" href="public/css/section-about.css">
-</head>
-
-<body>
-
-  <!-- INTRO OVERLAY -->
-  <div id="intro-overlay">
-    <div id="words-wrap">
-      <div id="percy-wrap">
-        <span class="percy-letter">P</span>
-        <span class="percy-letter">e</span>
-        <span class="percy-letter">r</span>
-        <span class="percy-letter">c</span>
-        <span class="percy-letter">y</span>
-      </div>
-      <div id="secondary-wrap">
-        <div id="secondary-inner">
-          <span class="secondary-word">SEO</span>
-          <span class="secondary-word">Content SEO</span>
-          <span class="secondary-word">UI/UX & Design</span>
-          <span class="secondary-word">Automation & Tech</span>
-          <span class="secondary-word">Frontend Developer</span>
+  <body>
+    <!-- INTRO OVERLAY -->
+    <div id="intro-overlay">
+      <div id="words-wrap">
+        <div id="percy-wrap">
+          <span class="percy-letter">P</span>
+          <span class="percy-letter">e</span>
+          <span class="percy-letter">r</span>
+          <span class="percy-letter">c</span>
+          <span class="percy-letter">y</span>
+        </div>
+        <div id="secondary-wrap">
+          <div id="secondary-inner">
+            <span class="secondary-word">SEO</span>
+            <span class="secondary-word">Content SEO</span>
+            <span class="secondary-word">UI/UX & Design</span>
+            <span class="secondary-word">Automation & Tech</span>
+            <span class="secondary-word">Frontend Developer</span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- HEADER cố định, luôn nằm trên cùng -->
-  <header>
-    <a href="#" class="logo"><img src="logo-ph.png" alt="Logo"></a>
-    <ul class="navlinks">
-      <li class="smart-container">
-        <div class="smart-box">
-          <div class="box-label"><span>About</span></div>
-          <div class="box-hidden-content">
-            <div class="content-top">
-              <h3>About</h3>
-              <a href="#about">VISIT SITE</a>
-            </div>
-            <p>We believe brands are not to be reasoned with. They are hearts to be won.</p>
-            <p style="font-size: 12px; color: #aaa; margin-top: 15px;">TinyWins builds brands that remain relevant and
-              differentiated.</p>
-          </div>
-        </div>
-      </li>
-      <li class="smart-container">
-        <div class="smart-box">
-          <div class="box-label"><span>Work</span></div>
-          <div class="box-hidden-content">
-            <div class="content-top">
-              <h3>Work</h3>
-              <a href="#work">VISIT SITE</a>
-            </div>
-            <p>Ready to start a project? Let's build something amazing together.</p>
-          </div>
-        </div>
-      </li>
-    </ul>
-    <nav id="nav" data-state="dots" role="navigation" aria-label="Page sections"
-      style="margin-left: 4.5px; position: relative; top: auto; left: auto; transform: none; flex-shrink: 0;">
-      <div class="layer-dots" id="layerDots"></div>
-      <div class="layer-links" id="layerLinks"></div>
-    </nav>
-  </header>
-
-  <!-- BANNER WRAPPER: tạo không gian scroll cho hiệu ứng thu nhỏ -->
-  <div class="banner-scroll-wrapper">
-    <div class="hero-header" id="heroHeader">
-      <section class="banner">
-        <picture>
-          <source media="(max-width: 767px)" srcset="banner-mobile.jpg">
-          <source media="(max-width: 1024px)" srcset="banner-tablet.jpg">
-          <img src="./public/images/main-banner-2.jpg" alt="Banner" class="hero-img">
-        </picture>
-      </section>
-      <div class="content-baner">
-        <h1 class="cb-title">
-          <span class="cb-title-a">HUYNH</span>
-          <span class="cb-title-b">MAN DAT</span>
-        </h1>
-      </div>
-    </div>
-  </div>
-
-  <!-- SECTIONS -->
-  <section class="section about" id="about">
-
-  <!-- ── GALLERY: 2 children ── -->
-  <div class="ab-gallery">
-
-    <!-- Child 1: ABOUT ME heading — scroll past to reach painting -->
-    <div class="ab-lbl-screen">
-      <h2 class="ab-lbl-text">ABOUT ME</h2>
-    </div>
-
-    <!-- Child 2: Museum painting — sticky scroll spotlight + B&W → color on hover -->
-    <div class="ab-painting-screen" id="ab-painting-screen">
-      <div class="ab-painting-sticky">
-        <div class="ab-painting-wrap">
-          <div class="ab-painting-frame" id="ab-pframe">
-            <img
-              src="https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=900&q=85"
-              alt=""
-              class="ab-painting-img"
-            />
-          </div>
-          <div class="ab-painting-plaque">
-            <span class="ab-pp-title">About Me</span>
-            <span class="ab-pp-sub">Percy Huynh · Portfolio</span>
-          </div>
-        </div>
-        <div class="ab-spot-beam"></div>
-        <div class="ab-spot-dark" id="ab-spot-dark"></div>
-        <div class="ab-spot-glow" id="ab-spot-glow"></div>
-      </div>
-    </div>
-
-  </div>
- 
-  <!-- ── 2. SCROLL TEXT BLOCK ── -->
-  <div class="ab-text-block">
-    <div class="ab-text-inner">
- 
-      <!-- Role typed -->
-      <span class="ab-line ab-role-wrap" id="ab-role">
-        — <span class="input">SEO Strategy</span>
-      </span>
- 
-      <!-- Tên lớn -->
-      <span class="ab-line ab-line-name" data-ab>Percy Huynh</span>
-      <span class="ab-spacer"></span>
- 
-      <!-- Bio dạng từng dòng để reveal -->
-      <span class="ab-line" data-ab>I would like to submit my profile for your consideration,</span>
-      <span class="ab-line" data-ab>with the hope of opening up opportunities for long-term collaboration.</span>
-      <span class="ab-spacer"></span>
-      <span class="ab-line" data-ab>My full name is Huynh Man Dat (Percy Huynh), and I hold a Bachelor's degree</span>
-      <span class="ab-line" data-ab>in Business Administration from the University of Finance and Marketing.</span>
-      <span class="ab-spacer"></span>
-      <span class="ab-line" data-ab>With nearly 2 years of hands-on experience in SEO,</span>
-      <span class="ab-line" data-ab>along with over 3 years of experience in Content SEO</span>
-      <span class="ab-line" data-ab>across B2C, B2B, travel, and sports industries.</span>
-      <span class="ab-spacer"></span>
-      <span class="ab-line" data-ab>I strongly believe I can bring valuable contributions aligned</span>
-      <span class="ab-line" data-ab>with your company's expectations.</span>
- 
-      <!-- Actions: CV, Contact, Social -->
-      <div class="ab-actions" id="ab-actions">
-        <div class="ab-btn-row">
-          <a href="#" class="ab-btn ab-btn-primary">CV</a>
-          <a href="#" class="ab-btn">Contact</a>
-        </div>
-        <div class="ab-social">
-          <a href="#"><i class="fa-solid fa-envelope"></i></a>
-          <a href="#"><i class="fa-brands fa-linkedin"></i></a>
-          <a href="#"><i class="fa-brands fa-telegram"></i></a>
-          <a href="#"><i class="fa-solid fa-phone"></i></a>
-          <a href="#"><i class="fa-brands fa-instagram"></i></a>
-        </div>
-      </div>
- 
-    </div>
-  </div>
- 
-  <!-- ── 3. SKILLS ── (giữ nguyên HTML, bỏ scramble JS) -->
-  <div id="sk-root">
-    <div class="sk-head">
-      <h3 class="sk-title">Skills &amp; Expertise</h3>
-    </div>
-    <div class="sk-pills">
-      <span class="sk-pill" data-val="On-page SEO">On-page SEO</span>
-      <span class="sk-pill" data-val="Technical SEO">Technical SEO</span>
-      <span class="sk-pill" data-val="Keyword Research">Keyword Research</span>
-      <span class="sk-pill" data-val="Link Building">Link Building</span>
-      <span class="sk-pill" data-val="SERP Analysis">SERP Analysis</span>
-      <span class="sk-pill" data-val="Content Strategy">Content Strategy</span>
-      <span class="sk-pill" data-val="Editorial Planning">Editorial Planning</span>
-      <span class="sk-pill" data-val="Copywriting">Copywriting</span>
-      <span class="sk-pill" data-val="B2B / B2C Content">B2B / B2C Content</span>
-      <span class="sk-pill" data-val="Brand Storytelling">Brand Storytelling</span>
-      <span class="sk-pill" data-val="Google Analytics 4">Google Analytics 4</span>
-      <span class="sk-pill" data-val="Search Console">Search Console</span>
-      <span class="sk-pill" data-val="Ahrefs / SEMrush">Ahrefs / SEMrush</span>
-      <span class="sk-pill" data-val="Screaming Frog">Screaming Frog</span>
-      <span class="sk-pill" data-val="Figma / Canva">Figma / Canva</span>
-    </div>
-  </div>
- 
-  <!-- ── 4. GRADIENT BRIDGE đen → kem ── -->
-  <div class="ab-bridge"></div>
- 
-  <!-- ── 5. CANVAS (giữ nguyên, k đụng CSS) ── -->
-  <div id="ph-root">
-    <div id="ph-wrap">
-      <canvas id="ph-canvas"></canvas>
-    </div>
-  </div>
- 
-</section>
-
-
-<!-- ---SECTION WORK--- -->
-
-  <section class="section work" id="work">
-
-
-    <div class="work-header">
-      <div class="lbl work-lbl">
-        <h2>WORK</h2>
-      </div>
-      <p class="body">Each frame is a considered decision. Documentary instinct meets precise composition — capturing
-        the unguarded moment within a structured visual architecture.</p>
-    </div>
-
-
-    <div class="brand-grid-screen">
-    <div class="brand-grid">
-
-      <div class="brand-card">
-        <div class="card-bg"></div>
-        <div class="card-logo"><img src="./public/images/logo-brand-1.png" alt="Brand 1"></div>
-        <span class="card-pill always-on">Success Stories</span>
-        <div class="card-testimonial">
-          <p class="testimonial-quote">What impressed us most was their structured thinking. Every design decision had
-            purpose, every interaction had intention.</p>
-          <div class="testimonial-divider"></div>
-          <div class="testimonial-author">
-            <img src="https://i.pravatar.cc/80?img=1" alt="" class="testimonial-avatar">
-          </div>
-        </div>
-      </div>
-
-      <div class="brand-card">
-        <div class="card-bg"></div>
-        <div class="card-logo"><img src="https://picsum.photos/seed/brd2/200/80?grayscale" alt="Brand 2"></div>
-        <span class="card-pill">Success Stories</span>
-        <div class="card-testimonial">
-          <p class="testimonial-quote">"Exceptional work, delivered on time. The attention to detail was beyond our
-            expectations."</p>
-          <div class="testimonial-divider"></div>
-          <div class="testimonial-author">
-            <img src="https://i.pravatar.cc/80?img=5" alt="" class="testimonial-avatar">
-            <div>
-              <p class="testimonial-name">Sarah Chen</p>
-              <p class="testimonial-role">CEO, Brand Studio</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="brand-card">
-        <div class="card-bg"></div>
-        <div class="card-logo"><img src="https://picsum.photos/seed/brd3/200/80?grayscale" alt="Brand 3"></div>
-        <span class="card-pill">Success Stories</span>
-        <div class="card-testimonial">
-          <p class="testimonial-quote">"The SEO results exceeded our goals. Organic traffic grew significantly within
-            the first quarter."</p>
-          <div class="testimonial-divider"></div>
-          <div class="testimonial-author">
-            <img src="https://i.pravatar.cc/80?img=12" alt="" class="testimonial-avatar">
-            <div>
-              <p class="testimonial-name">James Park</p>
-              <p class="testimonial-role">Director, Radius Co.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="brand-card">
-        <div class="card-bg"></div>
-        <div class="card-logo"><img src="https://picsum.photos/seed/brd4/200/80?grayscale" alt="Brand 4"></div>
-        <span class="card-pill">Success Stories</span>
-        <div class="card-testimonial">
-          <p class="testimonial-quote">"A true partner in growth. Percy brought strategy and creativity together
-            seamlessly."</p>
-          <div class="testimonial-divider"></div>
-          <div class="testimonial-author">
-            <img src="https://i.pravatar.cc/80?img=20" alt="" class="testimonial-avatar">
-            <div>
-              <p class="testimonial-name">Mia Torres</p>
-              <p class="testimonial-role">Head of Growth, Acme</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="brand-card">
-        <div class="card-bg"></div>
-        <div class="card-logo"><img src="https://picsum.photos/seed/brd5/200/80?grayscale" alt="Brand 5"></div>
-        <span class="card-pill">Success Stories</span>
-        <div class="card-testimonial">
-          <p class="testimonial-quote">"Highly recommended. The content strategy delivered real, measurable results for
-            our business."</p>
-          <div class="testimonial-divider"></div>
-          <div class="testimonial-author">
-            <img src="https://i.pravatar.cc/80?img=33" alt="" class="testimonial-avatar">
-            <div>
-              <p class="testimonial-name">Tom Nguyen</p>
-              <p class="testimonial-role">Marketing Lead</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="brand-card">
-        <div class="card-bg"></div>
-        <div class="card-logo"><img src="https://picsum.photos/seed/brd6/200/80?grayscale" alt="Brand 6"></div>
-        <span class="card-pill always-on">Success Stories</span>
-        <div class="card-testimonial">
-          <p class="testimonial-quote">"Working with Percy transformed our online presence. Clear communication, clear
-            results."</p>
-          <div class="testimonial-divider"></div>
-          <div class="testimonial-author">
-            <img src="https://i.pravatar.cc/80?img=44" alt="" class="testimonial-avatar">
-            <div>
-              <p class="testimonial-name">Lena Fischer</p>
-              <p class="testimonial-role">CMO, CoreOS</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="brand-card">
-        <div class="card-bg"></div>
-        <div class="card-logo"><img src="https://picsum.photos/seed/brd7/200/80?grayscale" alt="Brand 7"></div>
-        <span class="card-pill always-on">Success Stories</span>
-        <div class="card-testimonial">
-          <p class="testimonial-quote">"The automation workflow saved our team hours every week. Smart, clean, and
-            efficient."</p>
-          <div class="testimonial-divider"></div>
-          <div class="testimonial-author">
-            <img src="https://i.pravatar.cc/80?img=56" alt="" class="testimonial-avatar">
-            <div>
-              <p class="testimonial-name">Alex Kim</p>
-              <p class="testimonial-role">Operations, Loop Inc.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="brand-card">
-        <div class="card-bg"></div>
-        <div class="card-logo"><img src="https://picsum.photos/seed/brd8/200/80?grayscale" alt="Brand 8"></div>
-        <span class="card-pill">Success Stories</span>
-        <div class="card-testimonial">
-          <p class="testimonial-quote">"From strategy to execution, everything was handled with precision and
-            professionalism."</p>
-          <div class="testimonial-divider"></div>
-          <div class="testimonial-author">
-            <img src="https://i.pravatar.cc/80?img=68" alt="" class="testimonial-avatar">
-            <div>
-              <p class="testimonial-name">Rita Bloom</p>
-              <p class="testimonial-role">Founder, Logoipsum</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-    </div><!-- /.brand-grid-screen -->
-
-    <div id="scroll-space">
-      <div id="pin-anchor">
-        <div class="card" id="card">
-          <!-- LEFT -->
-          <div class="img-panel" id="imgPanel"></div>
-
-          <!-- RIGHT -->
-          <div class="text-panel">
-            <div class="top-bar">
-              <div class="top-bar-left">
-                <svg viewBox="0 0 11 11" fill="none" stroke-width="1.4">
-                  <line x1="5.5" y1="0" x2="5.5" y2="11" />
-                  <line x1="0" y1="5.5" x2="11" y2="5.5" />
-                </svg>
-                About Altrum™
+    <!-- HEADER cố định, luôn nằm trên cùng -->
+    <header>
+      <a href="#" class="logo"><img src="logo-ph.png" alt="Logo" /></a>
+      <ul class="navlinks">
+        <li class="smart-container">
+          <div class="smart-box">
+            <div class="box-label"><span>About</span></div>
+            <div class="box-hidden-content">
+              <div class="content-top">
+                <h3>About</h3>
+                <a href="#about">VISIT SITE</a>
               </div>
-              <div class="top-bar-right">©Edition 02</div>
+              <p>
+                We believe brands are not to be reasoned with. They are hearts
+                to be won.
+              </p>
+              <!-- <p style="font-size: 12px; color: #aaa; margin-top: 15px;">TinyWins builds brands that remain relevant and
+              differentiated.</p> -->
             </div>
-
-            <div class="content-area">
-              <div class="heading-clip" id="headingClip"></div>
-              <div class="desc-clip" id="descClip"></div>
+          </div>
+        </li>
+        <li class="smart-container">
+          <div class="smart-box">
+            <div class="box-label"><span>Work</span></div>
+            <div class="box-hidden-content">
+              <div class="content-top">
+                <h3>Work</h3>
+                <a href="#work">VISIT SITE</a>
+              </div>
+              <p>
+                Ready to start a project? Let's build something amazing
+                together.
+              </p>
             </div>
+          </div>
+        </li>
+      </ul>
+      <nav
+        id="nav"
+        data-state="dots"
+        role="navigation"
+        aria-label="Page sections"
+        style="
+          margin-left: 4.5px;
+          position: relative;
+          top: auto;
+          left: auto;
+          transform: none;
+          flex-shrink: 0;
+        "
+      >
+        <div class="layer-dots" id="layerDots"></div>
+        <div class="layer-links" id="layerLinks"></div>
+      </nav>
+    </header>
 
-            <div class="cta-wrap">
-              <a href="#" class="cta-btn" onclick="return false;">
-                <div class="cta-track">
-                  <span class="cta-line cta-line-a"><span>↳</span>&nbsp;Get in touch</span>
-                  <span class="cta-line cta-line-b"><span>↳</span>&nbsp;Get in touch</span>
+    <!-- BANNER WRAPPER: tạo không gian scroll cho hiệu ứng thu nhỏ -->
+    <div class="banner-scroll-wrapper">
+      <div class="hero-header" id="heroHeader">
+        <section class="banner">
+          <picture>
+            <source media="(max-width: 767px)" srcset="banner-mobile.jpg" />
+            <source media="(max-width: 1024px)" srcset="banner-tablet.jpg" />
+            <img
+              src="./public/images/main-banner-2.jpg"
+              alt="Banner"
+              class="hero-img"
+            />
+          </picture>
+        </section>
+        <div class="content-baner">
+          <h1 class="cb-title">
+            <span class="cb-title-a">HUYNH</span>
+            <span class="cb-title-b">MAN DAT</span>
+          </h1>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTIONS -->
+    <section class="section about" id="about">
+      <!-- ── GALLERY: 2 children ── -->
+      <div class="ab-gallery">
+        <!-- Child 1: ABOUT ME heading — scroll past to reach painting -->
+        <div class="ab-lbl-screen">
+          <h2 class="ab-lbl-text">ABOUT ME</h2>
+        </div>
+
+        <!-- Child 2: Museum painting — sticky scroll spotlight + B&W → color on hover -->
+        <div class="ab-painting-screen" id="ab-painting-screen">
+          <div class="ab-painting-sticky">
+            <div class="ab-painting-wrap">
+              <div class="ab-painting-frame" id="ab-pframe">
+                <img
+                  src="https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=900&q=85"
+                  alt=""
+                  class="ab-painting-img"
+                />
+              </div>
+              <div class="ab-painting-plaque">
+                <span class="ab-pp-title">About Me</span>
+                <span class="ab-pp-sub">Percy Huynh · Portfolio</span>
+              </div>
+            </div>
+            <div class="ab-spot-beam"></div>
+            <div class="ab-spot-dark" id="ab-spot-dark"></div>
+            <div class="ab-spot-glow" id="ab-spot-glow"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 2. SCROLL TEXT BLOCK ── -->
+      <div class="ab-text-block">
+        <div class="ab-text-inner">
+          <!-- Role typed -->
+          <span class="ab-line ab-role-wrap" id="ab-role">
+            — <span class="input">SEO Strategy</span>
+          </span>
+
+          <!-- Tên lớn -->
+          <span class="ab-line ab-line-name" data-ab>Percy Huynh</span>
+          <span class="ab-spacer"></span>
+
+          <!-- Bio dạng từng dòng để reveal -->
+          <span class="ab-line" data-ab
+            >I would like to submit my profile for your consideration, with the
+            hope of opening up opportunities for long-term collaboration.</span
+          >
+          <!-- <span class="ab-line" data-ab></span> -->
+          <span class="ab-spacer"></span>
+          <span class="ab-line" data-ab
+            >My full name is Huynh Man Dat (Percy Huynh), and I hold a
+            Bachelor's degree in Business Administration from the University of
+            Finance and Marketing.</span
+          >
+          <!-- <span class="ab-line" data-ab></span> -->
+          <span class="ab-spacer"></span>
+          <span class="ab-line" data-ab
+            >With nearly 2 years of hands-on experience in SEO, along with over
+            3 years of experience in Content SEO across B2C, B2B, travel, and
+            sports industries.</span
+          >
+          <!-- <span class="ab-line" data-ab></span>
+      <span class="ab-line" data-ab></span> -->
+          <span class="ab-spacer"></span>
+          <span class="ab-line" data-ab
+            >I strongly believe I can bring valuable contributions aligned with
+            your company's expectations.</span
+          >
+          <!-- <span class="ab-line" data-ab></span> -->
+
+          <!-- Actions: CV, Contact, Social -->
+          <div class="ab-actions" id="ab-actions">
+            <div class="ab-btn-row">
+              <a href="#" class="ab-btn ab-btn-primary">
+                <div class="ab-btn-track">
+                  <span class="ab-btn-line ab-btn-line-a">CV</span>
+                  <span class="ab-btn-line ab-btn-line-b">CV</span>
+                </div>
+              </a>
+              <a href="#" class="ab-btn">
+                <div class="ab-btn-track">
+                  <span class="ab-btn-line ab-btn-line-a">Contact</span>
+                  <span class="ab-btn-line ab-btn-line-b">Contact</span>
                 </div>
               </a>
             </div>
-            <div class="dots" id="dots"></div>
-            <!-- <div class="counter" id="counter">01 / 06</div> -->
+            <div class="ab-social">
+              <a href="#"><i class="fa-solid fa-envelope"></i></a>
+              <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+              <a href="#"><i class="fa-brands fa-telegram"></i></a>
+              <a href="#"><i class="fa-solid fa-phone"></i></a>
+              <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-  </section>
+      <!-- ── 3. SKILLS ── (giữ nguyên HTML, bỏ scramble JS) -->
+      <div id="sk-root">
+        <div class="sk-head">
+          <h3 class="sk-title">Skills &amp; Expertise</h3>
+        </div>
+        <div class="sk-pills">
+          <span class="sk-pill" data-val="On-page SEO">On-page SEO</span>
+          <span class="sk-pill" data-val="Technical SEO">Technical SEO</span>
+          <span class="sk-pill" data-val="Keyword Research"
+            >Keyword Research</span
+          >
+          <span class="sk-pill" data-val="Link Building">Link Building</span>
+          <span class="sk-pill" data-val="SERP Analysis">SERP Analysis</span>
+          <span class="sk-pill" data-val="Content Strategy"
+            >Content Strategy</span
+          >
+          <span class="sk-pill" data-val="Editorial Planning"
+            >Editorial Planning</span
+          >
+          <span class="sk-pill" data-val="Copywriting">Copywriting</span>
+          <span class="sk-pill" data-val="B2B / B2C Content"
+            >B2B / B2C Content</span
+          >
+          <span class="sk-pill" data-val="Brand Storytelling"
+            >Brand Storytelling</span
+          >
+          <span class="sk-pill" data-val="Google Analytics 4"
+            >Google Analytics 4</span
+          >
+          <span class="sk-pill" data-val="Search Console">Search Console</span>
+          <span class="sk-pill" data-val="Ahrefs / SEMrush"
+            >Ahrefs / SEMrush</span
+          >
+          <span class="sk-pill" data-val="Screaming Frog">Screaming Frog</span>
+          <span class="sk-pill" data-val="Figma / Canva">Figma / Canva</span>
+        </div>
+      </div>
 
-<!-- ══════════════════════════════════════════════════════════
+      <!-- ── 4. GRADIENT BRIDGE đen → kem ── -->
+      <div class="ab-bridge"></div>
+
+      <!-- ── 5. CANVAS (giữ nguyên, k đụng CSS) ── -->
+      <div id="ph-root">
+        <div id="ph-wrap">
+          <canvas id="ph-canvas"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---SECTION WORK--- -->
+
+    <section class="section work" id="work">
+      <div class="work-header">
+        <div class="lbl work-lbl">
+          <h2>WORK</h2>
+        </div>
+        <p class="body">
+          Each frame is a considered decision. Documentary instinct meets
+          precise composition — capturing the unguarded moment within a
+          structured visual architecture.
+        </p>
+      </div>
+
+      <div class="brand-grid-screen">
+        <div class="brand-grid">
+          <div class="brand-card">
+            <div class="card-bg"></div>
+            <div class="card-logo">
+              <img src="./public/images/logo-brand-1.png" alt="Brand 1" />
+            </div>
+            <!-- <span class="card-pill always-on">Success Stories</span> -->
+            <div class="card-testimonial">
+              <p class="testimonial-quote">
+                What impressed us most was their structured thinking. Every
+                design decision had purpose, every interaction had intention.
+              </p>
+              <div class="testimonial-divider"></div>
+              <div class="testimonial-author">
+                <img
+                  src="https://i.pravatar.cc/80?img=1"
+                  alt=""
+                  class="testimonial-avatar"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="brand-card">
+            <div class="card-bg"></div>
+            <div class="card-logo">
+              <img
+                src="https://picsum.photos/seed/brd2/200/80?grayscale"
+                alt="Brand 2"
+              />
+            </div>
+            <!-- <span class="card-pill">Success Stories</span> -->
+            <div class="card-testimonial">
+              <p class="testimonial-quote">
+                "Exceptional work, delivered on time. The attention to detail
+                was beyond our expectations."
+              </p>
+              <div class="testimonial-divider"></div>
+              <div class="testimonial-author">
+                <img
+                  src="https://i.pravatar.cc/80?img=5"
+                  alt=""
+                  class="testimonial-avatar"
+                />
+                <!-- <div>
+              <p class="testimonial-name">Sarah Chen</p>
+              <p class="testimonial-role">CEO, Brand Studio</p>
+            </div> -->
+              </div>
+            </div>
+          </div>
+
+          <div class="brand-card">
+            <div class="card-bg"></div>
+            <div class="card-logo">
+              <img
+                src="https://picsum.photos/seed/brd3/200/80?grayscale"
+                alt="Brand 3"
+              />
+            </div>
+            <!-- <span class="card-pill">Success Stories</span> -->
+            <div class="card-testimonial">
+              <p class="testimonial-quote">
+                "The SEO results exceeded our goals. Organic traffic grew
+                significantly within the first quarter."
+              </p>
+              <div class="testimonial-divider"></div>
+              <div class="testimonial-author">
+                <img
+                  src="https://i.pravatar.cc/80?img=12"
+                  alt=""
+                  class="testimonial-avatar"
+                />
+                <!-- <div>
+              <p class="testimonial-name">James Park</p>
+              <p class="testimonial-role">Director, Radius Co.</p>
+            </div> -->
+              </div>
+            </div>
+          </div>
+
+          <div class="brand-card">
+            <div class="card-bg"></div>
+            <div class="card-logo">
+              <img
+                src="https://picsum.photos/seed/brd4/200/80?grayscale"
+                alt="Brand 4"
+              />
+            </div>
+            <!-- <span class="card-pill">Success Stories</span> -->
+            <div class="card-testimonial">
+              <p class="testimonial-quote">
+                "A true partner in growth. Percy brought strategy and creativity
+                together seamlessly."
+              </p>
+              <div class="testimonial-divider"></div>
+              <div class="testimonial-author">
+                <img
+                  src="https://i.pravatar.cc/80?img=20"
+                  alt=""
+                  class="testimonial-avatar"
+                />
+                <!-- <div>
+              <p class="testimonial-name">Mia Torres</p>
+              <p class="testimonial-role">Head of Growth, Acme</p>
+            </div> -->
+              </div>
+            </div>
+          </div>
+
+          <div class="brand-card">
+            <div class="card-bg"></div>
+            <div class="card-logo">
+              <img
+                src="https://picsum.photos/seed/brd5/200/80?grayscale"
+                alt="Brand 5"
+              />
+            </div>
+            <!-- <span class="card-pill">Success Stories</span> -->
+            <div class="card-testimonial">
+              <p class="testimonial-quote">
+                "Highly recommended. The content strategy delivered real,
+                measurable results for our business."
+              </p>
+              <div class="testimonial-divider"></div>
+              <div class="testimonial-author">
+                <img
+                  src="https://i.pravatar.cc/80?img=33"
+                  alt=""
+                  class="testimonial-avatar"
+                />
+                <!-- <div>
+              <p class="testimonial-name">Tom Nguyen</p>
+              <p class="testimonial-role">Marketing Lead</p>
+            </div> -->
+              </div>
+            </div>
+          </div>
+
+          <div class="brand-card">
+            <div class="card-bg"></div>
+            <div class="card-logo">
+              <img
+                src="https://picsum.photos/seed/brd6/200/80?grayscale"
+                alt="Brand 6"
+              />
+            </div>
+            <!-- <span class="card-pill always-on">Success Stories</span> -->
+            <div class="card-testimonial">
+              <p class="testimonial-quote">
+                "Working with Percy transformed our online presence. Clear
+                communication, clear results."
+              </p>
+              <div class="testimonial-divider"></div>
+              <div class="testimonial-author">
+                <img
+                  src="https://i.pravatar.cc/80?img=44"
+                  alt=""
+                  class="testimonial-avatar"
+                />
+                <!-- <div>
+              <p class="testimonial-name">Lena Fischer</p>
+              <p class="testimonial-role">CMO, CoreOS</p>
+            </div> -->
+              </div>
+            </div>
+          </div>
+
+          <div class="brand-card">
+            <div class="card-bg"></div>
+            <div class="card-logo">
+              <img
+                src="https://picsum.photos/seed/brd7/200/80?grayscale"
+                alt="Brand 7"
+              />
+            </div>
+            <!-- <span class="card-pill always-on">Success Stories</span> -->
+            <div class="card-testimonial">
+              <p class="testimonial-quote">
+                "The automation workflow saved our team hours every week. Smart,
+                clean, and efficient."
+              </p>
+              <div class="testimonial-divider"></div>
+              <div class="testimonial-author">
+                <img
+                  src="https://i.pravatar.cc/80?img=56"
+                  alt=""
+                  class="testimonial-avatar"
+                />
+                <!-- <div>
+              <p class="testimonial-name">Alex Kim</p>
+              <p class="testimonial-role">Operations, Loop Inc.</p>
+            </div> -->
+              </div>
+            </div>
+          </div>
+
+          <div class="brand-card">
+            <div class="card-bg"></div>
+            <div class="card-logo">
+              <img
+                src="https://picsum.photos/seed/brd8/200/80?grayscale"
+                alt="Brand 8"
+              />
+            </div>
+            <!-- <span class="card-pill">Success Stories</span> -->
+            <div class="card-testimonial">
+              <p class="testimonial-quote">
+                "From strategy to execution, everything was handled with
+                precision and professionalism."
+              </p>
+              <div class="testimonial-divider"></div>
+              <div class="testimonial-author">
+                <img
+                  src="https://i.pravatar.cc/80?img=68"
+                  alt=""
+                  class="testimonial-avatar"
+                />
+                <!-- <div>
+              <p class="testimonial-name">Rita Bloom</p>
+              <p class="testimonial-role">Founder, Logoipsum</p>
+            </div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.brand-grid-screen -->
+
+      <div id="scroll-space">
+        <div id="pin-anchor">
+          <div class="card" id="card">
+            <!-- LEFT -->
+            <div class="img-panel" id="imgPanel"></div>
+
+            <!-- RIGHT -->
+            <div class="text-panel">
+              <div class="top-bar">
+                <div class="top-bar-left">
+                  <svg viewBox="0 0 11 11" fill="none" stroke-width="1.4">
+                    <line x1="5.5" y1="0" x2="5.5" y2="11" />
+                    <line x1="0" y1="5.5" x2="11" y2="5.5" />
+                  </svg>
+                  About Percy
+                </div>
+                <div class="top-bar-right">Works</div>
+              </div>
+
+              <div class="content-area">
+                <div class="heading-clip" id="headingClip"></div>
+                <div class="desc-clip" id="descClip"></div>
+              </div>
+
+              <div class="cta-wrap">
+                <a href="#" class="cta-btn" onclick="return false;">
+                  <div class="cta-track">
+                    <span class="cta-line cta-line-a">&nbsp;Get in touch</span>
+                    <span class="cta-line cta-line-b">&nbsp;Get in touch</span>
+                  </div>
+                </a>
+              </div>
+              <div class="dots" id="dots"></div>
+              <!-- <div class="counter" id="counter">01 / 06</div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
      SEO SECTION — thay thế đoạn này vào vị trí cũ trong main-por.html
      Tìm: <section class="section s1" id="s0"> ... </section>
      Và thay toàn bộ nội dung bên trong bằng đoạn dưới đây
 ════════════════════════════════════════════════════════════ -->
 
-<section class="section s1" id="s0">
-  <!-- <div class="lbl"><h2 class="ttl">SEO Strategy</h2></div> -->
+    <section class="section s1" id="s0">
+      <!-- <div class="lbl"><h2 class="ttl">SEO Strategy</h2></div> -->
 
-  <section id="seo-trangy">
-
-    <!-- ══ 1 · HERO ══ -->
-    <div class="st__hero">
-      <div class="st__hero-ghost" aria-hidden="true">SEO</div>
-      <div class="st__hero-eyebrow">Project 01 · SEO Strategy</div>
-      <h2 class="st__hero-title">SEO <em>Strategy</em></h2>
-      <p class="st__hero-sub">
-        From raw Google Search Console data to top-page dominance —
-        precision-calculated strategy, systematically executed.
-      </p>
-
-    </div>
-
-    <!-- ══ 2 · SPLIT — GSC chart + Stats ══ -->
-    <div class="st__split-wrap">
-      <div class="st__split-sticky">
-
-        <!-- LEFT: GSC mock frame -->
-        <div class="st__split-left">
-          <div class="st__gsc-frame">
-            <div class="st__gsc-bar">
-              <div class="st__gsc-dot r"></div>
-              <div class="st__gsc-dot y"></div>
-              <div class="st__gsc-dot g"></div>
-              <div class="st__gsc-url">search.google.com/search-console</div>
-            </div>
-            <div class="st__gsc-body">
-              <!-- Thay src bằng ảnh GSC thực của bạn -->
-              <div class="st__chart-img-wrap">
-                <img
-                  src="section-seo-contentseo/gtrip_1.png"
-                  alt="SEO Performance Chart — Google Search Console"
-                  class="st__chart-render"
-                />
-              </div>
-            </div>
-          </div>
+      <section id="seo-trangy">
+        <!-- ══ 1 · HERO ══ -->
+        <div class="st__hero">
+          <div class="st__hero-ghost" aria-hidden="true">SEO</div>
+          <div class="st__hero-eyebrow">Project 01 · SEO GTrip</div>
+          <h2 class="st__hero-title">SEO <em>Strangy</em></h2>
+          <p class="st__hero-sub">
+            From raw Google Search Console data to top-page dominance —
+            precision-calculated strategy, systematically executed.
+          </p>
         </div>
 
-        <!-- RIGHT: Stats -->
-        <div class="st__split-right">
-          <div class="st__stats-eyebrow">Results · 90 Days</div>
-          <h3 class="st__stats-heading">Numbers that<br/><em>don't lie</em></h3>
-          <div class="st__stat-list">
-
-            <div class="st__stat-row">
-              <div class="st__stat-num">
-                <span class="st__ctr" data-target="184">0</span><span class="st__accent">%</span>
-              </div>
-              <div class="st__stat-info">
-                <div class="st__stat-name">Click Growth</div>
-                <div class="st__stat-delta">▲ 2.9K → 8.4K / month</div>
-                <div class="st__stat-desc">Organic search, zero paid ads</div>
+        <!-- ══ 2 · SPLIT — GSC chart + Stats ══ -->
+        <div class="st__split-wrap">
+          <div class="st__split-sticky">
+            <!-- LEFT: GSC mock frame -->
+            <div class="st__split-left">
+              <div class="st__gsc-frame">
+                <div class="st__gsc-bar">
+                  <div class="st__gsc-dot r"></div>
+                  <div class="st__gsc-dot y"></div>
+                  <div class="st__gsc-dot g"></div>
+                  <div class="st__gsc-url">
+                    search.google.com/search-console
+                  </div>
+                </div>
+                <div class="st__gsc-body">
+                  <!-- Thay src bằng ảnh GSC thực của bạn -->
+                  <div class="st__chart-img-wrap">
+                    <img
+                      src="section-seo-contentseo/gtrip_1.png"
+                      alt="SEO Performance Chart — Google Search Console"
+                      class="st__chart-render"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div class="st__stat-row">
-              <div class="st__stat-num">
-                <span class="st__ctr" data-target="47">0</span><span class="st__accent">K</span>
-              </div>
-              <div class="st__stat-info">
-                <div class="st__stat-name">Monthly Impressions</div>
-                <div class="st__stat-delta">▲ +231%</div>
-                <div class="st__stat-desc">Expanded brand reach across SERPs</div>
-              </div>
-            </div>
-
-            <div class="st__stat-row">
-              <div class="st__stat-num">
-                <span class="st__ctr" data-target="312">0</span>
-              </div>
-              <div class="st__stat-info">
-                <div class="st__stat-name">Top-10 Keywords</div>
-                <div class="st__stat-delta">▲ 18 → 312</div>
-                <div class="st__stat-desc">Including high-competition terms</div>
-              </div>
-            </div>
-
-            <div class="st__stat-row">
-              <div class="st__stat-num">
-                <span class="st__ctr" data-target="3">0</span><span class="st__accent">.</span><span class="st__ctr" data-target="2">0</span><span class="st__accent">%</span>
-              </div>
-              <div class="st__stat-info">
-                <div class="st__stat-name">Avg. CTR</div>
-                <div class="st__stat-delta">▲ +0.8 points</div>
-                <div class="st__stat-desc">Position: 10.5 → 6.4</div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ══ 3 · PROOF — GSC Screenshots ══ -->
-    <div class="st__proof">
-      <div class="st__proof-header">
-        <div class="st__proof-eyebrow">Evidence · Google Search Console</div>
-        <h3 class="st__proof-title">Real screenshots from <em>GSC</em> —<br />unedited data</h3>
-      </div>
-      <div class="st__proof-grid">
-
-        <!-- Slot lớn (span 2 hàng) — CLICK ĐỂ XEM FULL -->
-        <div class="st__proof-slot st__slot-hero has-image">
-          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=80" alt="GSC Performance Overview" />
-          <div class="st__slot-inner">
-            <div class="st__slot-icon">📊</div>
-            <div class="st__slot-lbl">Main GSC Screenshot</div>
-            <div class="st__slot-hint">Overall Performance · Clicks &amp; Impressions · 3 months</div>
-          </div>
-          <div class="st__slot-cap">Click to view full</div>
-        </div>
-
-        <!-- Slot nhỏ 1 -->
-        <div class="st__proof-slot has-image">
-          <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80" alt="Top Keywords" />
-          <div class="st__slot-inner">
-            <div class="st__slot-icon">🔑</div>
-            <div class="st__slot-lbl">Top Keywords</div>
-            <div class="st__slot-hint">Clicks · Impressions · CTR · Position</div>
-          </div>
-          <div class="st__slot-cap">Click to view full</div>
-        </div>
-
-        <!-- Slot nhỏ 2 -->
-        <div class="st__proof-slot has-image">
-          <img src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=800&q=80" alt="Top Pages" />
-          <div class="st__slot-inner">
-            <div class="st__slot-icon">📄</div>
-            <div class="st__slot-lbl">Top Pages</div>
-            <div class="st__slot-hint">Highest traffic pages from organic search</div>
-          </div>
-          <div class="st__slot-cap">Click to view full</div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- ══ 4 · PROJECT 02 ══ -->
-    <div class="st__proj2">
-
-      <!-- Header -->
-      <div class="st__proj2-header">
-        <div class="st__proj2-eyebrow">Project 02 · Content SEO</div>
-        <h3 class="st__proj2-maintitle">Content that<br/><em>Converts</em></h3>
-      </div>
-
-      <!-- 2-col image grid (placeholder — thêm ảnh thật vào src) -->
-      <div class="st__proj2-strip">
-
-        <!-- Card lớn (span 2 hàng) -->
-        <div class="st__p2-card st__p2-card--large has-image">
-          <img class="st__p2-img" src="https://images.unsplash.com/photo-1542744095-fcf48d80b0fd?w=1200&q=80" alt="Project 02 Main" />
-          <div class="st__p2-placeholder">
-            <div class="st__p2-placeholder-icon">🖼</div>
-            <div class="st__p2-placeholder-lbl">Featured image</div>
-          </div>
-          <div class="st__p2-overlay">
-            <span class="st__p2-overlay-tag">Content SEO</span>
-            <div class="st__p2-overlay-title">Editorial content strategy across B2C &amp; B2B verticals</div>
-            <div class="st__p2-overlay-arrow">↗</div>
-          </div>
-        </div>
-
-        <!-- Card nhỏ 1 -->
-        <div class="st__p2-card st__p2-card--sm has-image">
-          <img class="st__p2-img" src="https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?w=800&q=80" alt="Keyword Research" />
-          <div class="st__p2-placeholder">
-            <div class="st__p2-placeholder-icon">🔍</div>
-            <div class="st__p2-placeholder-lbl">Keyword research</div>
-          </div>
-          <div class="st__p2-overlay">
-            <span class="st__p2-overlay-tag">Research</span>
-            <div class="st__p2-overlay-title">In-depth keyword mapping &amp; cluster architecture</div>
-            <div class="st__p2-overlay-arrow">↗</div>
-          </div>
-        </div>
-
-        <!-- Card nhỏ 2 -->
-        <div class="st__p2-card st__p2-card--sm has-image">
-          <img class="st__p2-img" src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800&q=80" alt="Content Output" />
-          <div class="st__p2-placeholder">
-            <div class="st__p2-placeholder-icon">✍</div>
-            <div class="st__p2-placeholder-lbl">Content output</div>
-          </div>
-          <div class="st__p2-overlay">
-            <span class="st__p2-overlay-tag">Publishing</span>
-            <div class="st__p2-overlay-title">60+ articles published — pillar &amp; cluster model</div>
-            <div class="st__p2-overlay-arrow">↗</div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Metrics row -->
-      <div class="st__proj2-metrics">
-        <div class="st__p2-metric">
-          <div class="st__p2-metric-num">
-            <span class="st__p2ctr" data-target="60">0</span><span class="st__accent">+</span>
-          </div>
-          <div class="st__p2-metric-label">Articles Published</div>
-          <div class="st__p2-metric-desc">Pillar pages &amp; supporting cluster content</div>
-        </div>
-        <div class="st__p2-metric">
-          <div class="st__p2-metric-num">
-            <span class="st__p2ctr" data-target="3">0</span><span class="st__accent">×</span>
-          </div>
-          <div class="st__p2-metric-label">Organic Growth</div>
-          <div class="st__p2-metric-desc">Traffic tripled within 5 months of execution</div>
-        </div>
-        <div class="st__p2-metric">
-          <div class="st__p2-metric-num">
-            <span class="st__p2ctr" data-target="4">0</span><span class="st__accent"> industries</span>
-          </div>
-          <div class="st__p2-metric-label">Industries Covered</div>
-          <div class="st__p2-metric-desc">B2C · B2B · Travel · Sports</div>
-        </div>
-      </div>
-
-      <!-- Footer -->
-      <div class="st__proj2-footer">
-        <p class="st__proj2-footnote">
-          Full case study available on request — detailed briefs, keyword maps, and
-          performance reports included.
-        </p>
-        <a href="#" class="st__proj2-cta"><div class="cta-track"><span class="cta-line cta-line-a">View Full Case Study</span><span class="cta-line cta-line-b">View Full Case Study</span></div></a>
-      </div>
-
-    </div>
-
-<!-- <h2 class="sr-only">News from above</h2> -->
-
-<div class="nfa-root" id="nfaRoot">
-  <div class="nfa-heading" id="nfaHeading">News from above</div>
-  <div class="nfa-grid" id="nfaGrid">
-    <div class="nfa-col" id="nfaCol0">
-      <div class="nfa-meta"><div class="nfa-date">Mar 13, 2026</div></div>
-      <div class="nfa-title-text">
-        Joby Completes Piloted Electric Air Taxi Flight Across San Francisco Bay
-        and Around the Golden Gate Bridge — a historic milestone for urban air
-        mobility
-      </div>
-      <div class="nfa-img-area">
-        <div class="nfa-img-wrap" id="nfaWrap0" onclick="nfaOpen(0)">
-          <img
-            class="nfa-img"
-            id="nfaImg0"
-            src="https://images.unsplash.com/photo-1569025690938-a00729c9e1f9?w=900&q=82"
-            alt="eVTOL over SF Bay"
-          />
-        </div>
-      </div>
-    </div>
-
-    <div class="nfa-col" id="nfaCol1">
-      <div class="nfa-meta"><div class="nfa-date">Mar 12, 2026</div></div>
-      <div class="nfa-title-text">
-        Joby's First FAA-Conforming Aircraft Takes Flight
-      </div>
-      <div class="nfa-img-area">
-        <div class="nfa-img-wrap" id="nfaWrap1" onclick="nfaOpen(1)">
-          <img
-            class="nfa-img"
-            id="nfaImg1"
-            src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=82"
-            alt="Aircraft in sky"
-          />
-        </div>
-      </div>
-    </div>
-
-    <div class="nfa-col" id="nfaCol2">
-      <div class="nfa-meta"><div class="nfa-date">Mar 10, 2026</div></div>
-      <div class="nfa-title-text">
-        Joby to Begin U.S. Operations in 2026 Under White House Air Taxi Program
-      </div>
-      <div class="nfa-img-area">
-        <div class="nfa-img-wrap" id="nfaWrap2" onclick="nfaOpen(2)">
-          <img
-            class="nfa-img"
-            id="nfaImg2"
-            src="https://images.unsplash.com/photo-1464983953574-0892a716854b?w=900&q=82"
-            alt="Aerial city view"
-          />
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="nfa-lb-overlay" id="nfaOverlay"></div>
-  </section>
-</section>
-
-
-
-
-  <section class="section s2" id="s1">
-
-    <div id="cs-portfolio">
-
-      <div class="cs__header">
-        <div>
-          <p class="cs__eyebrow">Content SEO Portfolio</p>
-          <h2 class="cs__heading" id="cs-main-heading">
-            <span class="cs__heading-line"><span>My SEO</span></span>
-            <span class="cs__heading-line"><span><em>Proofs</em> &amp;</span></span>
-            <span class="cs__heading-line"><span>Results.</span></span>
-          </h2>
-        </div>
-        <p class="cs__desc" id="cs-header-desc">
-          Real-world projects backed by hard data — from compounding organic traffic growth to top-ranking keywords, fully
-          documented with transparent screenshots and analytics.
-        </p>
-      </div>
-
-      <!-- ══ STATS STRIP ══ -->
-      <div class="cs__stats-strip">
-        <div class="cs__stat-item">
-          <span class="cs__stat-number">47+</span><span class="cs__stat-label">SEO Campaigns</span>
-        </div>
-        <div class="cs__stat-divider"></div>
-        <div class="cs__stat-item">
-          <span class="cs__stat-number">320%</span><span class="cs__stat-label">Organic Growth</span>
-        </div>
-        <div class="cs__stat-divider"></div>
-        <div class="cs__stat-item">
-          <span class="cs__stat-number">180</span><span class="cs__stat-label">Top 3 Rankings</span>
-        </div>
-        <div class="cs__stat-divider"></div>
-        <div class="cs__stat-item">
-          <span class="cs__stat-number">5 Yrs</span><span class="cs__stat-label">Of Experience</span>
-        </div>
-      </div>
-
-      <!-- ══ PROCESS STICKY ══ -->
-      <div id="cs-process-wrap">
-        <div class="cs__process-sticky">
-          <div class="cs__process-inner" style="max-width:1100px;margin:0 auto;padding:0 32px;width:100%;">
-            <div class="cs__process-left">
-              <div class="cs__process-eyebrow">SEO Methodology</div>
-              <h3 class="cs__process-heading">
-                From Strategy to<br /><em>Proven ROI</em>
+            <!-- RIGHT: Stats -->
+            <div class="st__split-right">
+              <div class="st__stats-eyebrow">Results · 6 Months</div>
+              <h3 class="st__stats-heading">
+                Google Search Console Data<br /><em>for gtrip.vn</em>
               </h3>
-              <p class="cs__process-desc">
-                Every Content SEO campaign follows a battle-tested framework optimized through hundreds of real-world
-                implementations — leaving no room for guesswork.
-              </p>
-            </div>
-            <div class="cs__steps" id="cs-steps">
-              <div class="cs__step is-active" data-step="0">
-                <div class="cs__step-num">01</div>
-                <div class="cs__step-body">
-                  <div class="cs__step-title">Research &amp; Comprehensive Audit</div>
-                  <div class="cs__step-text">
-                    In-depth website analysis, keyword gap identification, competitor research, and uncovering untapped SEO
-                    opportunities using data from Ahrefs, GSC, and Screaming Frog.
+              <div class="st__stat-list">
+                <div class="st__stat-row">
+                  <div class="st__stat-num">
+                    <span class="st__ctr" data-target="184">0</span
+                    ><span class="st__accent">%</span>
+                  </div>
+                  <div class="st__stat-info">
+                    <div class="st__stat-name">Click Growth</div>
+                    <div class="st__stat-delta">▲ 2.9K → 8.4K / month</div>
+                    <div class="st__stat-desc">
+                      Organic search, zero paid ads
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="cs__step" data-step="1">
-                <div class="cs__step-num">02</div>
-                <div class="cs__step-body">
-                  <div class="cs__step-title">Content Strategy &amp; Topic Clustering</div>
-                  <div class="cs__step-text">
-                    Architecting Pillar-Cluster models, developing detailed content calendars, and mapping keywords based on
-                    search intent and the conversion funnel.
+
+                <div class="st__stat-row">
+                  <div class="st__stat-num">
+                    <span class="st__ctr" data-target="47">0</span
+                    ><span class="st__accent">K</span>
+                  </div>
+                  <div class="st__stat-info">
+                    <div class="st__stat-name">Monthly Impressions</div>
+                    <div class="st__stat-delta">▲ +231%</div>
+                    <div class="st__stat-desc">
+                      Expanded brand reach across SERPs
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="cs__step" data-step="2">
-                <div class="cs__step-num">03</div>
-                <div class="cs__step-body">
-                  <div class="cs__step-title">Execution &amp; On-Page Optimization</div>
-                  <div class="cs__step-text">
-                    Crafting and publishing E-E-A-T compliant content, performing meticulous on-page optimization, building
-                    strategic internal links, and tracking real-time performance via GSC &amp; GA4.
+
+                <div class="st__stat-row">
+                  <div class="st__stat-num">
+                    <span class="st__ctr" data-target="312">0</span>
+                  </div>
+                  <div class="st__stat-info">
+                    <div class="st__stat-name">Top-10 Keywords</div>
+                    <div class="st__stat-delta">▲ 18 → 312</div>
+                    <div class="st__stat-desc">
+                      Including high-competition terms
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="cs__step" data-step="3">
-                <div class="cs__step-num">04</div>
-                <div class="cs__step-body">
-                  <div class="cs__step-title">Reporting &amp; Scaling Strategy</div>
-                  <div class="cs__step-text">
-                    Delivering transparent, data-driven reports on clicks, impressions, rankings, and conversions. Scaling
-                    what works and eliminating what doesn't.
+
+                <div class="st__stat-row">
+                  <div class="st__stat-num">
+                    <span class="st__ctr" data-target="3">0</span
+                    ><span class="st__accent">.</span
+                    ><span class="st__ctr" data-target="2">0</span
+                    ><span class="st__accent">%</span>
+                  </div>
+                  <div class="st__stat-info">
+                    <div class="st__stat-name">Avg. CTR</div>
+                    <div class="st__stat-delta">▲ +0.8 points</div>
+                    <div class="st__stat-desc">Position: 10.5 → 6.4</div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div><!-- /#cs-process-wrap -->
 
-      <!-- ══ PROOF ZOOM FRAMES ══ -->
-      <div class="cs__zoom-wrap">
-        <div class="cs__zoom-header">
-          <div class="cs__zoom-title-block">
-            <div class="cs__zoom-eyebrow">Data-Driven Evidence</div>
-            <h3 class="cs__zoom-section-title">
-              <em>Unedited</em> Screenshots
+        <!-- ══ 3 · PROOF — GSC Screenshots ══ -->
+        <div class="st__proof">
+          <div class="st__proof-header">
+            <div class="st__proof-eyebrow" data-sl>
+              Evidence · Google Search Console
+            </div>
+            <h3 class="st__proof-title" data-sl>
+              Real screenshots from <em>GSC</em> —<br />unedited data
             </h3>
           </div>
+          <div class="st__proof-grid">
+            <!-- Slot lớn (span 2 hàng) — CLICK ĐỂ XEM FULL -->
+            <div class="st__proof-slot st__slot-hero has-image">
+              <img
+                src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=80"
+                alt="GSC Performance Overview"
+              />
+              <div class="st__slot-inner">
+                <div class="st__slot-icon">📊</div>
+                <div class="st__slot-lbl">Main GSC Screenshot</div>
+                <div class="st__slot-hint">
+                  Overall Performance · Clicks &amp; Impressions · 3 months
+                </div>
+              </div>
+              <div class="st__slot-cap">Click to view full</div>
+            </div>
+
+            <!-- Slot nhỏ 1 -->
+            <div class="st__proof-slot has-image">
+              <img
+                src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80"
+                alt="Top Keywords"
+              />
+              <div class="st__slot-inner">
+                <div class="st__slot-icon">🔑</div>
+                <div class="st__slot-lbl">Top Keywords</div>
+                <div class="st__slot-hint">
+                  Clicks · Impressions · CTR · Position
+                </div>
+              </div>
+              <div class="st__slot-cap">Click to view full</div>
+            </div>
+
+            <!-- Slot nhỏ 2 -->
+            <div class="st__proof-slot has-image">
+              <img
+                src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=800&q=80"
+                alt="Top Pages"
+              />
+              <div class="st__slot-inner">
+                <div class="st__slot-icon">📄</div>
+                <div class="st__slot-lbl">Top Pages</div>
+                <div class="st__slot-hint">
+                  Highest traffic pages from organic search
+                </div>
+              </div>
+              <div class="st__slot-cap">Click to view full</div>
+            </div>
+          </div>
         </div>
-        <div class="cs__zoom-grid">
-          <div class="cs__zoom-slot">
-            <div class="cs__zoom-icon">📈</div>
-            <div class="cs__zoom-lbl">Traffic Overview</div>
-            <div class="cs__zoom-hint">GA4 Organic Sessions · 12 Months</div>
-            <div class="cs__zoom-cap">View Proof</div>
+
+        <!-- ══ 4 · PROJECT 02 ══ -->
+        <div class="st__proj2">
+          <!-- Header -->
+          <div class="st__proj2-header">
+            <div class="st__proj2-eyebrow">Project 02 · Content SEO</div>
+            <h3 class="st__proj2-maintitle">
+              Content that<br /><em>Converts</em>
+            </h3>
           </div>
-          <div class="cs__zoom-slot">
-            <div class="cs__zoom-icon">🎯</div>
-            <div class="cs__zoom-lbl">Keyword Rankings</div>
-            <div class="cs__zoom-hint">Ahrefs Position Tracking · Top 10</div>
-            <div class="cs__zoom-cap">View Proof</div>
+
+          <!-- 2-col image grid (placeholder — thêm ảnh thật vào src) -->
+          <div class="st__proj2-strip">
+            <!-- Card lớn (span 2 hàng) -->
+            <div class="st__p2-card st__p2-card--large has-image">
+              <img
+                class="st__p2-img"
+                src="https://images.unsplash.com/photo-1542744095-fcf48d80b0fd?w=1200&q=80"
+                alt="Project 02 Main"
+              />
+              <div class="st__p2-placeholder">
+                <div class="st__p2-placeholder-icon">🖼</div>
+                <div class="st__p2-placeholder-lbl">Featured image</div>
+              </div>
+              <div class="st__p2-overlay">
+                <span class="st__p2-overlay-tag">Content SEO</span>
+                <div class="st__p2-overlay-title">
+                  Editorial content strategy across B2C &amp; B2B verticals
+                </div>
+                <div class="st__p2-overlay-arrow">↗</div>
+              </div>
+            </div>
+
+            <!-- Card nhỏ 1 -->
+            <div class="st__p2-card st__p2-card--sm has-image">
+              <img
+                class="st__p2-img"
+                src="https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?w=800&q=80"
+                alt="Keyword Research"
+              />
+              <div class="st__p2-placeholder">
+                <div class="st__p2-placeholder-icon">🔍</div>
+                <div class="st__p2-placeholder-lbl">Keyword research</div>
+              </div>
+              <div class="st__p2-overlay">
+                <span class="st__p2-overlay-tag">Research</span>
+                <div class="st__p2-overlay-title">
+                  In-depth keyword mapping &amp; cluster architecture
+                </div>
+                <div class="st__p2-overlay-arrow">↗</div>
+              </div>
+            </div>
+
+            <!-- Card nhỏ 2 -->
+            <div class="st__p2-card st__p2-card--sm has-image">
+              <img
+                class="st__p2-img"
+                src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800&q=80"
+                alt="Content Output"
+              />
+              <div class="st__p2-placeholder">
+                <div class="st__p2-placeholder-icon">✍</div>
+                <div class="st__p2-placeholder-lbl">Content output</div>
+              </div>
+              <div class="st__p2-overlay">
+                <span class="st__p2-overlay-tag">Publishing</span>
+                <div class="st__p2-overlay-title">
+                  60+ articles published — pillar &amp; cluster model
+                </div>
+                <div class="st__p2-overlay-arrow">↗</div>
+              </div>
+            </div>
           </div>
-          <div class="cs__zoom-slot">
-            <div class="cs__zoom-icon">📊</div>
-            <div class="cs__zoom-lbl">GSC Performance</div>
-            <div class="cs__zoom-hint">Clicks &amp; Impressions Growth</div>
-            <div class="cs__zoom-cap">View Proof</div>
+
+          <!-- Metrics row -->
+          <div class="st__proj2-metrics">
+            <div class="st__p2-metric">
+              <div class="st__p2-metric-num">
+                <span class="st__p2ctr" data-target="60">0</span
+                ><span class="st__accent">+</span>
+              </div>
+              <div class="st__p2-metric-label">Articles Published</div>
+              <div class="st__p2-metric-desc">
+                Pillar pages &amp; supporting cluster content
+              </div>
+            </div>
+            <div class="st__p2-metric">
+              <div class="st__p2-metric-num">
+                <span class="st__p2ctr" data-target="3">0</span
+                ><span class="st__accent">×</span>
+              </div>
+              <div class="st__p2-metric-label">Organic Growth</div>
+              <div class="st__p2-metric-desc">
+                Traffic tripled within 5 months of execution
+              </div>
+            </div>
+            <div class="st__p2-metric">
+              <div class="st__p2-metric-num">
+                <span class="st__p2ctr" data-target="4">0</span
+                ><span class="st__accent"> industries</span>
+              </div>
+              <div class="st__p2-metric-label">Industries Covered</div>
+              <div class="st__p2-metric-desc">B2C · B2B · Travel · Sports</div>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div class="st__proj2-footer">
+            <p class="st__proj2-footnote">
+              Full case study available on request — detailed briefs, keyword
+              maps, and performance reports included.
+            </p>
+            <a href="#" class="st__proj2-cta"
+              ><div class="cta-track">
+                <span class="cta-line cta-line-a">View Full Case Study</span
+                ><span class="cta-line cta-line-b">View Full Case Study</span>
+              </div></a
+            >
           </div>
         </div>
+
+        <!-- <h2 class="sr-only">News from above</h2> -->
+
+        <div class="nfa-root" id="nfaRoot">
+          <div class="nfa-heading" id="nfaHeading">News from above</div>
+          <div class="nfa-grid" id="nfaGrid">
+            <div class="nfa-col" id="nfaCol0">
+              <div class="nfa-meta">
+                <div class="nfa-date">Mar 13, 2026</div>
+              </div>
+              <div class="nfa-title-text">
+                Joby Completes Piloted Electric Air Taxi Flight Across San
+                Francisco Bay and Around the Golden Gate Bridge — a historic
+                milestone for urban air mobility
+              </div>
+              <div class="nfa-img-area">
+                <div class="nfa-img-wrap" id="nfaWrap0" onclick="nfaOpen(0)">
+                  <img
+                    class="nfa-img"
+                    id="nfaImg0"
+                    src="https://images.unsplash.com/photo-1569025690938-a00729c9e1f9?w=900&q=82"
+                    alt="eVTOL over SF Bay"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="nfa-col" id="nfaCol1">
+              <div class="nfa-meta">
+                <div class="nfa-date">Mar 12, 2026</div>
+              </div>
+              <div class="nfa-title-text">
+                Joby's First FAA-Conforming Aircraft Takes Flight
+              </div>
+              <div class="nfa-img-area">
+                <div class="nfa-img-wrap" id="nfaWrap1" onclick="nfaOpen(1)">
+                  <img
+                    class="nfa-img"
+                    id="nfaImg1"
+                    src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=82"
+                    alt="Aircraft in sky"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="nfa-col" id="nfaCol2">
+              <div class="nfa-meta">
+                <div class="nfa-date">Mar 10, 2026</div>
+              </div>
+              <div class="nfa-title-text">
+                Joby to Begin U.S. Operations in 2026 Under White House Air Taxi
+                Program
+              </div>
+              <div class="nfa-img-area">
+                <div class="nfa-img-wrap" id="nfaWrap2" onclick="nfaOpen(2)">
+                  <img
+                    class="nfa-img"
+                    id="nfaImg2"
+                    src="https://images.unsplash.com/photo-1464983953574-0892a716854b?w=900&q=82"
+                    alt="Aerial city view"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="nfa-lb-overlay" id="nfaOverlay"></div>
+      </section>
+    </section>
+
+    <section class="section s2" id="s1">
+      <div id="cs-portfolio">
+        <div class="cs__header">
+          <h2 class="cs__hdr-title">Content SEO</h2>
+          <div class="cs__hdr-body">
+            <span class="cs__hdr-line" data-csl
+              >Real-world projects backed by hard data —</span
+            >
+            <span class="cs__hdr-line" data-csl
+              >from compounding organic traffic growth to top-ranking
+              keywords,</span
+            >
+            <span class="cs__hdr-line" data-csl
+              >fully documented with transparent screenshots and
+              analytics.</span
+            >
+            <span class="cs__hdr-spacer"></span>
+            <span class="cs__hdr-line" data-csl
+              >Every Content SEO campaign follows a battle-tested
+              framework</span
+            >
+            <span class="cs__hdr-line" data-csl
+              >— optimised through hundreds of real-world implementations,</span
+            >
+            <span class="cs__hdr-line" data-csl
+              >leaving no room for guesswork.</span
+            >
+          </div>
+
+          <!-- ══ STATS STRIP — inside header so both fill one screen ══ -->
+          <div class="cs__stats-strip">
+            <div class="cs__stat-item">
+              <span class="cs__stat-number">47+</span
+              ><span class="cs__stat-label">SEO Campaigns</span>
+            </div>
+            <div class="cs__stat-divider"></div>
+            <div class="cs__stat-item">
+              <span class="cs__stat-number">320%</span
+              ><span class="cs__stat-label">Organic Growth</span>
+            </div>
+            <div class="cs__stat-divider"></div>
+            <div class="cs__stat-item">
+              <span class="cs__stat-number">180</span
+              ><span class="cs__stat-label">Top 3 Rankings</span>
+            </div>
+            <div class="cs__stat-divider"></div>
+            <div class="cs__stat-item">
+              <span class="cs__stat-number">5 Yrs</span
+              ><span class="cs__stat-label">Of Experience</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ PROCESS STICKY ══ -->
+        <div id="cs-process-wrap">
+          <div class="cs__process-sticky">
+            <div
+              class="cs__process-inner"
+              style="
+                max-width: 1100px;
+                margin: 0 auto;
+                padding: 0 32px;
+                width: 100%;
+              "
+            >
+              <div class="cs__process-left">
+                <div class="cs__process-eyebrow">SEO Methodology</div>
+                <h3 class="cs__process-heading">
+                  From Strategy to<br /><em>Proven ROI</em>
+                </h3>
+                <p class="cs__process-desc">
+                  Every Content SEO campaign follows a battle-tested framework
+                  optimized through hundreds of real-world implementations —
+                  leaving no room for guesswork.
+                </p>
+              </div>
+              <div class="cs__steps" id="cs-steps">
+                <div class="cs__step is-active" data-step="0">
+                  <div class="cs__step-num">01</div>
+                  <div class="cs__step-body">
+                    <div class="cs__step-title">
+                      Research &amp; Comprehensive Audit
+                    </div>
+                    <div class="cs__step-text">
+                      In-depth website analysis, keyword gap identification,
+                      competitor research, and uncovering untapped SEO
+                      opportunities using data from Ahrefs, GSC, and Screaming
+                      Frog.
+                    </div>
+                  </div>
+                </div>
+                <div class="cs__step" data-step="1">
+                  <div class="cs__step-num">02</div>
+                  <div class="cs__step-body">
+                    <div class="cs__step-title">
+                      Content Strategy &amp; Topic Clustering
+                    </div>
+                    <div class="cs__step-text">
+                      Architecting Pillar-Cluster models, developing detailed
+                      content calendars, and mapping keywords based on search
+                      intent and the conversion funnel.
+                    </div>
+                  </div>
+                </div>
+                <div class="cs__step" data-step="2">
+                  <div class="cs__step-num">03</div>
+                  <div class="cs__step-body">
+                    <div class="cs__step-title">
+                      Execution &amp; On-Page Optimization
+                    </div>
+                    <div class="cs__step-text">
+                      Crafting and publishing E-E-A-T compliant content,
+                      performing meticulous on-page optimization, building
+                      strategic internal links, and tracking real-time
+                      performance via GSC &amp; GA4.
+                    </div>
+                  </div>
+                </div>
+                <div class="cs__step" data-step="3">
+                  <div class="cs__step-num">04</div>
+                  <div class="cs__step-body">
+                    <div class="cs__step-title">
+                      Reporting &amp; Scaling Strategy
+                    </div>
+                    <div class="cs__step-text">
+                      Delivering transparent, data-driven reports on clicks,
+                      impressions, rankings, and conversions. Scaling what works
+                      and eliminating what doesn't.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /#cs-process-wrap -->
+
+        <!-- ══ PROOF ZOOM FRAMES ══ -->
+        <div class="cs__zoom-wrap">
+          <div class="cs__zoom-header">
+            <div class="cs__zoom-title-block">
+              <div class="cs__zoom-eyebrow" data-sl>Data-Driven Evidence</div>
+              <h3 class="cs__zoom-section-title" data-sl>
+                <em>Unedited</em> Screenshots
+              </h3>
+            </div>
+          </div>
+          <div class="cs__zoom-grid">
+            <div class="cs__zoom-slot">
+              <div class="cs__zoom-icon">📈</div>
+              <div class="cs__zoom-lbl">Traffic Overview</div>
+              <div class="cs__zoom-hint">GA4 Organic Sessions · 12 Months</div>
+              <div class="cs__zoom-cap">View Proof</div>
+            </div>
+            <div class="cs__zoom-slot">
+              <div class="cs__zoom-icon">🎯</div>
+              <div class="cs__zoom-lbl">Keyword Rankings</div>
+              <div class="cs__zoom-hint">Ahrefs Position Tracking · Top 10</div>
+              <div class="cs__zoom-cap">View Proof</div>
+            </div>
+            <div class="cs__zoom-slot">
+              <div class="cs__zoom-icon">📊</div>
+              <div class="cs__zoom-lbl">GSC Performance</div>
+              <div class="cs__zoom-hint">Clicks &amp; Impressions Growth</div>
+              <div class="cs__zoom-cap">View Proof</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ DARK ZONE ══ -->
+        <div class="cs__dark-zone" id="cs-dark-zone">
+          <div class="cs__dark-bg" id="cs-parallax-bg"></div>
+          <div class="cs__dark-overlay"></div>
+          <div class="cs__dark-inner">
+            <p class="cs__dark-label" data-sl>Real Project Case Studies</p>
+            <div class="cs__cards-grid" id="cs-cards-grid">
+              <!-- CARD 1: Featured -->
+              <article class="cs__proof-card cs__card--featured">
+                <div
+                  class="cs__card-image-wrap"
+                  data-src="anhtest-1.jpg"
+                  data-title="Achieved 320% Organic Traffic Growth — Ecommerce SEO"
+                  data-tag="Ecommerce SEO · Case Study"
+                >
+                  <img
+                    src="anhtest-1.jpg"
+                    alt="Traffic chart proof"
+                    class="cs__card-image"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="cs__card-body">
+                  <span class="cs__card-tag">Ecommerce SEO · Case Study</span>
+                  <h3 class="cs__card-title">
+                    Scaled Organic Traffic by 320% in 6 Months for an E-commerce
+                    Platform
+                  </h3>
+                  <p class="cs__card-desc">
+                    Implemented a robust Topic Cluster strategy, conducted
+                    comprehensive On-page optimization across all product
+                    categories, and restructured the internal linking
+                    architecture. Result: Scaled organic traffic from 8,000 to
+                    34,000 sessions/month.
+                  </p>
+                  <div class="cs__card-metrics">
+                    <div class="cs__metric">
+                      <span class="cs__metric-val">+320%</span
+                      ><span class="cs__metric-key">Organic Traffic</span>
+                    </div>
+                    <div class="cs__metric">
+                      <span class="cs__metric-val">47</span
+                      ><span class="cs__metric-key">Top 3 Keywords</span>
+                    </div>
+                    <div class="cs__metric">
+                      <span class="cs__metric-val">6 Months</span
+                      ><span class="cs__metric-key">Duration</span>
+                    </div>
+                    <div class="cs__metric">
+                      <span class="cs__metric-val">E-com</span
+                      ><span class="cs__metric-key">Industry</span>
+                    </div>
+                  </div>
+                  <a href="#" class="cs__card-link"
+                    >Read Full Case Study
+                    <svg
+                      width="16"
+                      height="16"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M5 12h14M12 5l7 7-7 7" /></svg
+                  ></a>
+                </div>
+              </article>
+              <!-- CARD 2 -->
+              <article class="cs__proof-card">
+                <div
+                  class="cs__card-image-wrap"
+                  data-src="anhtest-2.jpg"
+                  data-title="Secured Position #1 for 12 High-Volume Keywords"
+                  data-tag="Keyword Research · B2B SaaS"
+                >
+                  <img
+                    src="anhtest-2.jpg"
+                    alt="Keyword ranking proof"
+                    class="cs__card-image"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="cs__card-body">
+                  <span class="cs__card-tag">Keyword Research</span>
+                  <h3 class="cs__card-title">
+                    Secured Google Position #1 for 12 High-Volume Keywords
+                  </h3>
+                  <p class="cs__card-desc">
+                    Executed in-depth keyword research and built content pillars
+                    targeting high-value B2B SaaS queries with search volumes
+                    ranging from 5,000 to 20,000/month.
+                  </p>
+                  <div class="cs__card-metrics">
+                    <div class="cs__metric">
+                      <span class="cs__metric-val">12</span
+                      ><span class="cs__metric-key">Rank #1 KW</span>
+                    </div>
+                    <div class="cs__metric">
+                      <span class="cs__metric-val">20K</span
+                      ><span class="cs__metric-key">Avg Volume</span>
+                    </div>
+                  </div>
+                  <a href="#" class="cs__card-link"
+                    >View Details
+                    <svg
+                      width="16"
+                      height="16"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M5 12h14M12 5l7 7-7 7" /></svg
+                  ></a>
+                </div>
+              </article>
+              <!-- CARD 3 -->
+              <article class="cs__proof-card">
+                <div
+                  class="cs__card-image-wrap"
+                  data-src="anhtest-3.jpg"
+                  data-title="Scaled a Finance Blog from 0 to 50,000 Monthly Pageviews"
+                  data-tag="Content Strategy · Finance"
+                >
+                  <img
+                    src="anhtest-3.jpg"
+                    alt="GSC proof screenshot"
+                    class="cs__card-image"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="cs__card-body">
+                  <span class="cs__card-tag">Content Strategy</span>
+                  <h3 class="cs__card-title">
+                    Scaled a Finance Blog from 0 to 50,000 Monthly Pageviews
+                  </h3>
+                  <p class="cs__card-desc">
+                    Designed a strategic 12-month content calendar and produced
+                    60+ E-E-A-T compliant articles for a leading brand in the
+                    personal finance sector.
+                  </p>
+                  <div class="cs__card-metrics">
+                    <div class="cs__metric">
+                      <span class="cs__metric-val">50K</span
+                      ><span class="cs__metric-key">Pageviews/mo</span>
+                    </div>
+                    <div class="cs__metric">
+                      <span class="cs__metric-val">60+</span
+                      ><span class="cs__metric-key">Articles Published</span>
+                    </div>
+                  </div>
+                  <a href="#" class="cs__card-link"
+                    >View Details
+                    <svg
+                      width="16"
+                      height="16"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M5 12h14M12 5l7 7-7 7" /></svg
+                  ></a>
+                </div>
+              </article>
+            </div>
+            <!-- /#cs-cards-grid -->
+          </div>
+          <!-- /.cs__dark-inner -->
+        </div>
+        <!-- /.cs__dark-zone -->
       </div>
+      <!-- /#cs-portfolio -->
+    </section>
 
-      <!-- ══ DARK ZONE ══ -->
-      <div class="cs__dark-zone" id="cs-dark-zone">
-        <div class="cs__dark-bg" id="cs-parallax-bg"></div>
-        <div class="cs__dark-overlay"></div>
-        <div class="cs__dark-inner">
-          <p class="cs__dark-label">Real Project Case Studies</p>
-          <div class="cs__cards-grid" id="cs-cards-grid">
-            <!-- CARD 1: Featured -->
-            <article class="cs__proof-card cs__card--featured">
-              <div class="cs__card-image-wrap" data-src="anhtest-1.jpg"
-                data-title="Achieved 320% Organic Traffic Growth — Ecommerce SEO" data-tag="Ecommerce SEO · Case Study">
-                <img src="anhtest-1.jpg" alt="Traffic chart proof" class="cs__card-image" loading="lazy" />
-              </div>
-              <div class="cs__card-body">
-                <span class="cs__card-tag">Ecommerce SEO · Case Study</span>
-                <h3 class="cs__card-title">
-                  Scaled Organic Traffic by 320% in 6 Months for an E-commerce Platform
-                </h3>
-                <p class="cs__card-desc">
-                  Implemented a robust Topic Cluster strategy, conducted comprehensive On-page optimization across all
-                  product categories, and restructured the internal linking architecture. Result: Scaled organic traffic
-                  from 8,000 to 34,000 sessions/month.
-                </p>
-                <div class="cs__card-metrics">
-                  <div class="cs__metric">
-                    <span class="cs__metric-val">+320%</span><span class="cs__metric-key">Organic Traffic</span>
-                  </div>
-                  <div class="cs__metric">
-                    <span class="cs__metric-val">47</span><span class="cs__metric-key">Top 3 Keywords</span>
-                  </div>
-                  <div class="cs__metric">
-                    <span class="cs__metric-val">6 Months</span><span class="cs__metric-key">Duration</span>
-                  </div>
-                  <div class="cs__metric">
-                    <span class="cs__metric-val">E-com</span><span class="cs__metric-key">Industry</span>
-                  </div>
-                </div>
-                <a href="#" class="cs__card-link">Read Full Case Study
-                  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg></a>
-              </div>
-            </article>
-            <!-- CARD 2 -->
-            <article class="cs__proof-card">
-              <div class="cs__card-image-wrap" data-src="anhtest-2.jpg"
-                data-title="Secured Position #1 for 12 High-Volume Keywords" data-tag="Keyword Research · B2B SaaS">
-                <img src="anhtest-2.jpg" alt="Keyword ranking proof" class="cs__card-image" loading="lazy" />
-              </div>
-              <div class="cs__card-body">
-                <span class="cs__card-tag">Keyword Research</span>
-                <h3 class="cs__card-title">
-                  Secured Google Position #1 for 12 High-Volume Keywords
-                </h3>
-                <p class="cs__card-desc">
-                  Executed in-depth keyword research and built content pillars targeting high-value B2B SaaS queries with
-                  search volumes ranging from 5,000 to 20,000/month.
-                </p>
-                <div class="cs__card-metrics">
-                  <div class="cs__metric">
-                    <span class="cs__metric-val">12</span><span class="cs__metric-key">Rank #1 KW</span>
-                  </div>
-                  <div class="cs__metric">
-                    <span class="cs__metric-val">20K</span><span class="cs__metric-key">Avg Volume</span>
-                  </div>
-                </div>
-                <a href="#" class="cs__card-link">View Details
-                  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg></a>
-              </div>
-            </article>
-            <!-- CARD 3 -->
-            <article class="cs__proof-card">
-              <div class="cs__card-image-wrap" data-src="anhtest-3.jpg"
-                data-title="Scaled a Finance Blog from 0 to 50,000 Monthly Pageviews" data-tag="Content Strategy · Finance">
-                <img src="anhtest-3.jpg" alt="GSC proof screenshot" class="cs__card-image" loading="lazy" />
-              </div>
-              <div class="cs__card-body">
-                <span class="cs__card-tag">Content Strategy</span>
-                <h3 class="cs__card-title">
-                  Scaled a Finance Blog from 0 to 50,000 Monthly Pageviews
-                </h3>
-                <p class="cs__card-desc">
-                  Designed a strategic 12-month content calendar and produced 60+ E-E-A-T compliant articles for a leading
-                  brand in the personal finance sector.
-                </p>
-                <div class="cs__card-metrics">
-                  <div class="cs__metric">
-                    <span class="cs__metric-val">50K</span><span class="cs__metric-key">Pageviews/mo</span>
-                  </div>
-                  <div class="cs__metric">
-                    <span class="cs__metric-val">60+</span><span class="cs__metric-key">Articles Published</span>
-                  </div>
-                </div>
-                <a href="#" class="cs__card-link">View Details
-                  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg></a>
-              </div>
-            </article>
-          </div><!-- /#cs-cards-grid -->
-        </div><!-- /.cs__dark-inner -->
-      </div><!-- /.cs__dark-zone -->
-
-    </div><!-- /#cs-portfolio -->
-
-  </section>
-
-  <section class="section s3" id="s2">
-    <div class="lbl">UI/UX - Design</div>
-    <h1 class="ttl">Drawing<br>Thought</h1>
-    <p class="body">Hand and concept in dialogue. Illustration as a way of thinking — working through ideas with line,
-      texture, and the honest imprecision of making.</p>
+    <section class="section s3" id="s2">
+      <div class="lbl">UI/UX - Design</div>
+      <h2 class="ttl">
+        FIGMA <br />
+        UI/UX
+      </h2>
+      <p class="body">
+        Hand and concept in dialogue. Illustration as a way of thinking —
+        working through ideas with line, texture, and the honest imprecision of
+        making.
+      </p>
       <div id="progressBar"></div>
-    <div id="dotNav"></div>
+      <div id="dotNav"></div>
 
-    <!-- Hero -->
-    
-<div class="hs-progress" id="hsProgress"></div>
-<div class="hs-dots"     id="hsDots"></div>
+      <!-- Hero -->
 
-<div class="hs-section" id="hsSection">
-  <div class="hs-track" id="hsTrack">
+      <div class="hs-progress" id="hsProgress"></div>
+      <div class="hs-dots" id="hsDots"></div>
 
-    <div class="hs-panel">
-      <div class="hs-fig">Fig. 1.1 <span>Overhead view of aircraft</span></div>
-      <div class="hs-card">
-        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=80" alt="Overhead view — eVTOL 6-rotor platform" />
-        <!-- <div class="hs-card-placeholder">
+      <div class="hs-section" id="hsSection">
+        <div class="hs-track" id="hsTrack">
+          <div class="hs-panel">
+            <div class="hs-fig">
+              Fig. 1.1 <span>Overhead view of aircraft</span>
+            </div>
+            <div class="hs-card">
+              <img
+                src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=80"
+                alt="Overhead view — eVTOL 6-rotor platform"
+              />
+              <!-- <div class="hs-card-placeholder">
           <div class="hs-placeholder-icon">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#1a1a18" stroke-width="1.4">
               <rect x="2" y="4" width="16" height="12" rx="2"/><circle cx="7" cy="9" r="1.5"/><path d="M2 14l4-4 3 3 3-4 6 5"/>
@@ -1009,146 +1323,219 @@
           </div>
           <span class="hs-placeholder-text">Chèn ảnh vào đây</span>
         </div> -->
-        <!-- <span class="hs-caption">Overhead view — eVTOL 6-rotor platform</span> -->
-      </div>
-    </div>
-
-    <div class="hs-panel">
-      <div class="hs-fig">Fig. 1.2 <span>Direct drive motor breakdown</span></div>
-      <div class="hs-card">
-        <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&q=80" alt="Axial-flux direct-drive motor — exploded" />
-        <div class="hs-card-placeholder">
-          <div class="hs-placeholder-icon">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#1a1a18" stroke-width="1.4">
-              <rect x="2" y="4" width="16" height="12" rx="2"/><circle cx="7" cy="9" r="1.5"/><path d="M2 14l4-4 3 3 3-4 6 5"/>
-            </svg>
+              <!-- <span class="hs-caption">Overhead view — eVTOL 6-rotor platform</span> -->
+            </div>
           </div>
-          <span class="hs-placeholder-text">Chèn ảnh vào đây</span>
-        </div>
-        <span class="hs-caption">Axial-flux direct-drive motor — exploded</span>
-      </div>
-    </div>
 
-    <div class="hs-panel">
-      <div class="hs-fig">Fig. 1.4 <span>Back view of aircraft</span></div>
-      <div class="hs-card">
-        <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&q=80" alt="Rear elevation — wingspan 32 ft" />
-        <div class="hs-card-placeholder">
-          <div class="hs-placeholder-icon">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#1a1a18" stroke-width="1.4">
-              <rect x="2" y="4" width="16" height="12" rx="2"/><circle cx="7" cy="9" r="1.5"/><path d="M2 14l4-4 3 3 3-4 6 5"/>
-            </svg>
+          <div class="hs-panel">
+            <div class="hs-fig">
+              Fig. 1.2 <span>Direct drive motor breakdown</span>
+            </div>
+            <div class="hs-card">
+              <img
+                src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&q=80"
+                alt="Axial-flux direct-drive motor — exploded"
+              />
+              <div class="hs-card-placeholder">
+                <div class="hs-placeholder-icon">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    stroke="#1a1a18"
+                    stroke-width="1.4"
+                  >
+                    <rect x="2" y="4" width="16" height="12" rx="2" />
+                    <circle cx="7" cy="9" r="1.5" />
+                    <path d="M2 14l4-4 3 3 3-4 6 5" />
+                  </svg>
+                </div>
+                <span class="hs-placeholder-text">Chèn ảnh vào đây</span>
+              </div>
+              <span class="hs-caption"
+                >Axial-flux direct-drive motor — exploded</span
+              >
+            </div>
           </div>
-          <span class="hs-placeholder-text">Chèn ảnh vào đây</span>
-        </div>
-        <span class="hs-caption">Rear elevation — wingspan 32 ft</span>
-      </div>
-    </div>
 
-    <div class="hs-panel">
-      <div class="hs-fig">Fig. 2.1 <span>Battery pack architecture</span></div>
-      <div class="hs-card">
-        <img src="https://images.unsplash.com/photo-1620288627223-53302f4e8c74?w=1200&q=80" alt="Li-ion cell stack — 2 160-cell modules" />
-        <div class="hs-card-placeholder">
-          <div class="hs-placeholder-icon">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#1a1a18" stroke-width="1.4">
-              <rect x="2" y="4" width="16" height="12" rx="2"/><circle cx="7" cy="9" r="1.5"/><path d="M2 14l4-4 3 3 3-4 6 5"/>
-            </svg>
+          <div class="hs-panel">
+            <div class="hs-fig">
+              Fig. 1.4 <span>Back view of aircraft</span>
+            </div>
+            <div class="hs-card">
+              <img
+                src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&q=80"
+                alt="Rear elevation — wingspan 32 ft"
+              />
+              <div class="hs-card-placeholder">
+                <div class="hs-placeholder-icon">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    stroke="#1a1a18"
+                    stroke-width="1.4"
+                  >
+                    <rect x="2" y="4" width="16" height="12" rx="2" />
+                    <circle cx="7" cy="9" r="1.5" />
+                    <path d="M2 14l4-4 3 3 3-4 6 5" />
+                  </svg>
+                </div>
+                <span class="hs-placeholder-text">Chèn ảnh vào đây</span>
+              </div>
+              <span class="hs-caption">Rear elevation — wingspan 32 ft</span>
+            </div>
           </div>
-          <span class="hs-placeholder-text">Chèn ảnh vào đây</span>
-        </div>
-        <span class="hs-caption">Li-ion cell stack — 2 × 160-cell modules</span>
-      </div>
-    </div>
 
-    <div class="hs-panel">
-      <div class="hs-fig">Fig. 3.2 <span>Mission profile</span></div>
-      <div class="hs-card">
-        <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1200&q=80" alt="200 mi range · 200 mph cruise · L/D 14:1" />
-        <div class="hs-card-placeholder">
-          <div class="hs-placeholder-icon">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#1a1a18" stroke-width="1.4">
-              <rect x="2" y="4" width="16" height="12" rx="2"/><circle cx="7" cy="9" r="1.5"/><path d="M2 14l4-4 3 3 3-4 6 5"/>
-            </svg>
+          <div class="hs-panel">
+            <div class="hs-fig">
+              Fig. 2.1 <span>Battery pack architecture</span>
+            </div>
+            <div class="hs-card">
+              <img
+                src="https://images.unsplash.com/photo-1620288627223-53302f4e8c74?w=1200&q=80"
+                alt="Li-ion cell stack — 2 160-cell modules"
+              />
+              <div class="hs-card-placeholder">
+                <div class="hs-placeholder-icon">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    stroke="#1a1a18"
+                    stroke-width="1.4"
+                  >
+                    <rect x="2" y="4" width="16" height="12" rx="2" />
+                    <circle cx="7" cy="9" r="1.5" />
+                    <path d="M2 14l4-4 3 3 3-4 6 5" />
+                  </svg>
+                </div>
+                <span class="hs-placeholder-text">Chèn ảnh vào đây</span>
+              </div>
+              <span class="hs-caption"
+                >Li-ion cell stack — 2 × 160-cell modules</span
+              >
+            </div>
           </div>
-          <span class="hs-placeholder-text">Chèn ảnh vào đây</span>
-        </div>
-        <span class="hs-caption">200 mi range · 200 mph cruise · L/D 14:1</span>
-      </div>
-    </div>
 
-    <div class="hs-panel">
-      <div class="hs-fig">Fig. 4.1 <span>FAA certification roadmap</span></div>
-      <div class="hs-card">
-        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&q=80" alt="FAA Part 23 type certificate — 5 stages" />
-        <div class="hs-card-placeholder">
-          <div class="hs-placeholder-icon">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#1a1a18" stroke-width="1.4">
-              <rect x="2" y="4" width="16" height="12" rx="2"/><circle cx="7" cy="9" r="1.5"/><path d="M2 14l4-4 3 3 3-4 6 5"/>
-            </svg>
+          <div class="hs-panel">
+            <div class="hs-fig">Fig. 3.2 <span>Mission profile</span></div>
+            <div class="hs-card">
+              <img
+                src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1200&q=80"
+                alt="200 mi range · 200 mph cruise · L/D 14:1"
+              />
+              <div class="hs-card-placeholder">
+                <div class="hs-placeholder-icon">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    stroke="#1a1a18"
+                    stroke-width="1.4"
+                  >
+                    <rect x="2" y="4" width="16" height="12" rx="2" />
+                    <circle cx="7" cy="9" r="1.5" />
+                    <path d="M2 14l4-4 3 3 3-4 6 5" />
+                  </svg>
+                </div>
+                <span class="hs-placeholder-text">Chèn ảnh vào đây</span>
+              </div>
+              <span class="hs-caption"
+                >200 mi range · 200 mph cruise · L/D 14:1</span
+              >
+            </div>
           </div>
-          <span class="hs-placeholder-text">Chèn ảnh vào đây</span>
-        </div>
-        <span class="hs-caption">FAA Part 23 type certificate — 5 stages</span>
-      </div>
-    </div>
 
-  </div>
-  </div><!-- /.hs-section -->
-
-  <div class="pf-section">
-    <span class="pf-design-label">Design</span>
-    <div class="pf-grid">
-      <div class="pf-col">
-        <div class="pf-card">
-          <img src="https://picsum.photos/900/600?random=1" alt="" />
-        </div>
-        <div class="pf-card">
-          <img src="https://picsum.photos/900/600?random=4" alt="" />
-        </div>
-        <div class="pf-card">
-          <img src="https://picsum.photos/900/600?random=7" alt="" />
-        </div>
-      </div>
-
-      <div class="pf-col">
-        <div class="pf-card">
-          <img src="https://picsum.photos/900/600?random=2" alt="" />
-        </div>
-        <div class="pf-card">
-          <img src="https://picsum.photos/900/600?random=5" alt="" />
-        </div>
-        <div class="pf-card">
-          <img src="https://picsum.photos/900/600?random=8" alt="" />
-        </div>
-      </div>
-
-      <div class="pf-col">
-        <div class="pf-card">
-          <img src="https://picsum.photos/900/600?random=3" alt="" />
-        </div>
-        <div class="pf-card">
-          <img src="https://picsum.photos/900/600?random=6" alt="" />
-        </div>
-        <div class="pf-card">
-          <img src="https://picsum.photos/900/600?random=9" alt="" />
+          <div class="hs-panel">
+            <div class="hs-fig">
+              Fig. 4.1 <span>FAA certification roadmap</span>
+            </div>
+            <div class="hs-card">
+              <img
+                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&q=80"
+                alt="FAA Part 23 type certificate — 5 stages"
+              />
+              <div class="hs-card-placeholder">
+                <div class="hs-placeholder-icon">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    stroke="#1a1a18"
+                    stroke-width="1.4"
+                  >
+                    <rect x="2" y="4" width="16" height="12" rx="2" />
+                    <circle cx="7" cy="9" r="1.5" />
+                    <path d="M2 14l4-4 3 3 3-4 6 5" />
+                  </svg>
+                </div>
+                <span class="hs-placeholder-text">Chèn ảnh vào đây</span>
+              </div>
+              <span class="hs-caption"
+                >FAA Part 23 type certificate — 5 stages</span
+              >
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
+      <!-- /.hs-section -->
 
-  <div class="pf-lightbox" id="pfLightbox">
-    <div class="pf-lb-inner" id="pfLbInner">
-      <img src="" alt="" id="pfLbImg" />
-    </div>
-  </div>
+      <div class="pf-section">
+        <span class="pf-design-label">DESIGN</span>
+        <div class="pf-grid">
+          <div class="pf-col">
+            <div class="pf-card">
+              <img src="https://picsum.photos/900/600?random=1" alt="" />
+            </div>
+            <div class="pf-card">
+              <img src="https://picsum.photos/900/600?random=4" alt="" />
+            </div>
+            <div class="pf-card">
+              <img src="https://picsum.photos/900/600?random=7" alt="" />
+            </div>
+          </div>
 
-</section><!-- /.section.s3 -->
+          <div class="pf-col">
+            <div class="pf-card">
+              <img src="https://picsum.photos/900/600?random=2" alt="" />
+            </div>
+            <div class="pf-card">
+              <img src="https://picsum.photos/900/600?random=5" alt="" />
+            </div>
+            <div class="pf-card">
+              <img src="https://picsum.photos/900/600?random=8" alt="" />
+            </div>
+          </div>
 
+          <div class="pf-col">
+            <div class="pf-card">
+              <img src="https://picsum.photos/900/600?random=3" alt="" />
+            </div>
+            <div class="pf-card">
+              <img src="https://picsum.photos/900/600?random=6" alt="" />
+            </div>
+            <div class="pf-card">
+              <img src="https://picsum.photos/900/600?random=9" alt="" />
+            </div>
+          </div>
+        </div>
+      </div>
 
+      <div class="pf-lightbox" id="pfLightbox">
+        <div class="pf-lb-inner" id="pfLbInner">
+          <img src="" alt="" id="pfLbImg" />
+        </div>
+      </div>
+    </section>
+    <!-- /.section.s3 -->
 
-
-<!-- 
+    <!-- 
    <section class="section s4" id="s3">
   <div class="lbl">Automation - Tech</div>
   <h1 class="ttl">Objects<br>in Space</h1>
@@ -1157,8 +1544,7 @@
     brand, product, and environment.
   </p> -->
 
-<section class="scroll-section" id="scrollSection">
-   
+    <section class="scroll-section" id="scrollSection">
       <div class="stage" id="stage">
         <!-- Heading -->
         <div class="heading-wrap" id="headingWrap">
@@ -1185,7 +1571,6 @@
             Leave city congestion behind and choose a stress-free commute
             through the clouds.
           </p>
-          
         </div>
 
         <!-- ══ SLIDE 2 ══ -->
@@ -1214,7 +1599,6 @@
             Sit back and enjoy. Breathtaking views come standard with every
             seat.
           </p>
-          
         </div>
 
         <!-- ══ SLIDE 3 ══ -->
@@ -1243,7 +1627,6 @@
             Enjoy seamless travel with a choreographed rideshare to the
             vertiport.
           </p>
-          
         </div>
 
         <!-- ══ SLIDE 4 ══ -->
@@ -1269,7 +1652,6 @@
         </div>
         <div class="text-panel-tech" id="text4">
           <p>The city glows below. Arrive refreshed, every single time.</p>
-          
         </div>
 
         <!-- ══ SLIDE 5 ══ -->
@@ -1291,7 +1673,6 @@
           <p>
             Start your morning above it all. A new way to move, built for you.
           </p>
-          
         </div>
 
         <div class="nav-labels">
@@ -1299,122 +1680,135 @@
           <!-- <span id="labelRight">Skip town, let's fly</span> -->
         </div>
       </div>
-<!-- </div> -->
+      <!-- </div> -->
 
-  <!-- <div class="ghost">04</div> -->
-</section>
+      <!-- <div class="ghost">04</div> -->
+    </section>
 
+    <section class="section s5" id="s4">
+      <div id="ps">
+        <div class="ps-heading">
+          <h2>Others</h2>
+        </div>
 
+        <!-- Scroll track: height set by JS -->
+        <div id="ps-scroll-track">
+          <div id="ps-sticky">
+            <div class="ps-layout">
+              <!-- LEFT NAV -->
+              <nav class="ps-nav" id="ps-nav">
+                <button class="ps-nav-item active" data-index="0">
+                  Car Service
+                </button>
+                <button class="ps-nav-item" data-index="1">Airlines</button>
+                <button class="ps-nav-item" data-index="2">
+                  Infrastructure
+                </button>
+                <button class="ps-nav-item" data-index="3">R&amp;D</button>
+                <button class="ps-nav-item" data-index="4">Technology</button>
+                <button class="ps-nav-item" data-index="5">Government</button>
+              </nav>
 
-
-
-
-
-  <section class="section s5" id="s4">
-    <div id="ps">
-      <div class="ps-heading">
-        <h2>Others</h2>
-      </div>
-
-      <!-- Scroll track: height set by JS -->
-      <div id="ps-scroll-track">
-        <div id="ps-sticky">
-          <div class="ps-layout">
-            <!-- LEFT NAV -->
-            <nav class="ps-nav" id="ps-nav">
-              <button class="ps-nav-item active" data-index="0">
-                Car Service
-              </button>
-              <button class="ps-nav-item" data-index="1">Airlines</button>
-              <button class="ps-nav-item" data-index="2">Infrastructure</button>
-              <button class="ps-nav-item" data-index="3">R&amp;D</button>
-              <button class="ps-nav-item" data-index="4">Technology</button>
-              <button class="ps-nav-item" data-index="5">Government</button>
-            </nav>
-
-            <!-- CENTER IMAGE -->
-            <div id="ps-frame-wrap">
-              <div class="ps-image-frame">
+              <!-- CENTER IMAGE -->
+              <div id="ps-frame-wrap">
                 <div class="ps-image-frame">
-                  <img
-                    class="ps-slide show"
-                    data-index="0"
-                    src="./public/images/anhtest-4.jpg"
-                  />
-                  <img class="ps-slide" data-index="1" src="./public/images/anhtest-1.jpg" />
-                  <img class="ps-slide" data-index="2" src="./public/images/anhtest-2.jpg" />
-                  <img class="ps-slide" data-index="3" src="./public/images/anhtest-3.jpg" />
-                  <img class="ps-slide" data-index="4" src="./public/images/anhtest-4.jpg" />
-                  <img class="ps-slide" data-index="5" src="./public/images/anhtest-1.jpg" />
+                  <div class="ps-image-frame">
+                    <img
+                      class="ps-slide show"
+                      data-index="0"
+                      src="./public/images/anhtest-4.jpg"
+                    />
+                    <img
+                      class="ps-slide"
+                      data-index="1"
+                      src="./public/images/anhtest-1.jpg"
+                    />
+                    <img
+                      class="ps-slide"
+                      data-index="2"
+                      src="./public/images/anhtest-2.jpg"
+                    />
+                    <img
+                      class="ps-slide"
+                      data-index="3"
+                      src="./public/images/anhtest-3.jpg"
+                    />
+                    <img
+                      class="ps-slide"
+                      data-index="4"
+                      src="./public/images/anhtest-4.jpg"
+                    />
+                    <img
+                      class="ps-slide"
+                      data-index="5"
+                      src="./public/images/anhtest-1.jpg"
+                    />
+                  </div>
+                </div>
+                <!-- /.ps-image-frame -->
+              </div>
+              <!-- /#ps-frame-wrap -->
+
+              <!-- RIGHT CONTENT -->
+              <div class="ps-right" id="ps-right">
+                <div class="ps-panel show" data-index="0">
+                  <p>
+                    We're partnering with global leaders in ground
+                    transportation to seamlessly integrate air mobility into the
+                    future of door-to-door travel.
+                  </p>
+                </div>
+
+                <div class="ps-panel" data-index="1">
+                  <p>
+                    Working with major airlines to build seamless connections
+                    between urban air mobility and traditional aviation networks
+                    worldwide.
+                  </p>
+                </div>
+
+                <div class="ps-panel" data-index="2">
+                  <p>
+                    Building the physical foundation for urban air mobility
+                    through vertiports, charging networks, and ground support
+                    systems in key cities.
+                  </p>
+                </div>
+
+                <div class="ps-panel" data-index="3">
+                  <p>
+                    Collaborating with world-class research institutions to push
+                    the boundaries of electric propulsion, battery technology,
+                    and aerodynamics.
+                  </p>
+                </div>
+
+                <div class="ps-panel" data-index="4">
+                  <p>
+                    Integrating cutting-edge AI, sensor fusion, and software
+                    platforms to enable safe, efficient autonomous flight at
+                    scale.
+                  </p>
+                </div>
+
+                <div class="ps-panel" data-index="5">
+                  <p>
+                    Working with aviation authorities and city governments to
+                    shape the regulatory frameworks that will enable safe urban
+                    air mobility worldwide.
+                  </p>
                 </div>
               </div>
-              <!-- /.ps-image-frame -->
+              <!-- /.ps-right -->
             </div>
-            <!-- /#ps-frame-wrap -->
-
-            <!-- RIGHT CONTENT -->
-            <div class="ps-right" id="ps-right">
-              <div class="ps-panel show" data-index="0">
-                <p>
-                  We're partnering with global leaders in ground transportation
-                  to seamlessly integrate air mobility into the future of
-                  door-to-door travel.
-                </p>
-              </div>
-
-              <div class="ps-panel" data-index="1">
-                <p>
-                  Working with major airlines to build seamless connections
-                  between urban air mobility and traditional aviation networks
-                  worldwide.
-                </p>
-              </div>
-
-              <div class="ps-panel" data-index="2">
-                <p>
-                  Building the physical foundation for urban air mobility
-                  through vertiports, charging networks, and ground support
-                  systems in key cities.
-                </p>
-              </div>
-
-              <div class="ps-panel" data-index="3">
-                <p>
-                  Collaborating with world-class research institutions to push
-                  the boundaries of electric propulsion, battery technology, and
-                  aerodynamics.
-                </p>
-              </div>
-
-              <div class="ps-panel" data-index="4">
-                <p>
-                  Integrating cutting-edge AI, sensor fusion, and software
-                  platforms to enable safe, efficient autonomous flight at
-                  scale.
-                </p>
-              </div>
-
-              <div class="ps-panel" data-index="5">
-                <p>
-                  Working with aviation authorities and city governments to
-                  shape the regulatory frameworks that will enable safe urban
-                  air mobility worldwide.
-                </p>
-              </div>
-            </div>
-            <!-- /.ps-right -->
+            <!-- /.ps-layout -->
           </div>
-          <!-- /.ps-layout -->
+          <!-- /#ps-sticky -->
         </div>
-        <!-- /#ps-sticky -->
+        <!-- /#ps-scroll-track -->
       </div>
-      <!-- /#ps-scroll-track -->
-    </div>
-    <!-- /#ps -->
-
-  </section>
-
-
+      <!-- /#ps -->
+    </section>
 
     <svg style="display: none">
       <filter id="diagonal-streak">
@@ -1426,33 +1820,51 @@
       <div class="bg sharp"></div>
       <div class="bg streaky-blur"></div>
       <main class="content">
-        <nav>NOTRE ÉQUIPE</nav>
+        <nav>Percy Huynh · Portfolio</nav>
         <section class="member">
           <div class="sidebar">
-            <h3>• Charles Montambault</h3>
+            <h3>SEO Strategy &amp; Content</h3>
           </div>
           <div class="description">
-            <p class="role">Co-fondateur et responsable de l'innovation</p>
-            <p>Concepteur sonore et responsable R&D, Charles porte la vision de paysages studio. Il crée des expériences
-              immersives axées sur le bien-être...</p>
+            <p class="role">Organic Growth, Built on Data</p>
+            <p>
+              Keyword research, content architecture, and on-page optimization
+              that convert search intent into measurable traffic and revenue —
+              proven across B2C, B2B, travel, and sports verticals.
+            </p>
           </div>
         </section>
         <section class="member">
           <div class="sidebar">
-            <h3>• Daniel Boisclair</h3>
+            <h3>UI/UX &amp; Frontend</h3>
           </div>
           <div class="description">
-            <p class="role">Co-fondateur et responsable des opérations</p>
-            <p>Producteur et codirecteur créatif, Daniel œuvre depuis plus de dix ans dans les arts numériques...</p>
+            <p class="role">Design That Functions, Code That Ships</p>
+            <p>
+              Interface design grounded in user behaviour, brought to life with
+              clean, performant frontend code. From wireframe to deployed
+              product — end to end.
+            </p>
+          </div>
+        </section>
+        <section class="member">
+          <div class="sidebar">
+            <h3>Automation &amp; Workflow</h3>
+          </div>
+          <div class="description">
+            <p class="role">Less Manual Work, More Output</p>
+            <p>
+              Building automated pipelines for content publishing, reporting,
+              and internal tooling — connecting APIs, spreadsheets, and
+              third-party platforms so teams spend time on work that matters.
+            </p>
           </div>
         </section>
       </main>
     </div>
-  </section>
 
-
-  <!-- ══ CONTENT SEO LIGHTBOX ══ -->
-  <!-- <div id="cs-lightbox">
+    <!-- ══ CONTENT SEO LIGHTBOX ══ -->
+    <!-- <div id="cs-lightbox">
     <div id="cs-lb-backdrop"></div>
     <button class="cs-lb-nav" id="cs-lb-prev" aria-label="Previous">
       <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
@@ -1480,15 +1892,15 @@
     </button>
   </div> -->
 
-  <script src="public/js/intro.js"></script>
-<script src="public/js/sidenav.js"></script>
-<script src="public/js/section-work.js"></script>
-<script src="public/js/section-seo.js"></script>
-<script src="public/js/section-contentseo.js"></script>
-<script src="public/js/section-uiux.js"></script>
-<script src="public/js/section-tech.js"></script>
-<script src="public/js/section-others.js"></script>
-<script src="public/js/section-about.js"></script>
-
-</body>
+    <!-- <script src="public/js/intro.js"></script> -->
+    <script src="public/js/sidenav.js"></script>
+    <script src="public/js/section-about.js"></script>
+    <script src="public/js/section-work.js"></script>
+    <script src="public/js/section-seo.js"></script>
+    <script src="public/js/section-contentseo.js"></script>
+    <script src="public/js/section-uiux.js"></script>
+    <script src="public/js/section-tech.js"></script>
+    <script src="public/js/section-others.js"></script>
+    <!-- <script src="public/js/gallery-tunnel.js"></script> -->
+  </body>
 </html>

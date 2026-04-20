@@ -24,9 +24,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (isBlack === snapped) return;
         snapped = isBlack;
         stage.style.backgroundColor = isBlack ? "#000000" : "#fff";
-        heading.style.color = isWhite ? "#ffffff" : "#000000";
-        navLeft.style.color = isRed ? "#fff" : "#0f0f0e";
-        navRight.style.color = isRed ? "#fff" : "#0f0f0e";
+        heading.style.color = isBlack ? "#ffffff" : "#000000";
+        navLeft.style.color = isBlack ? "#fff" : "#0f0f0e";
+        navRight.style.color = isBlack ? "#fff" : "#0f0f0e";
       }
 
       /*
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
       tl.to(
         headingWrap,
         { y: "-115vh", duration: 0.9, ease: "power3.in" },
-        3.7,
+        3.0,
       );
 
       /* ─── PHASE C: Text 1 in ─── */

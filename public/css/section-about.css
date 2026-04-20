@@ -167,7 +167,7 @@
   font-size: 15px;
   line-height: 1.9;
   color: rgba(255, 255, 255, 0.15);
-  transition: color 0.4s ease;
+  transition: color 1.1s ease;
   will-change: color;
   text-align: justify;
 }
@@ -196,7 +196,7 @@
   margin-bottom: 32px;
   letter-spacing: 0.05em;
   display: block;
-  transition: color 0.4s ease;
+  transition: color 1.1s ease;
   text-align: justify;
 }
 
@@ -241,6 +241,8 @@
 }
 
 .ab-btn {
+  display: inline-flex;
+  align-items: center;
   padding: 10px 28px;
   border-radius: 30px;
   border: 1px solid rgba(255, 255, 255, 0.35);
@@ -250,12 +252,12 @@
   text-decoration: none;
   background: transparent;
   cursor: pointer;
-  transition:
-    border-color 0.3s ease,
-    background 0.3s ease,
-    color 0.3s ease;
   overflow: hidden;
   position: relative;
+  transition:
+    border-color 0.4s ease,
+    background 0.4s ease,
+    color 0.4s ease;
 }
 
 .ab-btn.ab-btn-primary {
@@ -265,14 +267,55 @@
 }
 
 .ab-btn:hover {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.6);
-  color: #fff;
+  background: #fff;
+  border-color: transparent;
+  color: #000;
 }
 
 .ab-btn.ab-btn-primary:hover {
-  background: #fff;
-  color: #000;
+  background: #111;
+  border-color: rgba(255, 255, 255, 0.35);
+  color: #fff;
+}
+
+/* ── Sliding text track — mirrors .cta-track / .cta-line ── */
+.ab-btn-track {
+  display: inline-flex;
+  flex-direction: column;
+  height: 1.1em;
+  overflow: hidden;
+  position: relative;
+}
+
+.ab-btn-line {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  line-height: 1.1;
+  transition:
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity  0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ab-btn-line-b {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  opacity: 0;
+  transform: translate(-5px, 0);
+  transition:
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity  0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ab-btn:hover .ab-btn-line-a {
+  transform: translate(6px, -100%);
+  opacity: 0;
+}
+
+.ab-btn:hover .ab-btn-line-b {
+  transform: translate(0, -100%);
+  opacity: 1;
 }
 
 .ab-social {

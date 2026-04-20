@@ -152,11 +152,15 @@
           }, FADE + 80);
         }
 
-        /* ── Nav click ── */
+        /* ── Nav click — jump scroll to exact tab position ── */
         navItems.forEach((btn) => {
           btn.addEventListener("click", () => {
             const idx = parseInt(btn.dataset.index, 10);
-            if (idx !== currentTab) switchTab(idx);
+            const vh = window.innerHeight;
+            // Land solidly inside tab idx's range (start + 10% buffer)
+            const targetScrolledIn = ZOOM_VH * vh + (idx * TAB_VH + TAB_VH * 0.1) * vh;
+            const trackTop = track.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({ top: trackTop + targetScrolledIn, behavior: "instant" });
           });
         });
 

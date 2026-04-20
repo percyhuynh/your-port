@@ -610,19 +610,35 @@ header * {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+  background: #0a0000;
+  color: #fff;
+  cursor: none;
 }
 
 .bg {
   position: absolute;
   inset: -10%;
-  background-image: url("https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2560");
+  background-image: url("https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=2560&q=85");
   background-size: cover;
-  background-position: center;
+  background-position: center top;
+}
+
+/* Dark red tint overlay on sharp layer */
+.bg.sharp::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(80, 0, 0, 0.55) 0%,
+    rgba(0, 0, 0, 0.72) 60%,
+    rgba(107, 26, 26, 0.4) 100%
+  );
 }
 
 .streaky-blur {
   z-index: 1;
-  filter: url(#diagonal-streak) brightness(0.7);
+  filter: url(#diagonal-streak) brightness(0.5) sepia(0.6) hue-rotate(-20deg) saturate(2);
   transform: rotate(-15deg) scale(1.4);
   -webkit-mask-image: radial-gradient(var(--reveal-size) circle at var(--x) var(--y), transparent 0%, black 80%);
   mask-image: radial-gradient(var(--reveal-size) circle at var(--x) var(--y), transparent 0%, black 80%);
@@ -640,22 +656,39 @@ header * {
   pointer-events: none;
 }
 
-nav {
-  letter-spacing: 3px;
+.reveal-container nav {
+  letter-spacing: 4px;
   margin-bottom: 12vh;
-  font-size: 1.2rem;
+  font-size: 0.75rem;
+  color: #6b1a1a;
+  text-transform: uppercase;
+  font-family: "Courier Prime", monospace;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.reveal-container nav::before {
+  content: "";
+  display: inline-block;
+  width: 32px;
+  height: 1px;
+  background: #6b1a1a;
 }
 
 .member {
   display: grid;
-  grid-template-columns: 280px 1fr;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 20px 0 60px 0;
+  grid-template-columns: 260px 1fr;
+  border-top: 1px solid rgba(107, 26, 26, 0.35);
+  padding: 24px 0 56px 0;
 }
 
 .member h3 {
-  font-size: 1rem;
-  font-weight: normal;
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: "Courier Prime", monospace;
+  letter-spacing: 0.04em;
 }
 
 .description {
@@ -663,12 +696,17 @@ nav {
 }
 
 .role {
-  font-weight: bold;
-  margin-bottom: 15px;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #fff;
+  margin-bottom: 14px;
+  font-family: "Courier Prime", monospace;
+  letter-spacing: 0.02em;
 }
 
 .description p:not(.role) {
-  line-height: 1.6;
-  font-size: 0.9rem;
-  opacity: 0.8;
+  line-height: 1.75;
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.55);
+  font-family: "Courier Prime", monospace;
 }

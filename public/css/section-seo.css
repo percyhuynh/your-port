@@ -697,6 +697,31 @@ html { scroll-behavior: auto; }
   .st__proj2-footer { flex-direction: column; gap: 16px; align-items: flex-start; }
 }
 
+/* ── SCROLL LIGHT — proof headings ── */
+#seo-trangy .st__proof-eyebrow[data-sl],
+#seo-trangy .st__proof-title[data-sl] {
+  transition: color 0.65s ease, opacity 0.65s ease;
+}
+#seo-trangy .st__proof-eyebrow[data-sl] {
+  color: rgba(107, 26, 26, 0.15);
+}
+#seo-trangy .st__proof-title[data-sl] {
+  color: rgba(13, 13, 13, 0.1);
+}
+#seo-trangy .st__proof-title[data-sl] em {
+  color: rgba(107, 26, 26, 0.1);
+  transition: color 0.65s ease;
+}
+#seo-trangy .st__proof-eyebrow[data-sl].sl-lit {
+  color: var(--st-red);
+}
+#seo-trangy .st__proof-title[data-sl].sl-lit {
+  color: var(--st-black);
+}
+#seo-trangy .st__proof-title[data-sl].sl-lit em {
+  color: var(--st-red);
+}
+
 
 
 

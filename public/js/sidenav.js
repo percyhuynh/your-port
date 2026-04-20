@@ -138,6 +138,9 @@ ScrollTrigger.create({
 // REVEAL CONTAINER — SVG streak effect follows mouse
 const revealContainer = document.getElementById("handler");
 if (revealContainer) {
+  revealContainer.style.setProperty("--reveal-size", "90px");
+  revealContainer.style.setProperty("--x", "50%");
+  revealContainer.style.setProperty("--y", "50%");
   window.addEventListener("mousemove", (e) => {
     revealContainer.style.setProperty("--x", e.clientX + "px");
     revealContainer.style.setProperty("--y", e.clientY + "px");

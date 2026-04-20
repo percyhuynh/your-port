@@ -1,6 +1,10 @@
 /* ══════════════════════════════════
    PARTNERS SECTION  (#ps)
 ══════════════════════════════════ */
+.section.s5 {
+  background: #fff;
+}
+
 #ps {
   position: relative;
   --dark: #1a1a1a;
@@ -16,7 +20,7 @@
   padding: 40px 40px 48px;
 }
 .ps-heading h2 {
-  font-family: 'Courier Prime', monospace;
+  font-family: "Courier Prime", monospace;
   font-size: clamp(2rem, 4vw, 3.2rem);
   font-weight: 400;
   line-height: 1.2;
@@ -71,7 +75,7 @@
   text-align: left;
   line-height: 1.4;
   letter-spacing: 0.01em;
-  font-family: 'Courier Prime', monospace;
+  font-family: "Courier Prime", monospace;
 }
 .ps-nav-item::before {
   content: "";
@@ -104,8 +108,8 @@
 
 .ps-image-frame {
   width: 100%;
-  aspect-ratio: 3/4;   /* giữ hình chữ nhật */
-  max-height: 90vh;    /* to hơn, căn giữa theo cột */
+  aspect-ratio: 3/4; /* giữ hình chữ nhật */
+  max-height: 90vh; /* to hơn, căn giữa theo cột */
   border-radius: 20px;
   overflow: hidden;
   position: relative;
@@ -163,7 +167,7 @@
   /* max-width: 220px — đã bỏ để text trải dài theo cột */
 }
 .ps-panel h3 {
-  font-family: 'Courier Prime', monospace;
+  font-family: "Courier Prime", monospace;
   font-size: clamp(1.1rem, 1.6vw, 1.4rem);
   font-weight: 400;
   color: var(--dark);
@@ -185,12 +189,14 @@
   align-items: center;
   gap: 8px;
   font-size: 13px;
-  font-family: 'Courier Prime', monospace;
+  font-family: "Courier Prime", monospace;
   color: var(--dark);
   text-decoration: none;
   border-bottom: 1px solid var(--border);
   padding-bottom: 2px;
-  transition: border-color 0.3s ease, color 0.3s ease;
+  transition:
+    border-color 0.3s ease,
+    color 0.3s ease;
 }
 .ps-cta:hover {
   color: var(--red);

@@ -136,6 +136,20 @@
   });
 
   /* ══════════════════════════════════════════════
+     5b. SCROLL LIGHT — proof headings dim → bright
+  ══════════════════════════════════════════════ */
+  (function () {
+    var slEls = sec.querySelectorAll('[data-sl]');
+    if (!slEls.length) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('sl-lit'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.3 });
+    slEls.forEach(function (el) { io.observe(el); });
+  }());
+
+  /* ══════════════════════════════════════════════
      6. PROJECT 02 — animate cards & metrics
   ══════════════════════════════════════════════ */
   const proj2 = q(".st__proj2");
