@@ -129,9 +129,14 @@
   qa(".st__proof-slot").forEach((slot) => {
     slot.addEventListener("click", () => {
       const img = slot.querySelector("img");
-      if (img) {
-        openLightbox(img.src, img.alt);
-      }
+      if (img) openLightbox(img.src, img.alt);
+    });
+  });
+
+  qa(".st__p2-card").forEach((card) => {
+    card.addEventListener("click", () => {
+      const img = card.querySelector("img");
+      if (img) openLightbox(img.src, img.alt);
     });
   });
 

@@ -380,7 +380,8 @@ html { scroll-behavior: auto; }
   pointer-events: none;
 }
 .st__proof-slot:hover .st__slot-cap { opacity: 1; }
-.st__proof-slot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.st__proof-slot img { width: 100%; height: 100%; object-fit: cover; display: block;}
+.st__proof-slot.st__slot-hero img { object-position: 38% 50%; }
 
 /* ─── LIGHTBOX ─── */
 .st__lightbox {
@@ -513,6 +514,7 @@ html { scroll-behavior: auto; }
   transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: absolute;
   inset: 0;
+  object-position: 0 50%;
 }
 
 /* Placeholder khi chưa có ảnh */
