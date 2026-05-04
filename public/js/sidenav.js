@@ -1,3 +1,170 @@
+/**
+ * cursor-effect.js
+ *
+ * - Chấm tròn chạy theo chuột, tự đổi màu tương phản với nền phía dưới
+ * - Hover vào a/button/[data-cursor]: chấm phình to nhẹ
+ * - Click: sóng lan ra 1 lần như gợn mặt nước
+ * - Chấm tròn ẩn: .reveal-container (cursor hệ thống ẩn toàn trang)
+ */
+
+(function () {
+  'use strict';
+
+  /* ── Elements/selectors ẩn chấm tròn ── */
+  const EXCLUDE = '.reveal-container';
+
+  function isExcluded(el) {
+    if (!el || el.nodeType !== 1) return false;
+    return !!el.closest(EXCLUDE);
+  }
+
+  /* ── Inject keyframe + ẩn cursor gốc toàn trang ── */
+  const style = document.createElement('style');
+  style.textContent =
+    '@keyframes _ce_r{to{transform:scale(1);opacity:0;}}' +
+    '*,*::before,*::after{cursor:none!important;}';
+  document.head.appendChild(style);
+
+  /* ── Tạo chấm ── */
+  const dot = document.createElement('div');
+  Object.assign(dot.style, {
+    position:      'fixed',
+    width:         '10px',
+    height:        '10px',
+    borderRadius:  '50%',
+    background:    '#ffffff',
+    pointerEvents: 'none',
+    transform:     'translate(-50%,-50%)',
+    transition:    'width .15s, height .15s, background .22s',
+    zIndex:        '2147483647',
+    opacity:       '0',
+  });
+  document.body.appendChild(dot);
+
+  let mx = 0, my = 0, cx = 0, cy = 0, started = false;
+
+  const revealEl = document.querySelector('.reveal-container');
+  function isRevealActive() {
+    return revealEl && parseFloat(getComputedStyle(revealEl).opacity) > 0;
+  }
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    if (!started) { cx = mx; cy = my; started = true; }
+    dot.style.opacity = (isExcluded(e.target) || isRevealActive()) ? '0' : '1';
+  });
+  document.addEventListener('mouseleave', () => dot.style.opacity = '0');
+  document.addEventListener('mouseenter', e => {
+    dot.style.opacity = isRevealActive() ? '0' : '1';
+  });
+
+  (function loop() {
+    cx += (mx - cx) * 0.14;
+    cy += (my - cy) * 0.14;
+    dot.style.left = cx + 'px';
+    dot.style.top  = cy + 'px';
+    requestAnimationFrame(loop);
+  })();
+
+  /* ── Lấy màu nền thực, leo lên cha nếu transparent ── */
+  function getBg(el) {
+    let node = el;
+    while (node && node.nodeType === 1) {
+      const c = getComputedStyle(node).backgroundColor;
+      const m = c.match(/[\d.]+/g);
+      if (!m || m.length < 3) { node = node.parentElement; continue; }
+      const a = m[3] !== undefined ? +m[3] : 1;
+      if (a < 0.05 || (+m[0] === 0 && +m[1] === 0 && +m[2] === 0 && a < 0.05)) {
+        node = node.parentElement; continue;
+      }
+      return { r: +m[0], g: +m[1], b: +m[2] };
+    }
+    return { r: 255, g: 255, b: 255 };
+  }
+
+  function lum({ r, g, b }) {
+    return [r, g, b].reduce((s, v, i) => {
+      v /= 255;
+      v = v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+      return s + v * [0.2126, 0.7152, 0.0722][i];
+    }, 0);
+  }
+
+  function contrast(el) {
+    return lum(getBg(el)) > 0.35 ? '#111111' : '#ffffff';
+  }
+
+  /* ── Cập nhật màu chấm theo element dưới chuột ── */
+  document.addEventListener('mousemove', e => {
+    if (isExcluded(e.target)) return;
+    dot.style.display = 'none';
+    const under = document.elementFromPoint(e.clientX, e.clientY);
+    dot.style.display = '';
+    if (under && !isExcluded(under)) dot.style.background = contrast(under);
+  });
+
+  /* ── Ripple chỉ khi click ── */
+  function spawnRipple(e, el) {
+    if (isExcluded(el)) return;
+    const rect = el.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const r = Math.hypot(Math.max(x, rect.width - x), Math.max(y, rect.height - y));
+    const fg = contrast(el);
+
+    const rip = document.createElement('span');
+    Object.assign(rip.style, {
+      position:      'absolute',
+      borderRadius:  '50%',
+      width:         r * 2 + 'px',
+      height:        r * 2 + 'px',
+      left:          (x - r) + 'px',
+      top:           (y - r) + 'px',
+      background:    fg,
+      opacity:       '0.18',
+      transform:     'scale(0)',
+      animation:     '_ce_r 0.6s ease-out forwards',
+      pointerEvents: 'none',
+    });
+
+    if (getComputedStyle(el).position === 'static') el.style.position = 'relative';
+    el.style.overflow = 'hidden';
+    el.appendChild(rip);
+    rip.addEventListener('animationend', () => rip.remove());
+  }
+
+  /* ── Bind elements (bỏ qua excluded) ── */
+  const SEL = 'a, button, [data-cursor], [role="button"], input[type="submit"], input[type="button"]';
+
+  function bind(el) {
+    if (el._ce || isExcluded(el)) return;
+    el._ce = true;
+    el.addEventListener('mouseenter', () => { dot.style.width = '18px'; dot.style.height = '18px'; });
+    el.addEventListener('mouseleave', () => { dot.style.width = '10px'; dot.style.height = '10px'; });
+    el.addEventListener('click', e => spawnRipple(e, el));
+  }
+
+  document.querySelectorAll(SEL).forEach(bind);
+  new MutationObserver(ms => ms.forEach(m =>
+    m.addedNodes.forEach(n => {
+      if (n.nodeType !== 1) return;
+      if (n.matches && n.matches(SEL)) bind(n);
+      n.querySelectorAll && n.querySelectorAll(SEL).forEach(bind);
+    })
+  )).observe(document.body, { childList: true, subtree: true });
+
+  document.addEventListener('mousedown', e => {
+    if (isExcluded(e.target)) return;
+    dot.style.width = '7px'; dot.style.height = '7px';
+  });
+  document.addEventListener('mouseup', () => {
+    dot.style.width = '10px'; dot.style.height = '10px';
+  });
+
+})();
+
+// <---->
+
 (() => {
   'use strict';
 
@@ -57,12 +224,25 @@
   nav.addEventListener('mouseenter', () => { isHovered = true; applyState(); });
   nav.addEventListener('mouseleave', () => { isHovered = false; applyState(); });
 
-  function getSectionProgress(el) {
-    const { top } = el.getBoundingClientRect();
-    const h = el.offsetHeight;
-    return Math.min(1, Math.max(0, -top / h));
+  // function getSectionProgress(el) {
+  //   const { top } = el.getBoundingClientRect();
+  //   const h = el.offsetHeight;
+  //   return Math.min(1, Math.max(0, -top / h));
+  // }
+function getSectionProgress(el) {
+  // s4 dùng scroll-track riêng, lấy progress từ ps-scroll-track
+  if (el.id === 's4') {
+    const track = document.getElementById('ps-scroll-track');
+    if (track) {
+      const { top } = track.getBoundingClientRect();
+      const h = track.offsetHeight;
+      return Math.min(1, Math.max(0, -top / h));
+    }
   }
-
+  const { top } = el.getBoundingClientRect();
+  const h = el.offsetHeight;
+  return Math.min(1, Math.max(0, -top / h));
+}
   function getActiveSection() {
     const mid = window.innerHeight / 2;
     let best = 0, bestDist = Infinity;
@@ -147,4 +327,4 @@ if (revealContainer) {
   });
 }
 
-
+

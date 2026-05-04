@@ -20,6 +20,32 @@
   --text-width: 19vw;
 }
 
+/* ── RESPONSIVE ROOT ── */
+@media (max-width: 1400px) {
+  :root {
+    --frame-w: 50vw;
+    --frame-left: 25vw;
+    --text-right: 5vw;
+    --text-width: 20vw;
+  }
+}
+@media (max-width: 1200px) {
+  :root {
+    --frame-w: 55vw;
+    --frame-left: 20vw;
+    --text-right: 4vw;
+    --text-width: 21vw;
+  }
+}
+@media (max-width: 1000px) {
+  :root {
+    --frame-w: 60vw;
+    --frame-left: 15vw;
+    --text-right: 3vw;
+    --text-width: 22vw;
+  }
+}
+
 html {
   scroll-behavior: auto;
 }
@@ -165,6 +191,23 @@ body {
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1400px) {
+  .thumb-br {
+    right: 200px;
+  }
+}
+@media (max-width: 1200px) {
+  .thumb-br {
+    right: 120px;
+  }
+}
+@media (max-width: 1000px) {
+  .thumb-br {
+    right: 80px;
+  }
 }
 
 /* ── Text panel — right of frame ── */

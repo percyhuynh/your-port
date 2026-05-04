@@ -65,30 +65,30 @@ const slides = [
   {
     title: "©Brand\nArchitecture",
     desc: "Structured visual identities designed to position, differentiate, and scale with precision and clarity.",
-    img: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=900&q=85",
+    img: "public/images/section-work-1.png",
   },
   {
-    title: "©Experience\nDesign",
+    title: "©Digital\nStrategy",
     desc: "Thoughtfully crafted digital journeys designed to maximise engagement, retention, and delight.",
     img: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=900&q=85",
   },
   {
-    title: "©Visual\nIdentity",
+    title: "©Content\nSEO",
     desc: "Every touchpoint deliberate. Every mark intentional. Cohesive systems built to last and evolve.",
-    img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=85",
+    img: "public/images/section-work-3.png",
   },
   {
-    title: "©Motion\n& Space",
+    title: "©UI/UX\nDesign",
     desc: "Animation that breathes life into brand moments — felt more than seen, subtle yet unforgettable.",
-    img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=900&q=85",
+    img: "public/images/section-work-4.png",
   },
   {
-    title: "©Creative\nDirection",
+    title: "©Automation\nTechnical",
     desc: "Vision-led strategy unifying aesthetics, messaging, and culture into a singular brand point of view.",
-    img: "https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?w=900&q=85",
+    img: "public/images/section-work-5.png",
   },
   {
-    title: "©Digital\nStrategy",
+    title: "©Others",
     desc: "Data-informed decisions fused with creative instinct to build brands that connect and convert.",
     img: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=900&q=85",
   },
@@ -206,7 +206,12 @@ const pB = Math.max((stepProg - split) / (1 - split), 0);
 // Khung #pin-anchor được ghim → không nhảy
 // onUpdate chạy liên tục = nội dung trượt theo đúng progress
 const SCROLL_DISTANCE = 1400;
-const totalScroll = (N - 1) * SCROLL_DISTANCE;
+const TAIL = 700; // extra scroll after last slide so last desc fully renders before section ends
+const totalScroll = (N - 1) * SCROLL_DISTANCE + TAIL;
+
+// set scroll-space tall enough for the full scroll range at any viewport height
+const scrollSpaceEl = document.getElementById('scroll-space');
+if (scrollSpaceEl) scrollSpaceEl.style.minHeight = (totalScroll + window.innerHeight + 200) + 'px';
 
 ScrollTrigger.create({
   id: "main",
@@ -217,18 +222,18 @@ ScrollTrigger.create({
   pinSpacing: false,
   scrub: 1.6,
   onUpdate(self) {
-    applyProgress(self.progress * (N - 1));
+    // convert scroll progress to slide units; TAIL region clamps at N-1
+    applyProgress(self.progress * totalScroll / SCROLL_DISTANCE);
   },
 });
 
-// Dot clicks
+// Dot clicks — target exact scroll position of each slide start
 dotEls.forEach((dot) => {
   dot.addEventListener("click", () => {
     const i  = parseInt(dot.dataset.i);
     const st = ScrollTrigger.getById("main");
     if (!st) return;
-    const t   = i / (N - 1);
-    const pos = st.start + t * (st.end - st.start);
+    const pos = st.start + i * SCROLL_DISTANCE;
     gsap.to(window, { scrollTo: pos, duration: 0.9, ease: "power2.inOut" });
   });
 });

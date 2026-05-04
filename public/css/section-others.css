@@ -5,6 +5,18 @@
   background: #fff;
 }
 
+/* ── CURTAIN REVEAL ── */
+.section-others {
+  position: relative;
+  z-index: 20;
+}
+
+.reveal-trigger-spacer {
+  height: 100vh;
+  position: relative;
+  z-index: 20;
+}
+
 #ps {
   position: relative;
   --dark: #1a1a1a;

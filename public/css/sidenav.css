@@ -7,7 +7,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'Courier Prime', monospace;
+  font-family: "Courier Prime", monospace;
   text-decoration: none;
 }
 
@@ -53,7 +53,6 @@ body {
   overflow-x: hidden;
   min-height: 100vh;
 }
-
 
 /* ═══════════════════════════════════════════════════
    HEADER
@@ -134,7 +133,8 @@ header * {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   overflow: hidden;
-  transition: height var(--transition-speed) var(--bezier),
+  transition:
+    height var(--transition-speed) var(--bezier),
     border-radius var(--transition-speed),
     background-color 0.3s;
 }
@@ -158,7 +158,9 @@ header * {
   color: var(--text-white);
   font-weight: 500;
   font-size: 14px;
-  transition: transform 0.3s, opacity 0.3s;
+  transition:
+    transform 0.3s,
+    opacity 0.3s;
 }
 
 .smart-container:hover .box-label {
@@ -171,7 +173,9 @@ header * {
   visibility: hidden;
   padding: 30px;
   transform: translateY(20px);
-  transition: opacity 0.5s ease 0.3s, transform 0.5s ease 0.3s;
+  transition:
+    opacity 0.5s ease 0.3s,
+    transform 0.5s ease 0.3s;
 }
 
 .smart-container:hover .box-hidden-content {
@@ -203,7 +207,9 @@ header * {
   padding: 6px 14px;
   border-radius: 20px;
   background: rgba(255, 255, 255, 0.08);
-  transition: background 0.22s ease, border-color 0.22s ease;
+  transition:
+    background 0.22s ease,
+    border-color 0.22s ease;
   white-space: nowrap;
 }
 .content-top a:hover {
@@ -285,7 +291,7 @@ header * {
 /* Part A — enormous ghost outline: last name as architectural element */
 .cb-title-a {
   display: block;
-  font-family: 'Courier Prime', monospace !important;
+  font-family: "Courier Prime", monospace !important;
   font-size: clamp(5.5rem, 28vw, 26rem);
   color: transparent;
   -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.88);
@@ -298,7 +304,7 @@ header * {
 /* Part B — solid fill, right-flush, separated by a thin rule */
 .cb-title-b {
   display: block;
-  font-family: 'Courier Prime', monospace !important;
+  font-family: "Courier Prime", monospace !important;
   font-size: clamp(1.8rem, 6.5vw, 6rem);
   color: #fff;
   letter-spacing: 0.28em;
@@ -339,8 +345,8 @@ header * {
 }
 
 .section.about {
-  overflow: visible;    /* cho phép #ph-root tràn ra ngoài padding 13vw */
-  padding-bottom: 0;    /* ph-root nằm sát đáy section */
+  overflow: visible; /* cho phép #ph-root tràn ra ngoài padding 13vw */
+  padding-bottom: 0; /* ph-root nằm sát đáy section */
 }
 
 .section.work {
@@ -377,7 +383,7 @@ header * {
 
 .s4 .lbl,
 .s4 .body {
-  color: rgba(230, 224, 212, 0.40);
+  color: rgba(230, 224, 212, 0.4);
 }
 
 /* ── ALTERNATING BG OVER BODY IMAGE ──
@@ -393,11 +399,11 @@ header * {
 .section.work,
 .section.s2,
 .scroll-section {
-  background: rgba(20, 14, 8, 0.10);
+  background: rgba(20, 14, 8, 0.1);
 }
 
 .lbl {
-  font-family: 'Courier Prime', monospace;
+  font-family: "Courier Prime", monospace;
   font-size: 14px;
   color: #6b1a1a;
   font-weight: 300;
@@ -407,7 +413,7 @@ header * {
 }
 
 .ttl {
-  font-family: 'Courier Prime', monospace;
+  font-family: "Courier Prime", monospace;
   font-size: clamp(38px, 6vw, 84px);
   font-weight: 200;
   line-height: 1.07;
@@ -428,7 +434,7 @@ header * {
   position: absolute;
   right: 8vw;
   bottom: 6vh;
-  font-family: 'Courier Prime', monospace;
+  font-family: "Courier Prime", monospace;
   font-size: clamp(80px, 15vw, 200px);
   font-weight: 200;
   opacity: 0.04;
@@ -454,9 +460,13 @@ header * {
   background: var(--nav-bg);
   backdrop-filter: blur(20px) saturate(1.6);
   -webkit-backdrop-filter: blur(20px) saturate(1.6);
-  box-shadow: 0 4px 28px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  box-shadow:
+    0 4px 28px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
   cursor: pointer;
-  transition: width 0.52s var(--ease-spring), background 0.28s ease;
+  transition:
+    width 0.52s var(--ease-spring),
+    background 0.28s ease;
 }
 
 #nav[data-state="pill"] {
@@ -489,13 +499,16 @@ header * {
   overflow: hidden;
   flex-shrink: 0;
   cursor: pointer;
-  background: rgba(255, 255, 255, 0.20);
-  transition: width 0.40s var(--ease-spring), background 0.28s ease, opacity 0.28s ease;
+  background: rgba(255, 255, 255, 0.2);
+  transition:
+    width 0.4s var(--ease-spring),
+    background 0.28s ease,
+    opacity 0.28s ease;
 }
 
 .nav-dot.is-active {
   width: var(--bar-w);
-  background: rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .nav-dot.is-visited {
@@ -511,7 +524,7 @@ header * {
   width: 0%;
   border-radius: 99px;
   background: linear-gradient(90deg, var(--clr-accent), var(--clr-gold));
-  box-shadow: 3px 0 12px rgba(196, 120, 58, 0.60);
+  box-shadow: 3px 0 12px rgba(196, 120, 58, 0.6);
   pointer-events: none;
 }
 
@@ -552,7 +565,7 @@ header * {
   font-weight: 300;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.30);
+  color: rgba(255, 255, 255, 0.3);
   white-space: nowrap;
   border: none;
   background: none;
@@ -561,7 +574,7 @@ header * {
 }
 
 .nav-link:hover {
-  color: rgba(255, 255, 255, 0.90);
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .nav-link.is-active {
@@ -569,7 +582,7 @@ header * {
 }
 
 .nav-link::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 7px;
   left: 50%;
@@ -598,7 +611,7 @@ header * {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(45, 74, 62, .3);
+  background: rgba(45, 74, 62, 0.3);
   border-radius: 3px;
 }
 
@@ -606,13 +619,17 @@ header * {
    REVEAL CONTAINER (s6)
 ═══════════════════════════════════════════════════ */
 .reveal-container {
-  position: relative;
-  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   height: 100vh;
+  z-index: 10;
+  opacity: 0;
+  pointer-events: none;
   overflow: hidden;
   background: #0a0000;
   color: #fff;
-  cursor: none;
 }
 
 .bg {
@@ -638,10 +655,19 @@ header * {
 
 .streaky-blur {
   z-index: 1;
-  filter: url(#diagonal-streak) brightness(0.5) sepia(0.6) hue-rotate(-20deg) saturate(2);
+  filter: url(#diagonal-streak) brightness(0.5) sepia(0.6) hue-rotate(-20deg)
+    saturate(2);
   transform: rotate(-15deg) scale(1.4);
-  -webkit-mask-image: radial-gradient(var(--reveal-size) circle at var(--x) var(--y), transparent 0%, black 80%);
-  mask-image: radial-gradient(var(--reveal-size) circle at var(--x) var(--y), transparent 0%, black 80%);
+  -webkit-mask-image: radial-gradient(
+    var(--reveal-size) circle at var(--x) var(--y),
+    transparent 0%,
+    black 80%
+  );
+  mask-image: radial-gradient(
+    var(--reveal-size) circle at var(--x) var(--y),
+    transparent 0%,
+    black 80%
+  );
 }
 
 .sharp {
@@ -709,4 +735,4 @@ header * {
   font-size: 0.88rem;
   color: rgba(255, 255, 255, 0.55);
   font-family: "Courier Prime", monospace;
-}
+}
