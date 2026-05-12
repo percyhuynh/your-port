@@ -44,17 +44,19 @@ ScrollTrigger.create({
   }
 });
 
-// Parallax mousemove
+// Parallax mousemove — smooth follow via CSS transition
 document.querySelectorAll('.brand-card').forEach(function(card) {
   var bg = card.querySelector('.card-bg');
   if (!bg) return;
   card.addEventListener('mousemove', function(e) {
+    bg.style.transition = 'transform 0.18s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
     var rect = card.getBoundingClientRect();
     var xPct = (e.clientX - rect.left) / rect.width  - 0.5;
     var yPct = (e.clientY - rect.top)  / rect.height - 0.5;
     bg.style.transform = 'scale(1.0) translate(' + (xPct * -16) + 'px, ' + (yPct * -16) + 'px)';
   });
   card.addEventListener('mouseleave', function() {
+    bg.style.transition = 'transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
     bg.style.transform = 'scale(1.1)';
   });
 });
@@ -63,34 +65,40 @@ document.querySelectorAll('.brand-card').forEach(function(card) {
 // ── 3. SCROLL-SPACE: pin khung cứng, nội dung trượt mượt ──
 const slides = [
   {
-    title: "©Brand\nArchitecture",
-    desc: "Structured visual identities designed to position, differentiate, and scale with precision and clarity.",
+    title: "©Percy\nHuynh",
+    desc: "A curated showcase of multidisciplinary work spanning branding, SEO, product thinking, and digital execution.",
     img: "public/images/section-work-1.png",
+    link: "#about",          // ← đổi link slide 1
   },
   {
     title: "©Digital\nStrategy",
-    desc: "Thoughtfully crafted digital journeys designed to maximise engagement, retention, and delight.",
-    img: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=900&q=85",
+    desc: "Data-driven digital strategies built to strengthen positioning, accelerate growth, and maximise business impact.",
+    img: "public/images/section-work-2.png",
+    link: "#s0",             // ← đổi link slide 2
   },
   {
     title: "©Content\nSEO",
-    desc: "Every touchpoint deliberate. Every mark intentional. Cohesive systems built to last and evolve.",
+    desc: "Search-focused content systems engineered to improve rankings, capture intent, and drive sustainable traffic.",
     img: "public/images/section-work-3.png",
+    link: "#s1",             // ← đổi link slide 3
   },
   {
     title: "©UI/UX\nDesign",
-    desc: "Animation that breathes life into brand moments — felt more than seen, subtle yet unforgettable.",
+    desc: "User-centered interfaces crafted to balance visual clarity, intuitive interaction, and conversion performance.",
     img: "public/images/section-work-4.png",
+    link: "#s2",             // ← đổi link slide 4
   },
   {
     title: "©Automation\nTechnical",
-    desc: "Vision-led strategy unifying aesthetics, messaging, and culture into a singular brand point of view.",
+    desc: "Technical workflows and automation systems designed to streamline operations, reduce friction, and scale efficiently.",
     img: "public/images/section-work-5.png",
+    link: "#scrollSection",  // ← đổi link slide 5
   },
   {
     title: "©Others",
-    desc: "Data-informed decisions fused with creative instinct to build brands that connect and convert.",
-    img: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=900&q=85",
+    desc: "Extended expertise in marketplace operations, YouTube growth management, event execution, and multi-channel business coordination.",
+    img: "public/images/section-work-6.jpg",
+    link: "#s4",             // ← đổi link slide 6
   },
 ];
 
@@ -101,6 +109,7 @@ const headingClip = document.getElementById("headingClip");
 const descClip    = document.getElementById("descClip");
 const dotsEl      = document.getElementById("dots");
 const counterEl   = document.getElementById("counter");
+const ctaEl       = document.querySelector(".cta-btn");
 
 const imgs   = [];
 const heads  = [];
@@ -149,6 +158,7 @@ descs.forEach((d, i) => {
 function setUI(i) {
   if (counterEl) counterEl.textContent = `${String(i + 1).padStart(2, "0")} / ${String(N).padStart(2, "0")}`;
   dotEls.forEach((d, j) => d.classList.toggle("active", j === i));
+  if (ctaEl) ctaEl.href = slides[i].link;
 }
 
 const ease1 = gsap.parseEase("power2.inOut");

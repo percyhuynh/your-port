@@ -1,0 +1,133 @@
+/* ═══════════════════════════════════════════════════
+   REVEAL CONTAINER — baner-end-1 curtain effect
+═══════════════════════════════════════════════════ */
+.reveal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 10;
+  opacity: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background: #0a0000;
+  color: #fff;
+}
+
+.bg {
+  position: absolute;
+  inset: 0%;
+  background-image: url(../images/baner-end-1.jpg);
+  background-size: cover;
+  background-position: center top;
+}
+
+/* Layer 2: ảnh sắc nét lộ đúng vị trí cursor — không có filter */
+.reveal {
+  z-index: 1;
+  will-change:
+    mask-image,
+    -webkit-mask-image;
+  -webkit-mask-image: radial-gradient(
+    150px circle at -999px -999px,
+    black 0%,
+    black 55%,
+    transparent 85%
+  );
+  mask-image: radial-gradient(
+    150px circle at -999px -999px,
+    black 0%,
+    black 55%,
+    transparent 85%
+  );
+}
+
+/* Layer 3: oil-paint phủ toàn màn hình, đục lỗ tại cursor */
+.streaky-blur {
+  z-index: 2;
+  filter: url(#oil-paint) brightness(0.22) saturate(2) contrast(1.1);
+  will-change:
+    mask-image,
+    -webkit-mask-image;
+  -webkit-mask-image: radial-gradient(
+    150px circle at -999px -999px,
+    transparent 0%,
+    transparent 45%,
+    black 85%
+  );
+  mask-image: radial-gradient(
+    150px circle at -999px -999px,
+    transparent 0%,
+    transparent 45%,
+    black 85%
+  );
+}
+
+/* Layer 1: ảnh gốc nền, luôn hiển thị */
+.sharp {
+  z-index: 0;
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  padding: 60px;
+  max-width: 900px;
+  pointer-events: none;
+}
+
+.reveal-container nav {
+  letter-spacing: 4px;
+  margin-bottom: 12vh;
+  font-size: 0.75rem;
+  color: #6b1a1a;
+  text-transform: uppercase;
+  font-family: "Courier Prime", monospace;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.reveal-container nav::before {
+  content: "";
+  display: inline-block;
+  width: 32px;
+  height: 1px;
+  background: #6b1a1a;
+}
+
+.member {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  border-top: 1px solid rgba(107, 26, 26, 0.35);
+  padding: 24px 0 56px 0;
+}
+
+.member h3 {
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: "Courier Prime", monospace;
+  letter-spacing: 0.04em;
+}
+
+.description {
+  max-width: 500px;
+}
+
+.role {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #fff;
+  margin-bottom: 14px;
+  font-family: "Courier Prime", monospace;
+  letter-spacing: 0.02em;
+}
+
+.description p:not(.role) {
+  line-height: 1.75;
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.55);
+  font-family: "Courier Prime", monospace;
+}

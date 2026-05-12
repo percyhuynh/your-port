@@ -23,7 +23,7 @@ html {
   --st-pad-x: 120px;
   /* ──────────────────────────────────────────────────────────────── */
   font-family: "Courier Prime", monospace;
-  background: transparent;
+  background: #fff;
   color: var(--st-black);
 }
 
@@ -375,27 +375,20 @@ html {
   gap: 14px;
 }
 .st__proof-slot {
-  border-radius: 12px;
+  border-radius: 16px;
   overflow: hidden;
-  border: 1.5px dashed rgba(232, 0, 13, 0.22);
-  background: rgba(232, 0, 13, 0.025);
+  background: var(--st-black);
   position: relative;
   min-height: 220px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   cursor: pointer;
-  transition:
-    border-color 0.3s,
-    background 0.3s,
-    box-shadow 0.3s;
   opacity: 0;
   transform: scale(0.88) translateY(30px);
 }
-.st__proof-slot:hover {
-  border-color: var(--st-red);
-  background: rgba(232, 0, 13, 0.05);
-  box-shadow: 0 12px 40px rgba(232, 0, 13, 0.1);
+.st__proof-slot:hover .st__p2-overlay {
+  opacity: 1;
+}
+.st__proof-slot:hover img {
+  transform: scale(1.05);
 }
 .st__proof-slot.st__slot-hero {
   grid-row: span 2;
@@ -456,13 +449,16 @@ html {
   opacity: 1;
 }
 .st__proof-slot img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 .st__proof-slot.st__slot-hero img {
-  object-position: 38% 50%;
+  object-position: 100% 40%;
 }
 
 /* ─── LIGHTBOX ─── */
@@ -742,18 +738,20 @@ html {
 .st__proj2-footer {
   margin-top: 40px;
   display: flex;
+  flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  gap: 32px;
   border-top: 1px solid var(--st-border);
   padding-top: 24px;
   opacity: 0;
 }
 .st__proj2-footnote {
+  flex: 1;
   font-size: 12px;
   color: var(--st-muted);
   font-style: italic;
-  max-width: 320px;
   line-height: 1.6;
+  text-align: justify;
 }
 .st__proj2-cta {
   display: inline-flex;
@@ -872,7 +870,7 @@ html {
   width: 100%;
   min-height: 100vh;
   background: none;
-  padding: 48px var(--st-pad-x) 0;
+  padding: 320px 0;
   font-family: "Courier Prime", monospace;
   overflow: hidden;
 }
@@ -946,6 +944,7 @@ html {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center 10%;
   display: block;
   will-change: transform;
 }
@@ -954,13 +953,14 @@ html {
   position: fixed;
   inset: 0;
   z-index: 9999;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   pointer-events: none;
   background: rgba(0, 0, 0, 0);
 }
 .nfa-lb.open {
+  display: flex;
   pointer-events: all;
 }
 .nfa-lb-box {

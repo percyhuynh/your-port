@@ -71,6 +71,11 @@
   gap: 10px;
   justify-self: end;
   align-self: center;
+  opacity: 0;
+  transition: opacity 0.65s ease;
+}
+.ps-nav.ps-revealed {
+  opacity: 1;
 }
 .ps-nav-item {
   display: flex;
@@ -83,7 +88,7 @@
   transition: color 0.35s ease;
   background: none;
   border: none;
-  padding: 4px 0;
+  padding: 10px 0;
   text-align: left;
   line-height: 1.4;
   letter-spacing: 0.01em;
@@ -153,6 +158,11 @@
   justify-self: stretch;
   align-self: center;
   text-align: right;
+  opacity: 0;
+  transition: opacity 0.65s ease;
+}
+.ps-right.ps-revealed {
+  opacity: 1;
 }
 .ps-panel {
   position: absolute;

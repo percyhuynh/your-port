@@ -11,7 +11,7 @@
   'use strict';
 
   /* ── Elements/selectors ẩn chấm tròn ── */
-  const EXCLUDE = '.reveal-container';
+  const EXCLUDE = '.reveal-container, .banner';
 
   function isExcluded(el) {
     if (!el || el.nodeType !== 1) return false;
@@ -315,16 +315,20 @@ ScrollTrigger.create({
   animation : bannerTl,
 });
 
-// REVEAL CONTAINER — SVG streak effect follows mouse
-const revealContainer = document.getElementById("handler");
-if (revealContainer) {
-  revealContainer.style.setProperty("--reveal-size", "90px");
-  revealContainer.style.setProperty("--x", "50%");
-  revealContainer.style.setProperty("--y", "50%");
-  window.addEventListener("mousemove", (e) => {
-    revealContainer.style.setProperty("--x", e.clientX + "px");
-    revealContainer.style.setProperty("--y", e.clientY + "px");
+// reveal logic → public/js/reveal.js
+
+// ── Back to top ──
+(function () {
+  const btn = document.getElementById("backToTop");
+  if (!btn) return;
+
+  window.addEventListener("scroll", () => {
+    btn.classList.toggle("is-visible", window.scrollY > 400);
+  }, { passive: true });
+
+  btn.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
   });
-}
+}());
 
 

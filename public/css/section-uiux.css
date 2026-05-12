@@ -1,34 +1,128 @@
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+/* ══════════════════════════════════════════════════
+   UIUX ZOOM INTRO
+══════════════════════════════════════════════════ */
+
+/* #s2 nối tiếp section content-seo màu đen */
+#s2 {
+  background: #000;
 }
 
-html {
-  scroll-behavior: auto;
+/* Wrapper: 2180vh tổng — phase 1: 2000vh (chậm), phase 2: 180vh (nhanh) */
+#uiux-sticky-wrap {
+  position: relative;
+  height: 581vh;
 }
 
-body {
+#uiux-sticky {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: #000;
+}
+
+#uiux-white {
+  position: absolute;
+  inset: 0;
   background: #fff;
-  color: #6b1a1a;
-  font-family: "Courier Prime", monospace;
-  overflow-x: hidden;
+  z-index: 1;
 }
+
+#uiux-black {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  z-index: 2;
+  pointer-events: none;
+}
+
+#uiux-text-layer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+#uiux-heading {
+  font-family: "Arial Black", Impact, sans-serif;
+  font-size: clamp(48px, 8vw, 100px);
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -2px;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  will-change: transform;
+  -webkit-font-smoothing: antialiased;
+  backface-visibility: hidden;
+  /* KHÔNG set transform ở đây — JS set sau khi đo xong */
+}
+
+.uiux-char {
+  display: inline-block;
+}
+
+#uiux-content {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  opacity: 0;
+  pointer-events: none;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 13vw 10vh;
+}
+
+#uiux-content .uiux-ttl {
+  font-family: "Courier Prime", monospace;
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 200;
+  color: #6b1a1a;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+  line-height: 1.1;
+  margin-bottom: 24px;
+}
+
+#uiux-content .uiux-body {
+  font-family: "Courier Prime", monospace;
+  font-size: clamp(13px, 1.1vw, 15px);
+  color: #000;
+  line-height: 1.7;
+  max-width: 560px;
+  white-space: normal;
+}
+
+/* ══════════════════════════════════════════════════ */
+
 .section.s3 {
   display: block;
   padding: 50px 0 0 0;
-  min-height: auto; /* override 1300vh — GSAP pin-spacer tự tạo đủ scroll space */
-  overflow: visible; /* tránh clip cắt pin-spacer khi GSAP tính height */
+  min-height: auto;
+  overflow: visible;
 }
 
 /* Giữ indent cho các text đầu section — dùng margin để không ảnh hưởng max-width */
 .section.s3 > .lbl,
-.section.s3 > .ttl,
-.section.s3 > .body {
+.section.s3 > .ttl {
   margin-left: 13vw;
   margin-right: 13vw;
+}
+
+.section.s3 > .body {
+  margin-left: 13.3vw;
+  margin-right: 0;
+  white-space: nowrap;
+  text-align: justify;
+  text-align-last: justify;
+  color: #000;
 }
 
 .section.s3 > .ttl {
@@ -67,8 +161,9 @@ body {
 .hs-section {
   overflow: hidden;
   position: relative;
-  height: 100vh; /* block flow cần explicit height để pin-spacer tính đúng */
+  height: 100vh;
   width: 100%;
+  background: #fff;
 }
 
 .hs-track {
@@ -109,8 +204,8 @@ body {
 .hs-fig::before {
   content: "";
   display: block;
-  width: 20px;
-  height: 1px;
+  width: 234px;
+  /* height: 1px; */
   background: var(--hs-mid);
 }
 
@@ -238,6 +333,79 @@ body {
   transform: scale(1.6);
 }
 
+/* ── FIGMA EMBED BLOCK ── */
+.ui-figma-block {
+  padding: 80px 13vw 60px;
+  background: var(--hs-cream, #fff);
+}
+
+.ui-figma-label {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.ui-figma-tag {
+  font-family: "Courier Prime", monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--hs-mid, #8a8878);
+  flex-shrink: 0;
+}
+
+.ui-figma-rule {
+  flex: 1;
+  height: 1px;
+  background: rgba(26, 26, 24, 0.1);
+  max-width: 60px;
+}
+
+.ui-figma-meta {
+  font-family: "Courier Prime", monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(138, 136, 120, 0.5);
+}
+
+.ui-figma-heading {
+  font-family: "Courier Prime", monospace;
+  font-size: clamp(1.4rem, 2.5vw, 2.2rem);
+  font-weight: 400;
+  color: var(--hs-ink, #1a1a18);
+  letter-spacing: 0.02em;
+  margin-bottom: 36px;
+}
+
+.ui-figma-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.04),
+    0 8px 24px rgba(0, 0, 0, 0.07),
+    0 24px 64px rgba(0, 0, 0, 0.05);
+}
+
+.ui-figma-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none !important;
+  border-radius: 16px;
+}
+
+.ui-figma-block--alt {
+  border-top: 1px solid rgba(26, 26, 24, 0.08);
+  margin-top: 0;
+  padding-top: 60px;
+}
+
 /* PHASE 2 */
 
 .pf-section *,
@@ -252,7 +420,8 @@ body {
   /* ↓↓ CHỈNH ĐỘ RỘNG: tăng số vw để hẹp hơn, giảm để rộng hơn ↓↓ */
   padding: 0 13vw 80px; /* trái/phải: 13vw — khớp indent chung của site */
   /* ↑↑ ————————————————————————————————————————————————— ↑↑ */
-  margin-top: 80px; /* khoảng cách với hs-section bên trên */
+  padding-top: 80px; /* dùng padding thay margin để bg:#fff phủ khoảng cách, không lộ nền đen */
+  background: #fff;
 }
 
 .pf-section .pf-design-label {
@@ -263,7 +432,7 @@ body {
   color: #6b1a1a;
   letter-spacing: 0.12em;
   white-space: nowrap;
-  line-height: 1;
+  line-height: 3;
   margin-bottom: 40px;
 }
 
@@ -298,46 +467,9 @@ body {
   background: #111;
   width: 100%;
   aspect-ratio: 3 / 4;
-
   opacity: 0;
-  transform: translateY(60px) scale(0.88);
-  transform-origin: bottom center;
-  transition:
-    opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.pf-card.pf-visible {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-}
-
-.pf-col:nth-child(1) .pf-card:nth-child(1) {
-  transition-delay: 0s;
-}
-.pf-col:nth-child(1) .pf-card:nth-child(2) {
-  transition-delay: 0.12s;
-}
-.pf-col:nth-child(1) .pf-card:nth-child(3) {
-  transition-delay: 0.24s;
-}
-.pf-col:nth-child(2) .pf-card:nth-child(1) {
-  transition-delay: 0.08s;
-}
-.pf-col:nth-child(2) .pf-card:nth-child(2) {
-  transition-delay: 0.2s;
-}
-.pf-col:nth-child(2) .pf-card:nth-child(3) {
-  transition-delay: 0.32s;
-}
-.pf-col:nth-child(3) .pf-card:nth-child(1) {
-  transition-delay: 0.16s;
-}
-.pf-col:nth-child(3) .pf-card:nth-child(2) {
-  transition-delay: 0.28s;
-}
-.pf-col:nth-child(3) .pf-card:nth-child(3) {
-  transition-delay: 0.4s;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
 }
 
 .pf-card img {
@@ -349,6 +481,14 @@ body {
     filter 0.5s ease,
     transform 0.55s ease;
   display: block;
+}
+
+.pf-col:nth-child(1) .pf-card:nth-child(2) img {
+  object-position: 55% center;
+}
+
+.pf-col:nth-child(1) .pf-card:nth-child(3) img {
+  object-position: 65% center;
 }
 
 .pf-card:hover img {

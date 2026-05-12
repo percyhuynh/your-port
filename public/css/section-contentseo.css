@@ -252,10 +252,10 @@
 }
 /* ─── ZOOM FRAMES (proof placeholders – zoom on scroll) ─── */
 .cs__zoom-wrap {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 32px 80px;
+  width: 100%;
+  padding: 0 0 40px;
   overflow: hidden;
+  margin-bottom: 72px;
 }
 .cs__zoom-grid {
   display: grid;
@@ -304,7 +304,7 @@
   font-size: 0.78rem;
   color: #d4d4d4;
   text-align: center;
-  max-width: 160px;
+  white-space: nowrap;
   line-height: 1.6;
 }
 .cs__zoom-cap {
@@ -334,9 +334,7 @@
 
 /* section divider */
 .cs__zoom-header {
-  max-width: 1100px;
-  margin: 0 auto 48px;
-  padding: 0 32px;
+  margin: 0 0 48px;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -483,7 +481,7 @@
   transform: scale(1.04);
 }
 .cs__card-image-wrap::after {
-  content: "Xem ảnh proof ↗";
+  /* content: "Xem ảnh proof ↗"; */
   position: absolute;
   bottom: 0;
   left: 0;
@@ -860,10 +858,10 @@
 
 /* ── DARK THEME ── */
 .section.s2 {
-  background: #0d0d0d;
+  background: #000;
 }
 #cs-portfolio {
-  background: #0d0d0d;
+  background: #000;
   color: #e8e2d8;
   --cs-ivory: rgba(255, 255, 255, 0.82);
   --cs-ivory-deep: #161616;

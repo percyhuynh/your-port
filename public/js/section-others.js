@@ -1,11 +1,10 @@
 (function () {
         "use strict";
 
-        const TABS = 6;
-        // Scroll budget per phase (in vh units)
-        const ZOOM_VH = 1.2; // how many screen-heights the zoom phase lasts
-        const TAB_VH = 1.0; // screen-heights per tab step
-        const EXIT_VH = 0.5; // buffer at end
+        const TABS = 5;
+        const ZOOM_VH = 1.2;
+        const TAB_VH = 1.0;
+        const EXIT_VH = 0.5;
 
         const track = document.getElementById("ps-scroll-track");
         const frameWrap = document.getElementById("ps-frame-wrap");
@@ -13,9 +12,11 @@
         const slides = document.querySelectorAll(".ps-slide");
         const panels = document.querySelectorAll(".ps-panel");
         const psRight = document.getElementById("ps-right");
+        const psNav = document.getElementById("ps-nav");
 
         let currentTab = 0;
         let switching = false;
+        let navRevealed = false;
 
         /* ── Set scroll track height ── */
         function setTrackHeight() {
@@ -26,7 +27,7 @@
         setTrackHeight();
         window.addEventListener("resize", setTrackHeight);
 
-        /* ── Initial state: frame scaled down, invisible ── */
+        /* ── Initial state: only image hidden (nav/right hidden via CSS) ── */
         frameWrap.style.opacity = "0";
         frameWrap.style.transform = "scale(0.7) translateY(50px)";
 
@@ -42,11 +43,9 @@
         function onScroll() {
           const rect = track.getBoundingClientRect();
           const vh = window.innerHeight;
-          // scrolledIn: how far we've scrolled into the track (0 = just reached top)
           const scrolledIn = -rect.top;
 
           if (scrolledIn < 0) {
-            // Haven't reached section yet
             frameWrap.style.opacity = "0";
             frameWrap.style.transform = "scale(0.7) translateY(50px)";
             return;
@@ -55,18 +54,17 @@
           const zoomScrollH = ZOOM_VH * vh;
           const tabsScrollH = TABS * TAB_VH * vh;
 
-          /* ── Phase 1: ZOOM (scroll-linked) ── */
+          /* ── Phase 1: ZOOM — chỉ ảnh giữa, nav/right vẫn ẩn (CSS giữ opacity:0) ── */
           if (scrolledIn <= zoomScrollH) {
             const t = scrolledIn / zoomScrollH;
             const te = easeInOut(clamp(t, 0, 1));
-            const scale = 0.7 + 0.3 * te; // 0.7 → 1.0
-            const ty = 50 - 50 * te; // 50px → 0
-            const op = clamp(t * 2, 0, 1); // fade in quickly
+            const scale = 0.7 + 0.3 * te;
+            const ty = 50 - 50 * te;
+            const op = clamp(t * 2, 0, 1);
 
             frameWrap.style.transform = `scale(${scale}) translateY(${ty}px)`;
             frameWrap.style.opacity = op;
 
-            // Keep tab 0 active during zoom
             if (currentTab !== 0) switchTab(0);
             return;
           }
@@ -74,6 +72,13 @@
           /* ── Phase 2: TABS ── */
           frameWrap.style.transform = "scale(1) translateY(0)";
           frameWrap.style.opacity = "1";
+
+          // Lần đầu vào phase 2: reveal nav và right cùng lúc với ảnh
+          if (!navRevealed) {
+            navRevealed = true;
+            psNav.classList.add("ps-revealed");
+            psRight.classList.add("ps-revealed");
+          }
 
           const tabScrolled = scrolledIn - zoomScrollH;
           const tabProgress = clamp(tabScrolled / tabsScrollH, 0, 1);
@@ -84,7 +89,7 @@
           }
         }
 
-        /* ── Switch tab: crossfade image (no black gap) + panel ── */
+        /* ── Switch tab: crossfade image + panel ── */
         function switchTab(idx) {
           if (switching) return;
           switching = true;
@@ -98,7 +103,6 @@
 
           const FADE = 550;
 
-          // ── Image: crossfade cả hai cùng lúc → không có khoảng đen ──
           if (newSlide && newSlide !== oldSlide) {
             newSlide.style.transition = "none";
             newSlide.style.opacity = "0";
@@ -115,14 +119,12 @@
             }));
           }
 
-          // ── Panel: exit ──
           if (oldPanel && oldPanel !== newPanel) {
             oldPanel.style.transition = "opacity 0.28s ease, transform 0.28s ease";
             oldPanel.style.opacity = "0";
             oldPanel.style.transform = "translateX(16px) translateY(-12px)";
           }
 
-          // Panel cleanup + enter sau khi exit xong
           setTimeout(() => {
             if (oldPanel && oldPanel !== newPanel) {
               oldPanel.classList.remove("show");
@@ -141,7 +143,6 @@
             }
           }, 310);
 
-          // Slide cleanup + unlock sau khi crossfade xong
           setTimeout(() => {
             if (oldSlide && oldSlide !== newSlide) {
               oldSlide.classList.remove("show");
@@ -152,19 +153,18 @@
           }, FADE + 80);
         }
 
-        /* ── Nav click — jump scroll to exact tab position ── */
+        /* ── Nav click ── */
         navItems.forEach((btn) => {
           btn.addEventListener("click", () => {
             const idx = parseInt(btn.dataset.index, 10);
+            switching = false; // reset guard: click luôn được ưu tiên hơn animation đang chạy
             const vh = window.innerHeight;
-            // Land solidly inside tab idx's range (start + 10% buffer)
             const targetScrolledIn = ZOOM_VH * vh + (idx * TAB_VH + TAB_VH * 0.1) * vh;
             const trackTop = track.getBoundingClientRect().top + window.scrollY;
             window.scrollTo({ top: trackTop + targetScrolledIn, behavior: "instant" });
           });
         });
 
-        /* ── Listen ── */
         window.addEventListener("scroll", onScroll, { passive: true });
-        onScroll(); // init
+        onScroll();
       })();

@@ -9,8 +9,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Percy</title>
-
+    <title>Percy Huynh</title>
+    <link rel="icon" type="image/x-icon" href="/public/images/main-logo.png" />
     <!-- Preconnect để tăng tốc load font -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -36,7 +36,8 @@
 
     <!-- Local CSS -->
     <link rel="stylesheet" href="public/css/global.css" />
-    <!-- <link rel="stylesheet" href="public/css/intro.css" /> -->
+    <link rel="stylesheet" href="public/css/intro.css" />
+    <link rel="stylesheet" href="public/css/banner.css" />
     <link rel="stylesheet" href="public/css/sidenav.css" />
     <link rel="stylesheet" href="public/css/section-work.css" />
     <link rel="stylesheet" href="public/css/section-seo.css" />
@@ -45,6 +46,7 @@
     <link rel="stylesheet" href="public/css/section-tech.css" />
     <link rel="stylesheet" href="public/css/section-others.css" />
     <link rel="stylesheet" href="public/css/section-about.css" />
+    <link rel="stylesheet" href="public/css/reveal.css" />
   </head>
 
   <body>
@@ -137,19 +139,13 @@
           <picture>
             <source media="(max-width: 767px)" srcset="banner-mobile.jpg" />
             <source media="(max-width: 1024px)" srcset="banner-tablet.jpg" />
-            <img
+            <!-- <img
               src="./public/images/main-banner-2.jpg"
               alt="Banner"
               class="hero-img"
-            />
+            /> -->
           </picture>
         </section>
-        <div class="content-baner">
-          <h1 class="cb-title">
-            <span class="cb-title-a">HUYNH</span>
-            <span class="cb-title-b">MAN DAT</span>
-          </h1>
-        </div>
       </div>
     </div>
 
@@ -166,13 +162,12 @@
         <div class="ab-painting-screen" id="ab-painting-screen">
           <div class="ab-painting-sticky">
             <div class="ab-painting-wrap">
-              <div class="ab-painting-frame" id="ab-pframe">
-                <img
-                  src="public/images/section-about-1.png"
-                  alt=""
-                  class="ab-painting-img"
-                />
-              </div>
+              <img
+                id="ab-pframe"
+                src="public/images/section-about-1(1).png"
+                alt=""
+                class="ab-painting-img"
+              />
               <div class="ab-painting-plaque">
                 <span class="ab-pp-title">About Me</span>
                 <span class="ab-pp-sub">Percy Huynh · Portfolio</span>
@@ -237,7 +232,11 @@
                   <span class="ab-btn-line ab-btn-line-b">CV</span>
                 </div>
               </a>
-              <a href="#" class="ab-btn">
+              <a
+                href="https://zalo.me/0397425548"
+                class="ab-btn"
+                target="_blank"
+              >
                 <div class="ab-btn-track">
                   <span class="ab-btn-line ab-btn-line-a">Contact</span>
                   <span class="ab-btn-line ab-btn-line-b">Contact</span>
@@ -248,10 +247,12 @@
               <a href="mailto:huynhmandat@gmail.com"
                 ><i class="fa-solid fa-envelope"></i
               ></a>
-              <a href="https://www.linkedin.com/"
+              <a
+                href="https://www.linkedin.com/in/dat-huynh-seo-contentseo/"
+                target="_blank"
                 ><i class="fa-brands fa-linkedin"></i
               ></a>
-              <a href="https://t.me/percyhuynh"
+              <a href="https://t.me/percyhuynh" target="_blank"
                 ><i class="fa-brands fa-telegram"></i
               ></a>
               <a href="tel:+84397425548"><i class="fa-solid fa-phone"></i></a>
@@ -277,6 +278,10 @@
             data-val="AI Workflow Automation (Google Apps Script/n8n)"
             >AI Workflow Automation (Google Apps Script/n8n)</span
           >
+          <span class="sk-pill" data-val="SERP Analysis">SERP Analysis</span>
+          <span class="sk-pill" data-val="Content Strategy"
+            >Content Strategy</span
+          >
           <span class="sk-pill" data-val="WordPress Implementer"
             >WordPress Implementer</span
           >
@@ -286,6 +291,9 @@
             data-val="HTML/CSS (Bootstrap, TailwindCSS, GSAP)"
             >HTML/CSS (Bootstrap, TailwindCSS, GSAP)</span
           >
+          <span class="sk-pill" data-val="E-commerce Operations"
+            >E-commerce Operations</span
+          >
 
           <span class="sk-pill" data-val="Chrome Extension Development"
             >Chrome Extension Development</span
@@ -293,10 +301,7 @@
           <span class="sk-pill" data-val="Data Conversion Tools"
             >Data Conversion Tools</span
           >
-          <span class="sk-pill" data-val="n8n">n8n</span>
-          <span class="sk-pill" data-val="Google Apps Script"
-            >Google Apps Script</span
-          >
+          <!-- <span class="sk-pill" data-val="n8n">n8n</span> -->
           <!-- <span class="sk-pill" data-val="Bootstrap">Bootstrap</span>
           <span class="sk-pill" data-val="TailwindCSS">TailwindCSS</span>
           <span class="sk-pill" data-val="GSAP">GSAP</span> -->
@@ -322,9 +327,9 @@
           <h2>WORK</h2>
         </div>
         <p class="body">
-          Real-world SEO strategy, UI/UX design, and automation — deployed
-          across retail, travel, sports, and e-commerce. Every project is built
-          for measurable, data-driven results.
+          Real-world SEO strategy, UI/UX design, and automation, deployed across
+          retail, travel, sports, and e-commerce. Every project is built for
+          measurable, data-driven results.
         </p>
       </div>
 
@@ -338,220 +343,115 @@
             <!-- <span class="card-pill always-on">Success Stories</span> -->
             <div class="card-testimonial">
               <p class="testimonial-quote">
-                What impressed us most was their structured thinking. Every
-                design decision had purpose, every interaction had intention.
+                Royal Helmet specializes in retail motorcycle helmets with
+                premium, modern, and trend-driven designs.
               </p>
               <div class="testimonial-divider"></div>
-              <div class="testimonial-author">
-                <img
-                  src="https://i.pravatar.cc/80?img=1"
-                  alt=""
-                  class="testimonial-avatar"
-                />
-              </div>
             </div>
           </div>
 
           <div class="brand-card">
             <div class="card-bg"></div>
             <div class="card-logo">
-              <img
-                src="https://picsum.photos/seed/brd2/200/80?grayscale"
-                alt="Brand 2"
-              />
+              <img src="/public/images/logo-brand-2.png" alt="Brand 2" />
             </div>
             <!-- <span class="card-pill">Success Stories</span> -->
             <div class="card-testimonial">
               <p class="testimonial-quote">
-                "Exceptional work, delivered on time. The attention to detail
-                was beyond our expectations."
+                Asia Helmet focuses on retail motorcycle helmets for the mass
+                consumer market.
               </p>
               <div class="testimonial-divider"></div>
-              <div class="testimonial-author">
-                <img
-                  src="https://i.pravatar.cc/80?img=5"
-                  alt=""
-                  class="testimonial-avatar"
-                />
-                <!-- <div>
-              <p class="testimonial-name">Sarah Chen</p>
-              <p class="testimonial-role">CEO, Brand Studio</p>
-            </div> -->
-              </div>
             </div>
           </div>
 
           <div class="brand-card">
             <div class="card-bg"></div>
             <div class="card-logo">
-              <img
-                src="https://picsum.photos/seed/brd3/200/80?grayscale"
-                alt="Brand 3"
-              />
+              <img src="/public/images/logo-brand-3.png" alt="Brand 3" />
             </div>
             <!-- <span class="card-pill">Success Stories</span> -->
             <div class="card-testimonial">
               <p class="testimonial-quote">
-                "The SEO results exceeded our goals. Organic traffic grew
-                significantly within the first quarter."
+                ROC Helmet develops export motorcycle helmets for international
+                distributors and overseas markets.
               </p>
               <div class="testimonial-divider"></div>
-              <div class="testimonial-author">
-                <img
-                  src="https://i.pravatar.cc/80?img=12"
-                  alt=""
-                  class="testimonial-avatar"
-                />
-                <!-- <div>
-              <p class="testimonial-name">James Park</p>
-              <p class="testimonial-role">Director, Radius Co.</p>
-            </div> -->
-              </div>
             </div>
           </div>
 
           <div class="brand-card">
             <div class="card-bg"></div>
             <div class="card-logo">
-              <img
-                src="https://picsum.photos/seed/brd4/200/80?grayscale"
-                alt="Brand 4"
-              />
+              <img src="/public/images/logo-brand-4.png" alt="Brand 4" />
             </div>
             <!-- <span class="card-pill">Success Stories</span> -->
             <div class="card-testimonial">
               <p class="testimonial-quote">
-                "A true partner in growth. Percy brought strategy and creativity
-                together seamlessly."
+                mubaohiemasia specializes in B2B helmet manufacturing, wholesale
+                orders, and corporate gift solutions.
               </p>
               <div class="testimonial-divider"></div>
-              <div class="testimonial-author">
-                <img
-                  src="https://i.pravatar.cc/80?img=20"
-                  alt=""
-                  class="testimonial-avatar"
-                />
-                <!-- <div>
-              <p class="testimonial-name">Mia Torres</p>
-              <p class="testimonial-role">Head of Growth, Acme</p>
-            </div> -->
-              </div>
             </div>
           </div>
 
           <div class="brand-card">
             <div class="card-bg"></div>
             <div class="card-logo">
-              <img
-                src="https://picsum.photos/seed/brd5/200/80?grayscale"
-                alt="Brand 5"
-              />
+              <img src="/public/images/logo-brand-5.png" alt="Brand 5" />
             </div>
             <!-- <span class="card-pill">Success Stories</span> -->
             <div class="card-testimonial">
               <p class="testimonial-quote">
-                "Highly recommended. The content strategy delivered real,
-                measurable results for our business."
+                Mop Xop A Chau provides wholesale foam products, OEM
+                manufacturing, and industrial packaging solutions.
               </p>
               <div class="testimonial-divider"></div>
-              <div class="testimonial-author">
-                <img
-                  src="https://i.pravatar.cc/80?img=33"
-                  alt=""
-                  class="testimonial-avatar"
-                />
-                <!-- <div>
-              <p class="testimonial-name">Tom Nguyen</p>
-              <p class="testimonial-role">Marketing Lead</p>
-            </div> -->
-              </div>
             </div>
           </div>
 
           <div class="brand-card">
             <div class="card-bg"></div>
             <div class="card-logo">
-              <img
-                src="https://picsum.photos/seed/brd6/200/80?grayscale"
-                alt="Brand 6"
-              />
+              <img src="/public/images/logo-brand-6.png" alt="Brand 6" />
             </div>
             <!-- <span class="card-pill always-on">Success Stories</span> -->
             <div class="card-testimonial">
               <p class="testimonial-quote">
-                "Working with Percy transformed our online presence. Clear
-                communication, clear results."
+                GTrip operates in inbound travel services, local tours, and
+                destination experiences for international travelers.
               </p>
               <div class="testimonial-divider"></div>
-              <div class="testimonial-author">
-                <img
-                  src="https://i.pravatar.cc/80?img=44"
-                  alt=""
-                  class="testimonial-avatar"
-                />
-                <!-- <div>
-              <p class="testimonial-name">Lena Fischer</p>
-              <p class="testimonial-role">CMO, CoreOS</p>
-            </div> -->
-              </div>
             </div>
           </div>
 
           <div class="brand-card">
             <div class="card-bg"></div>
             <div class="card-logo">
-              <img
-                src="https://picsum.photos/seed/brd7/200/80?grayscale"
-                alt="Brand 7"
-              />
+              <img src="/public/images/logo-brand-7.png" alt="Brand 7" />
             </div>
             <!-- <span class="card-pill always-on">Success Stories</span> -->
             <div class="card-testimonial">
               <p class="testimonial-quote">
-                "The automation workflow saved our team hours every week. Smart,
-                clean, and efficient."
+                Lensify focuses on retail studio equipment, photography
+                accessories, and creative production gear.
               </p>
               <div class="testimonial-divider"></div>
-              <div class="testimonial-author">
-                <img
-                  src="https://i.pravatar.cc/80?img=56"
-                  alt=""
-                  class="testimonial-avatar"
-                />
-                <!-- <div>
-              <p class="testimonial-name">Alex Kim</p>
-              <p class="testimonial-role">Operations, Loop Inc.</p>
-            </div> -->
-              </div>
             </div>
           </div>
 
           <div class="brand-card">
             <div class="card-bg"></div>
             <div class="card-logo">
-              <img
-                src="https://picsum.photos/seed/brd8/200/80?grayscale"
-                alt="Brand 8"
-              />
+              <img src="/public/images/logo-brand-8.png" alt="Brand 8" />
             </div>
             <!-- <span class="card-pill">Success Stories</span> -->
             <div class="card-testimonial">
               <p class="testimonial-quote">
-                "From strategy to execution, everything was handled with
-                precision and professionalism."
+                Bam House specializes in retail kitchenware, household products,
+                and home living essentials.
               </p>
               <div class="testimonial-divider"></div>
-              <div class="testimonial-author">
-                <img
-                  src="https://i.pravatar.cc/80?img=68"
-                  alt=""
-                  class="testimonial-avatar"
-                />
-                <!-- <div>
-              <p class="testimonial-name">Rita Bloom</p>
-              <p class="testimonial-role">Founder, Logoipsum</p>
-            </div> -->
-              </div>
             </div>
           </div>
         </div>
@@ -583,7 +483,7 @@
               </div>
 
               <div class="cta-wrap">
-                <a href="#" class="cta-btn" onclick="return false;">
+                <a href="#about" class="cta-btn">
                   <div class="cta-track">
                     <span class="cta-line cta-line-a">&nbsp;Get in touch</span>
                     <span class="cta-line cta-line-b">&nbsp;Get in touch</span>
@@ -612,9 +512,9 @@
         <div class="st__hero">
           <div class="st__hero-ghost" aria-hidden="true">SEO</div>
           <div class="st__hero-eyebrow">Project 01</div>
-          <h2 class="st__hero-title">SEO <em>Gtrip</em></h2>
+          <h2 class="st__hero-title">SEO <em>GTrip</em></h2>
           <p class="st__hero-sub">
-            From raw Google Search Console data to top-page dominance —
+            From raw Google Search Console data to top-page dominance,
             precision-calculated strategy, systematically executed.
           </p>
         </div>
@@ -636,7 +536,7 @@
                   <div class="st__chart-img-wrap">
                     <img
                       src="./public/images/gtrip_1.png"
-                      alt="SEO Performance Chart — Google Search Console"
+                      alt="SEO Performance Chart - Google Search Console"
                       class="st__chart-render"
                     />
                   </div>
@@ -702,7 +602,7 @@
                   <div class="st__stat-info">
                     <div class="st__stat-name">Avg. Position</div>
                     <div class="st__stat-delta">▼ from 16.4</div>
-                    <div class="st__stat-desc">English Inbound · gtrip.vn</div>
+                    <div class="st__stat-desc">Inbound · gtrip.vn</div>
                   </div>
                 </div>
               </div>
@@ -713,60 +613,43 @@
         <!-- ══ 3 · PROOF — GSC Screenshots ══ -->
         <div class="st__proof">
           <div class="st__proof-header">
-            <div class="st__proof-eyebrow" data-sl>
-              Evidence · Google Search Console
-            </div>
+            <div class="st__proof-eyebrow" data-sl>Real Performance Data</div>
             <h3 class="st__proof-title" data-sl>
-              Real screenshots from <em>GSC</em> —<br />unedited data
+              <em>Google Search Console & SEM</em><br />Data Proof
             </h3>
           </div>
           <div class="st__proof-grid">
-            <!-- Slot lớn (span 2 hàng) — CLICK ĐỂ XEM FULL -->
+            <!-- Slot lớn (span 2 hàng) -->
             <div class="st__proof-slot st__slot-hero has-image">
               <img
                 src="public/images/gtrip_2.png"
                 alt="GSC Performance Overview"
               />
-              <div class="st__slot-inner">
-                <div class="st__slot-icon">📊</div>
-                <div class="st__slot-lbl">Main GSC Screenshot</div>
-                <div class="st__slot-hint">
-                  Overall Performance · Clicks &amp; Impressions · 3 months
-                </div>
+              <div class="st__p2-overlay">
+                <span class="st__p2-overlay-tag">Google Search Console</span>
+                <div class="st__p2-overlay-title">Performance Overview</div>
+                <div class="st__p2-overlay-arrow">↗</div>
               </div>
-              <div class="st__slot-cap">Click to view full</div>
             </div>
 
             <!-- Slot nhỏ 1 -->
             <div class="st__proof-slot has-image">
-              <img
-                src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80"
-                alt="Top Keywords"
-              />
-              <div class="st__slot-inner">
-                <div class="st__slot-icon">🔑</div>
-                <div class="st__slot-lbl">Top Keywords</div>
-                <div class="st__slot-hint">
-                  Clicks · Impressions · CTR · Position
-                </div>
+              <img src="public/images/gtrip-3.jpg" alt="Top Keywords" />
+              <div class="st__p2-overlay">
+                <span class="st__p2-overlay-tag">Keywords</span>
+                <div class="st__p2-overlay-title">Top Ranking Keywords</div>
+                <div class="st__p2-overlay-arrow">↗</div>
               </div>
-              <div class="st__slot-cap">Click to view full</div>
             </div>
 
             <!-- Slot nhỏ 2 -->
             <div class="st__proof-slot has-image">
-              <img
-                src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=800&q=80"
-                alt="Top Pages"
-              />
-              <div class="st__slot-inner">
-                <div class="st__slot-icon">📄</div>
-                <div class="st__slot-lbl">Top Pages</div>
-                <div class="st__slot-hint">
-                  Highest traffic pages from organic search
-                </div>
+              <img src="public/images/gtrip-4.jpg" alt="Top Pages" />
+              <div class="st__p2-overlay">
+                <span class="st__p2-overlay-tag">Pages</span>
+                <div class="st__p2-overlay-title">Top Traffic Pages</div>
+                <div class="st__p2-overlay-arrow">↗</div>
               </div>
-              <div class="st__slot-cap">Click to view full</div>
             </div>
           </div>
         </div>
@@ -805,7 +688,7 @@
             <div class="st__p2-card st__p2-card--sm has-image">
               <img
                 class="st__p2-img"
-                src="https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?w=800&q=80"
+                src="public/images/royal-2.png"
                 alt="Keyword Research"
               />
               <div class="st__p2-placeholder">
@@ -815,7 +698,7 @@
               <div class="st__p2-overlay">
                 <span class="st__p2-overlay-tag">Research</span>
                 <div class="st__p2-overlay-title">
-                  In-depth keyword mapping &amp; cluster architecture
+                  <!-- In-depth keyword mapping &amp; cluster architecture -->
                 </div>
                 <div class="st__p2-overlay-arrow">↗</div>
               </div>
@@ -825,7 +708,7 @@
             <div class="st__p2-card st__p2-card--sm has-image">
               <img
                 class="st__p2-img"
-                src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800&q=80"
+                src="public/images/royal-3.png"
                 alt="Content Output"
               />
               <div class="st__p2-placeholder">
@@ -835,7 +718,7 @@
               <div class="st__p2-overlay">
                 <span class="st__p2-overlay-tag">Keyword ranking</span>
                 <div class="st__p2-overlay-title">
-                  91/151 keywords Top 3 — pillar &amp; cluster model
+                  <!-- 91/151 keywords Top 3 — pillar &amp; cluster model -->
                 </div>
                 <div class="st__p2-overlay-arrow">↗</div>
               </div>
@@ -877,15 +760,25 @@
           <!-- Footer -->
           <div class="st__proj2-footer">
             <p class="st__proj2-footnote">
-              Full case study available on request — detailed briefs, keyword
-              maps, and performance reports included.
+              SEO case studies available upon request, covering keyword
+              research, content strategy, traffic growth, and conversion
+              performance.
             </p>
-            <a href="#" class="st__proj2-cta"
-              ><div class="cta-track">
-                <span class="cta-line cta-line-a">View Full Case Study</span
-                ><span class="cta-line cta-line-b">View Full Case Study</span>
-              </div></a
+            <a
+              href="https://script.google.com/macros/s/AKfycbyONOA_SSEZvk8nzic9Q-D8j0rOpPU9CumMl3etYfmzj6yLbpwbdhwQNW5fXabLFnZwZw/exec"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="st__proj2-cta"
             >
+              <div class="cta-track">
+                <span class="cta-line cta-line-a"
+                  >&nbsp;View full report Keyword Royal Helmet</span
+                >
+                <span class="cta-line cta-line-b"
+                  >&nbsp;View full report Keyword Royal Helmet</span
+                >
+              </div>
+            </a>
           </div>
         </div>
       </section>
@@ -897,26 +790,21 @@
           <h2 class="cs__hdr-title">Content SEO</h2>
           <div class="cs__hdr-body">
             <span class="cs__hdr-line" data-csl
-              >Real-world projects backed by hard data — from compounding</span
-            >
+              >Real-world SEO projects built across multiple industries, focused
+            </span>
             <span class="cs__hdr-line" data-csl
-              >organic traffic growth to top-ranking keywords, fully
-              documented</span
+              >on content strategy, keyword growth, and measurable organic
+              performance.</span
             >
-            <span class="cs__hdr-line" data-csl
-              >with transparent screenshots and analytics.</span
-            >
+            <!-- <span class="cs__hdr-line" data-csl></span> -->
             <span class="cs__hdr-spacer"></span>
             <span class="cs__hdr-line" data-csl
-              >Every Content SEO campaign follows a battle-tested
-              framework</span
+              >Each campaign is developed through research, search intent</span
             >
             <span class="cs__hdr-line" data-csl
-              >— optimised through hundreds of real-world implementations,</span
+              >analysis, content execution, and continuous performance</span
             >
-            <span class="cs__hdr-line" data-csl
-              >leaving no room for guesswork.</span
-            >
+            <span class="cs__hdr-line" data-csl>optimization.</span>
           </div>
 
           <!-- ══ STATS STRIP — inside header so both fill one screen ══ -->
@@ -927,18 +815,18 @@
             </div>
             <div class="cs__stat-divider"></div>
             <div class="cs__stat-item">
-              <span class="cs__stat-number">4×</span
-              ><span class="cs__stat-label">Impressions Growth</span>
+              <span class="cs__stat-number">30+</span
+              ><span class="cs__stat-label">Brand Partnerships</span>
             </div>
             <div class="cs__stat-divider"></div>
             <div class="cs__stat-item">
-              <span class="cs__stat-number">91</span
-              ><span class="cs__stat-label">Top-3 Rankings</span>
+              <span class="cs__stat-number">500+ </span
+              ><span class="cs__stat-label">SEO Articles</span>
             </div>
             <div class="cs__stat-divider"></div>
             <div class="cs__stat-item">
-              <span class="cs__stat-number">57</span
-              ><span class="cs__stat-label">Rank #1 Keywords</span>
+              <span class="cs__stat-number">2</span
+              ><span class="cs__stat-label">Languages</span>
             </div>
           </div>
         </div>
@@ -949,21 +837,21 @@
             <div
               class="cs__process-inner"
               style="
-                max-width: 1100px;
+                max-width: 2000px;
                 margin: 0 auto;
-                padding: 0 32px;
+                padding: 0 20px;
                 width: 100%;
               "
             >
               <div class="cs__process-left">
                 <div class="cs__process-eyebrow">SEO Methodology</div>
                 <h3 class="cs__process-heading">
-                  From Strategy to<br /><em>Proven ROI</em>
+                  From Research<br /><em>Content Growth</em>
                 </h3>
                 <p class="cs__process-desc">
-                  Every Content SEO campaign follows a battle-tested framework
-                  optimized through hundreds of real-world implementations —
-                  leaving no room for guesswork.
+                  Every content campaign follows a structured framework built
+                  through real-world execution, combining audience research,
+                  search intent, and performance-driven content systems.
                 </p>
               </div>
               <div class="cs__steps" id="cs-steps">
@@ -1031,30 +919,30 @@
         <div class="cs__zoom-wrap">
           <div class="cs__zoom-header">
             <div class="cs__zoom-title-block">
-              <div class="cs__zoom-eyebrow" data-sl>Data-Driven Evidence</div>
+              <div class="cs__zoom-eyebrow" data-sl>CONTENT PERFORMANCE</div>
               <h3 class="cs__zoom-section-title" data-sl>
-                <em>Unedited</em> Screenshots
+                <em>Content SEO</em> Results
               </h3>
             </div>
           </div>
           <div class="cs__zoom-grid">
             <div class="cs__zoom-slot">
               <div class="cs__zoom-icon">📈</div>
-              <div class="cs__zoom-lbl">Traffic Overview</div>
-              <div class="cs__zoom-hint">GA4 Organic Sessions · 12 Months</div>
-              <div class="cs__zoom-cap">View Proof</div>
+              <div class="cs__zoom-lbl">CONTENT STRATEGY</div>
+              <div class="cs__zoom-hint">Topic Research</div>
+              <div class="cs__zoom-cap">Search Intent Mapping</div>
             </div>
             <div class="cs__zoom-slot">
               <div class="cs__zoom-icon">🎯</div>
-              <div class="cs__zoom-lbl">Keyword Rankings</div>
-              <div class="cs__zoom-hint">Ahrefs Position Tracking · Top 10</div>
-              <div class="cs__zoom-cap">View Proof</div>
+              <div class="cs__zoom-lbl">SEO WRITING</div>
+              <div class="cs__zoom-hint">Keyword Optimization</div>
+              <div class="cs__zoom-cap">EEAT-Based Content</div>
             </div>
             <div class="cs__zoom-slot">
               <div class="cs__zoom-icon">📊</div>
-              <div class="cs__zoom-lbl">GSC Performance</div>
-              <div class="cs__zoom-hint">Clicks &amp; Impressions Growth</div>
-              <div class="cs__zoom-cap">View Proof</div>
+              <div class="cs__zoom-lbl">PERFORMANCE RESULTS</div>
+              <div class="cs__zoom-hint">Traffic • Rankings • CTR</div>
+              <div class="cs__zoom-cap">Measured Content Growth</div>
             </div>
           </div>
         </div>
@@ -1062,23 +950,28 @@
         <!-- <h2 class="sr-only">News from above</h2> -->
 
         <div class="nfa-root" id="nfaRoot">
-          <div class="nfa-heading" id="nfaHeading">Case Study Highlights</div>
+          <div class="nfa-heading" id="nfaHeading">
+            Featured SEO Content Projects
+          </div>
           <div class="nfa-grid" id="nfaGrid">
             <div class="nfa-col" id="nfaCol0">
               <div class="nfa-meta">
                 <div class="nfa-date">Mar 13, 2026</div>
               </div>
               <div class="nfa-title-text">
-                GTrip.vn SEO: 4× Impressions Growth in 6 Months — from 693K to
-                2.77M via English Inbound Strategy
+                GTrip<br />
+                Planned keyword strategy, built detailed outlines, and delivered
+                full English blog content targeting global audiences. Focused on
+                search intent mapping, topic clusters, and scalable inbound
+                content system.
               </div>
               <div class="nfa-img-area">
                 <div class="nfa-img-wrap" id="nfaWrap0" onclick="nfaOpen(0)">
                   <img
                     class="nfa-img"
                     id="nfaImg0"
-                    src="https://images.unsplash.com/photo-1569025690938-a00729c9e1f9?w=900&q=82"
-                    alt="eVTOL over SF Bay"
+                    src="public/images/section-contentseo-1.jpg"
+                    alt="GTrip content SEO"
                   />
                 </div>
               </div>
@@ -1089,16 +982,19 @@
                 <div class="nfa-date">Mar 12, 2026</div>
               </div>
               <div class="nfa-title-text">
-                Royal Helmet: 57 Keywords at Rank #1, 91/151 in Top 3 — 6-Month
-                B2C SEO Campaign
+                Royal Helmet<br />
+                Developed keyword strategy, wrote SEO blog content, and designed
+                supporting visuals to enhance on-page engagement. Aligned
+                content with product pages to improve discoverability and
+                conversion.
               </div>
               <div class="nfa-img-area">
                 <div class="nfa-img-wrap" id="nfaWrap1" onclick="nfaOpen(1)">
                   <img
                     class="nfa-img"
                     id="nfaImg1"
-                    src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=82"
-                    alt="Aircraft in sky"
+                    src="public/images/section-contentseo-2.jpg"
+                    alt="Royal Helmet content SEO"
                   />
                 </div>
               </div>
@@ -1109,16 +1005,18 @@
                 <div class="nfa-date">Mar 10, 2026</div>
               </div>
               <div class="nfa-title-text">
-                Freelance SEO: Content Strategy Across Beauty, Travel, Sports
-                &amp; E-commerce — Nov 2022 to Present
+                Freelance Content SEO Produced SEO-driven content across diverse
+                industries including beauty, investment, pharmaceuticals,
+                healthcare knowledge, and sports. Adapted tone, structure, and
+                keyword strategy based on each niche and target audience.
               </div>
               <div class="nfa-img-area">
                 <div class="nfa-img-wrap" id="nfaWrap2" onclick="nfaOpen(2)">
                   <img
                     class="nfa-img"
                     id="nfaImg2"
-                    src="https://images.unsplash.com/photo-1464983953574-0892a716854b?w=900&q=82"
-                    alt="Aerial city view"
+                    src="public/images/section-contentseo-3.jpg"
+                    alt="Freelance content SEO"
                   />
                 </div>
               </div>
@@ -1127,6 +1025,23 @@
         </div>
 
         <div class="nfa-lb-overlay" id="nfaOverlay"></div>
+        <div class="nfa-lb" id="nfaLb">
+          <div class="nfa-lb-box" id="nfaLbBox">
+            <img
+              id="nfaLbImg"
+              src=""
+              alt=""
+              style="
+                display: block;
+                max-width: 82vw;
+                max-height: 80vh;
+                border-radius: 12px;
+                object-fit: contain;
+              "
+            />
+            <div class="nfa-lb-cap" id="nfaLbCap"></div>
+          </div>
+        </div>
 
         <!-- ══ DARK ZONE ══ -->
         <div class="cs__dark-zone" id="cs-dark-zone">
@@ -1139,33 +1054,35 @@
               <article class="cs__proof-card cs__card--featured">
                 <div
                   class="cs__card-image-wrap"
-                  data-src="anhtest-1.jpg"
+                  data-src="public/images/section-contentseo-4.webp"
                   data-title="Achieved 320% Organic Traffic Growth — Ecommerce SEO"
                   data-tag="Ecommerce SEO · Case Study"
                 >
                   <img
-                    src="anhtest-1.jpg"
+                    src="public/images/section-contentseo-4.webp"
                     alt="Traffic chart proof"
                     class="cs__card-image"
                     loading="lazy"
+                    style="object-position: center 32%"
                   />
                 </div>
                 <div class="cs__card-body">
-                  <span class="cs__card-tag">Travel SEO · Case Study</span>
+                  <span class="cs__card-tag">Product SEO · Case Study</span>
                   <h3 class="cs__card-title">
-                    4× Impressions Growth for a Travel Platform in 6 Months —
-                    GTrip.vn
+                    Top 1 Ranking for “Nón Bảo Hiểm 3/4 Cho Người Mới Lái Xe”
                   </h3>
                   <p class="cs__card-desc">
-                    English inbound SEO for GTrip.vn — keyword research, on-page
-                    optimization, and technical SEO. Scaled impressions from
-                    693K to 2.77M, drove 17K+ organic traffic, and improved
-                    average position from 16.4 to 10.8.
+                    Built search-driven blog content for Royal Helmet ,
+                    targeting beginner rider search intent in Vietnam. Optimized
+                    with product education, semantic keyword coverage, and
+                    internal links to category pages, helping the article secure
+                    top rankings and maintain stable organic visibility for
+                    nearly a year.
                   </p>
                   <div class="cs__card-metrics">
                     <div class="cs__metric">
-                      <span class="cs__metric-val">4×</span
-                      ><span class="cs__metric-key">Impressions</span>
+                      <span class="cs__metric-val">TOP 1</span
+                      ><span class="cs__metric-key">6+ MONTHS</span>
                     </div>
                     <div class="cs__metric">
                       <span class="cs__metric-val">17K+</span
@@ -1176,11 +1093,14 @@
                       ><span class="cs__metric-key">Duration</span>
                     </div>
                     <div class="cs__metric">
-                      <span class="cs__metric-val">Travel</span
-                      ><span class="cs__metric-key">Industry</span>
+                      <span class="cs__metric-val">Blog SEO</span
+                      ><span class="cs__metric-key">Experience</span>
                     </div>
                   </div>
-                  <a href="#" class="cs__card-link"
+                  <a
+                    href="https://royalhelmet.com.vn/tin-tuc/non-bao-hiem-3-4-cho-nguoi-moi-lai-xe"
+                    class="cs__card-link"
+                    target="_blank"
                     >Read Full Case Study
                     <svg
                       width="16"
@@ -1190,46 +1110,54 @@
                       stroke-width="2"
                       viewBox="0 0 24 24"
                     >
-                      <path d="M5 12h14M12 5l7 7-7 7" /></svg
-                  ></a>
+                      <path d="M5 12h14M12 5l7 7-7 7" /></svg></a>
                 </div>
               </article>
               <!-- CARD 2 -->
               <article class="cs__proof-card">
                 <div
                   class="cs__card-image-wrap"
-                  data-src="anhtest-2.jpg"
+                  data-src="public/images/section-contentseo-6.jpg"
                   data-title="Secured Position #1 for 12 High-Volume Keywords"
                   data-tag="Keyword Research · B2B SaaS"
                 >
                   <img
-                    src="anhtest-2.jpg"
+                    src="public/images/section-contentseo-6.jpg"
                     alt="Keyword ranking proof"
                     class="cs__card-image"
                     loading="lazy"
                   />
                 </div>
                 <div class="cs__card-body">
-                  <span class="cs__card-tag">B2C SEO · Helmet Brand</span>
+                  <span class="cs__card-tag"
+                    >TRAVEL SEO · HCMC ATTEACTIONS</span
+                  >
                   <h3 class="cs__card-title">
-                    57 Keywords at Rank #1 — Royal Helmet 6-Month SEO Campaign
+                    Saigon’s Chinatown SEO Cluster - Building Local Search
+                    Authority
                   </h3>
                   <p class="cs__card-desc">
-                    On-page and content SEO for Royal Helmet — 91 of 151 tracked
-                    keywords in Top 3, 57 keywords at position #1, and 117K
-                    clicks in 6 months. Top 1 for "nón bảo hiểm 3/4".
+                    Built entity-driven destination content for GTrip,
+                    connecting Saigon’s Chinatown with Ho Chi Minh attraction
+                    clusters through semantic SEO, internal linking, and search
+                    optimization. The page strengthened topical authority and
+                    improved visibility across cultural and sightseeing
+                    searches.
                   </p>
                   <div class="cs__card-metrics">
                     <div class="cs__metric">
-                      <span class="cs__metric-val">57</span
-                      ><span class="cs__metric-key">Rank #1 KW</span>
+                      <span class="cs__metric-val">TOP 10</span
+                      ><span class="cs__metric-key">ORGANIC KEYWORD</span>
                     </div>
                     <div class="cs__metric">
-                      <span class="cs__metric-val">117K</span
-                      ><span class="cs__metric-key">Organic Clicks</span>
+                      <span class="cs__metric-val">AIO</span
+                      ><span class="cs__metric-key">VISIBILITY</span>
                     </div>
                   </div>
-                  <a href="#" class="cs__card-link"
+                  <a
+                    href="https://gtrip.vn/vietnam-tours/attractions/saigons-chinatown"
+                    class="cs__card-link"
+                    target="_blank"
                     >View Details
                     <svg
                       width="16"
@@ -1239,48 +1167,51 @@
                       stroke-width="2"
                       viewBox="0 0 24 24"
                     >
-                      <path d="M5 12h14M12 5l7 7-7 7" /></svg
-                  ></a>
+                      <path d="M5 12h14M12 5l7 7-7 7" /></svg></a>
                 </div>
               </article>
               <!-- CARD 3 -->
               <article class="cs__proof-card">
                 <div
                   class="cs__card-image-wrap"
-                  data-src="anhtest-3.jpg"
+                  data-src="section-contentseo-5.jpg"
                   data-title="Scaled a Finance Blog from 0 to 50,000 Monthly Pageviews"
                   data-tag="Content Strategy · Finance"
                 >
                   <img
-                    src="anhtest-3.jpg"
+                    src="public/images/section-contentseo-5.jpg"
                     alt="GSC proof screenshot"
                     class="cs__card-image"
                     loading="lazy"
                   />
                 </div>
                 <div class="cs__card-body">
-                  <span class="cs__card-tag">Multi-Industry · Freelance</span>
+                  <span class="cs__card-tag">TRAVEL SEO · HCMC TOPLIST</span>
                   <h3 class="cs__card-title">
-                    SEO &amp; Content Across Beauty, Travel, Sports &amp;
-                    E-commerce
+                    Top 1 Ranking for “Where to Buy Ao Dai in Ho Chi Minh”
                   </h3>
                   <p class="cs__card-desc">
-                    Freelance SEO content since Nov 2022 — homepage, product
-                    pages, blog content (Guides, Reviews, Toplists). WordPress
-                    management, Shopee SEO, and conversion-focused UI/UX landing
-                    page design.
+                    Created a high-intent toplist article for GTrip, targeting
+                    shopping-focused travel searches in Ho Chi Minh City.
+                    Optimized with local entities, semantic content structure,
+                    and internal links to destination pages, helping the article
+                    achieve strong organic rankings and broader topical
+                    relevance.
                   </p>
                   <div class="cs__card-metrics">
                     <div class="cs__metric">
-                      <span class="cs__metric-val">4</span
-                      ><span class="cs__metric-key">Industries</span>
+                      <span class="cs__metric-val">Top 1</span
+                      ><span class="cs__metric-key">TARGET KEYWORD</span>
                     </div>
                     <div class="cs__metric">
-                      <span class="cs__metric-val">2022–</span
-                      ><span class="cs__metric-key">Ongoing</span>
+                      <span class="cs__metric-val">HCMC</span
+                      ><span class="cs__metric-key">TOPICAL CLUSTER</span>
                     </div>
                   </div>
-                  <a href="#" class="cs__card-link"
+                  <a
+                    href="https://gtrip.vn/travel-blogs/where-to-buy-ao-dai-in-ho-chi-minh-city"
+                    class="cs__card-link"
+                    target="_blank"
                     >View Details
                     <svg
                       width="16"
@@ -1290,8 +1221,7 @@
                       stroke-width="2"
                       viewBox="0 0 24 24"
                     >
-                      <path d="M5 12h14M12 5l7 7-7 7" /></svg
-                  ></a>
+                      <path d="M5 12h14M12 5l7 7-7 7" /></svg></a>
                 </div>
               </article>
             </div>
@@ -1305,16 +1235,42 @@
     </section>
 
     <section class="section s3" id="s2">
-      <div class="lbl">UI/UX - Design</div>
-      <h2 class="ttl">
-        FIGMA <br />
-        UI/UX
-      </h2>
-      <p class="body">
-        UI/UX design grounded in user behaviour — from wireframe to
-        high-fidelity prototype. Interfaces built for clarity, conversion, and
-        real-world deployment.
-      </p>
+      <!-- <div class="lbl">UI/UX - Design</div> -->
+
+      <div id="uiux-sticky-wrap">
+        <div id="uiux-sticky">
+          <div id="uiux-white"></div>
+          <div id="uiux-black"></div>
+          <div id="uiux-text-layer">
+            <div id="uiux-heading">
+              <span class="uiux-char">U</span>
+              <span class="uiux-char">I</span>
+              <span class="uiux-char">/</span>
+              <span class="uiux-char">U</span>
+              <span class="uiux-char">X</span>
+              <span class="uiux-char">&nbsp;</span>
+              <span class="uiux-char" id="uiux-pivot">D</span>
+              <span class="uiux-char">E</span>
+              <span class="uiux-char">S</span>
+              <span class="uiux-char">I</span>
+              <span class="uiux-char">G</span>
+              <span class="uiux-char">N</span>
+            </div>
+          </div>
+          <div id="uiux-content">
+            <h2 class="uiux-ttl">
+              FIGMA <br />
+              UI/UX
+            </h2>
+            <p class="uiux-body">
+              UI/UX design grounded in user behaviour, from wireframe to
+              high-fidelity prototype. Interfaces built for clarity, conversion,
+              and real-world deployment.
+            </p>
+          </div>
+        </div>
+      </div>
+
       <div id="progressBar"></div>
       <div id="dotNav"></div>
 
@@ -1326,10 +1282,12 @@
       <div class="hs-section" id="hsSection">
         <div class="hs-track" id="hsTrack">
           <div class="hs-panel">
-            <div class="hs-fig">Fig. 1.1 <span>Landing page design</span></div>
+            <div class="hs-fig">
+              Fig. 1. <span>Landingpage Campaign M139 - M239</span>
+            </div>
             <div class="hs-card">
               <img
-                src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=80"
+                src="/public/images/uiux-1.jpg"
                 alt="Overhead view — eVTOL 6-rotor platform"
               />
               <!-- <div class="hs-card-placeholder">
@@ -1346,11 +1304,11 @@
 
           <div class="hs-panel">
             <div class="hs-fig">
-              Fig. 1.2 <span>User flow &amp; wireframes</span>
+              <!-- Fig. 1.2 <span>User flow &amp; wireframes</span> -->
             </div>
             <div class="hs-card">
               <img
-                src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&q=80"
+                src="/public/images/uiux-2.jpg"
                 alt="Axial-flux direct-drive motor — exploded"
               />
               <div class="hs-card-placeholder">
@@ -1368,21 +1326,21 @@
                     <path d="M2 14l4-4 3 3 3-4 6 5" />
                   </svg>
                 </div>
-                <span class="hs-placeholder-text">Chèn ảnh vào đây</span>
+                <!-- <span class="hs-placeholder-text">Chèn ảnh vào đây</span> -->
               </div>
-              <span class="hs-caption"
+              <!-- <span class="hs-caption"
                 >User flow mapping &amp; wireframe architecture</span
-              >
+              > -->
             </div>
           </div>
 
           <div class="hs-panel">
             <div class="hs-fig">
-              Fig. 1.4 <span>Component &amp; UI system</span>
+              <!-- Fig. 1.4 <span>Component &amp; UI system</span> -->
             </div>
             <div class="hs-card">
               <img
-                src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&q=80"
+                src="/public/images/uiux-3.jpg"
                 alt="Rear elevation — wingspan 32 ft"
               />
               <div class="hs-card-placeholder">
@@ -1400,21 +1358,20 @@
                     <path d="M2 14l4-4 3 3 3-4 6 5" />
                   </svg>
                 </div>
-                <span class="hs-placeholder-text">Chèn ảnh vào đây</span>
+                <!-- <span class="hs-placeholder-text">Chèn ảnh vào đây</span> -->
               </div>
-              <span class="hs-caption"
-                >Component design — interactive UI elements</span
-              >
+              <!-- <span class="hs-caption"
+                >Component design — interactive UI elements</span -->
             </div>
           </div>
 
           <div class="hs-panel">
             <div class="hs-fig">
-              Fig. 2.1 <span>Responsive layout system</span>
+              <!-- Fig. 2.1 <span>Responsive layout system</span> -->
             </div>
             <div class="hs-card">
               <img
-                src="https://images.unsplash.com/photo-1620288627223-53302f4e8c74?w=1200&q=80"
+                src="/public/images/uiux-4.jpg"
                 alt="Li-ion cell stack — 2 160-cell modules"
               />
               <div class="hs-card-placeholder">
@@ -1432,21 +1389,21 @@
                     <path d="M2 14l4-4 3 3 3-4 6 5" />
                   </svg>
                 </div>
-                <span class="hs-placeholder-text">Chèn ảnh vào đây</span>
+                <!-- <span class="hs-placeholder-text">Chèn ảnh vào đây</span> -->
               </div>
-              <span class="hs-caption"
+              <!-- <span class="hs-caption"
                 >Responsive grid — mobile, tablet &amp; desktop</span
-              >
+              > -->
             </div>
           </div>
 
           <div class="hs-panel">
             <div class="hs-fig">
-              Fig. 3.2 <span>Cross-platform design</span>
+              Fig. 2. <span>Landingpage B2B 'nonbahiemasia.com'</span>
             </div>
             <div class="hs-card">
               <img
-                src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1200&q=80"
+                src="/public/images/uiux-5.jpg"
                 alt="200 mi range · 200 mph cruise · L/D 14:1"
               />
               <div class="hs-card-placeholder">
@@ -1464,21 +1421,21 @@
                     <path d="M2 14l4-4 3 3 3-4 6 5" />
                   </svg>
                 </div>
-                <span class="hs-placeholder-text">Chèn ảnh vào đây</span>
+                <!-- <span class="hs-placeholder-text">Chèn ảnh vào đây</span> -->
               </div>
-              <span class="hs-caption"
+              <!-- <span class="hs-caption"
                 >Cross-platform UI — Figma to production</span
-              >
+              > -->
             </div>
           </div>
 
           <div class="hs-panel">
             <div class="hs-fig">
-              Fig. 4.1 <span>High-fidelity Figma prototype</span>
+              <!-- Fig. 4.1 <span>High-fidelity Figma prototype</span> -->
             </div>
             <div class="hs-card">
               <img
-                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&q=80"
+                src="/public/images/uiux-6.jpg"
                 alt="FAA Part 23 type certificate — 5 stages"
               />
               <div class="hs-card-placeholder">
@@ -1496,53 +1453,86 @@
                     <path d="M2 14l4-4 3 3 3-4 6 5" />
                   </svg>
                 </div>
-                <span class="hs-placeholder-text">Chèn ảnh vào đây</span>
+                <!-- <span class="hs-placeholder-text">Chèn ảnh vào đây</span> -->
               </div>
-              <span class="hs-caption"
-                >High-fidelity prototype — client delivery ready</span
-              >
+              <!-- <span class="hs-caption"
+                >High-fidelity prototype — client delivery ready</span -->
             </div>
           </div>
         </div>
       </div>
       <!-- /.hs-section -->
 
+      <!-- FIGMA EMBED -->
+      <div class="ui-figma-block">
+        <div class="ui-figma-label">
+          <span class="ui-figma-tag">Prototype</span>
+          <span class="ui-figma-rule"></span>
+          <span class="ui-figma-meta">Figma · Interactive</span>
+        </div>
+        <h3 class="ui-figma-heading">Landingpage Royal M139</h3>
+        <div class="ui-figma-frame">
+          <iframe
+            style="border: 1px solid rgba(0, 0, 0, 0.08); border-radius: 16px"
+            src="https://embed.figma.com/proto/M6eLg8jcHsc1Pr8N7xaxRh/Landingpage-royal-M139--9-2024-?node-id=185-375&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&embed-host=share"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+
+      <!-- FIGMA EMBED 2 -->
+      <div class="ui-figma-block ui-figma-block--alt">
+        <div class="ui-figma-label">
+          <span class="ui-figma-tag">Prototype</span>
+          <span class="ui-figma-rule"></span>
+          <span class="ui-figma-meta">Figma · Interactive</span>
+        </div>
+        <h3 class="ui-figma-heading">B2B Redesign</h3>
+        <div class="ui-figma-frame">
+          <iframe
+            style="border: 1px solid rgba(0, 0, 0, 0.08); border-radius: 16px"
+            src="https://embed.figma.com/proto/3OipZT5zK7ZqTc5kjtv5gZ/B2B-redesign--3-5-2025-?node-id=203-3135&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&embed-host=share"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+
       <div class="pf-section">
-        <span class="pf-design-label">DESIGN</span>
+        <span class="pf-design-label">GRAPHIC DESIGN</span>
         <div class="pf-grid">
           <div class="pf-col">
             <div class="pf-card">
-              <img src="https://picsum.photos/900/600?random=1" alt="" />
+              <img src="public/images/graphic-design-1.jpg" alt="" />
             </div>
             <div class="pf-card">
-              <img src="https://picsum.photos/900/600?random=4" alt="" />
+              <img src="public/images/graphic-design-2.jpg" alt="" />
             </div>
             <div class="pf-card">
-              <img src="https://picsum.photos/900/600?random=7" alt="" />
-            </div>
-          </div>
-
-          <div class="pf-col">
-            <div class="pf-card">
-              <img src="https://picsum.photos/900/600?random=2" alt="" />
-            </div>
-            <div class="pf-card">
-              <img src="https://picsum.photos/900/600?random=5" alt="" />
-            </div>
-            <div class="pf-card">
-              <img src="https://picsum.photos/900/600?random=8" alt="" />
+              <img src="public/images/graphic-design-3.jpg" alt="" />
             </div>
           </div>
 
           <div class="pf-col">
             <div class="pf-card">
-              <img src="https://picsum.photos/900/600?random=3" alt="" />
+              <img src="public/images/graphic-design-4.jpg" alt="" />
             </div>
             <div class="pf-card">
-              <img src="https://picsum.photos/900/600?random=6" alt="" />
+              <img src="public/images/graphic-design-5.jpg" alt="" />
             </div>
             <div class="pf-card">
-              <img src="https://picsum.photos/900/600?random=9" alt="" />
+              <img src="public/images/graphic-design-6.jpg" alt="" />
+            </div>
+          </div>
+
+          <div class="pf-col">
+            <div class="pf-card">
+              <img src="public/images/graphic-design-7.jpg" alt="" />
+            </div>
+            <div class="pf-card">
+              <img src="public/images/graphic-design-8.jpg" alt="" />
+            </div>
+            <div class="pf-card">
+              <img src="public/images/graphic-design-9.jpg" alt="" />
             </div>
           </div>
         </div>
@@ -1575,108 +1565,84 @@
         <!-- ══ SLIDE 1 ══ -->
         <div class="main-frame" id="main1">
           <div class="img-inner" id="inner1">
-            <img
-              src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1600&q=85"
-              alt="City sky"
-            />
+            <img src="public/images/section-tech-1.png" alt="n8n" />
           </div>
         </div>
         <div class="thumb-frame thumb-tl" id="thumb1tl">
-          <img
-            src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=400&q=80"
-            alt=""
-          />
+          <img src="public/images/section-tech-1.png" alt="n8n" />
         </div>
         <div class="text-panel-tech" id="text1">
           <p>
-            Automated content pipelines using n8n — connecting APIs,
-            spreadsheets, and CMS platforms to eliminate repetitive publishing
-            operations.
+            Building automated workflows with n8n for keyword research, SEO
+            outline generation, and content production. Integrated with APIs,
+            Google Sheets, and Telegram chatbots, reducing manual work by over
+            70% and cutting content execution time from 40 minutes to under 10
+            minutes.
           </p>
         </div>
 
         <!-- ══ SLIDE 2 ══ -->
         <div class="main-frame" id="main2">
           <div class="img-inner" id="inner2">
-            <img
-              src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1600&q=85"
-              alt="Passenger view"
-            />
+            <img src="public/images/section-tech-2.jpg" alt="Automation" />
           </div>
         </div>
         <div class="thumb-frame thumb-br" id="thumb2br">
-          <img
-            src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=400&q=80"
-            alt=""
-          />
+          <img src="public/images/section-tech-2.jpg" alt="" />
         </div>
         <div class="thumb-frame thumb-tl" id="thumb2tl">
-          <img
-            src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=400&q=80"
-            alt=""
-          />
+          <img src="public/images/section-tech-2.jpg" alt="" />
         </div>
         <div class="text-panel-tech" id="text2">
           <p>
-            Chrome Extension development — browser tools that streamline data
-            collection, format conversion, and SEO workflow integration.
+            Google Apps Script automation, built an automation system for
+            sending emails, making calls, and updating lead sources for over
+            130,000 contacts simultaneously. All data is automatically
+            consolidated into interactive dashboards, enabling faster
+            performance tracking, issue analysis, and data-driven optimization.
           </p>
         </div>
 
         <!-- ══ SLIDE 3 ══ -->
         <div class="main-frame" id="main3">
           <div class="img-inner" id="inner3">
-            <img
-              src="https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=1600&q=85"
-              alt="Aircraft"
-            />
+            <img src="public/images/section-tech-3.jpg" alt="Aircraft" />
           </div>
         </div>
         <div class="thumb-frame thumb-br" id="thumb3br">
-          <img
-            src="https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=400&q=80"
-            alt=""
-          />
+          <img src="public/images/section-tech-3.jpg" alt="" />
         </div>
         <div class="thumb-frame thumb-tl" id="thumb3tl">
-          <img
-            src="https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=400&q=80"
-            alt=""
-          />
+          <img src="public/images/section-tech-3.jpg" alt="" />
         </div>
         <div class="text-panel-tech" id="text3">
           <p>
-            Data conversion utilities — CSV to JSON, HTML to Text, Text to Slug
-            — saving hours of manual processing per week.
+            Google Apps Script automation built an automated KOL/KOC tracking
+            system for Garnier, automatically collecting performance data from
+            TikTok content and updating reports daily. This streamlined campaign
+            monitoring, delivered real-time insights, and improved team
+            productivity by 4x.
           </p>
         </div>
 
         <!-- ══ SLIDE 4 ══ -->
         <div class="main-frame" id="main4">
           <div class="img-inner" id="inner4">
-            <img
-              src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1600&q=85"
-              alt="Night city"
-            />
+            <img src="public/images/section-tech-4.jpg" alt="Night city" />
           </div>
         </div>
         <div class="thumb-frame thumb-br" id="thumb4br">
-          <img
-            src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=400&q=80"
-            alt=""
-          />
+          <img src="public/images/section-tech-4.jpg" alt="" />
         </div>
         <div class="thumb-frame thumb-tl" id="thumb4tl">
-          <img
-            src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=400&q=80"
-            alt=""
-          />
+          <img src="public/images/section-tech-4.jpg" alt="" />
         </div>
         <div class="text-panel-tech" id="text4">
           <p>
-            Frontend implementation with HTML, CSS, Bootstrap, and TailwindCSS —
-            responsive layouts deployed across WordPress and custom landing
-            pages.
+            Google Apps Script automation built an automated KOL/KOC tracking
+            system for M.O.I Spa, automatically collecting data from TikTok
+            content and generating daily performance reports, helping streamline
+            campaign monitoring and operations.
           </p>
         </div>
 
@@ -1684,26 +1650,25 @@
         <div class="main-frame" id="main5">
           <div class="img-inner" id="inner5">
             <img
-              src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1600&q=85"
-              alt="Sunrise"
+              src="public/images/section-tech-5.jpg"
+              alt="Chrome Extension"
             />
           </div>
         </div>
         <div class="thumb-frame thumb-br" id="thumb5br">
-          <img
-            src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400&q=80"
-            alt=""
-          />
+          <img src="public/images/section-tech-5.jpg" alt="Chrome Extension" />
         </div>
         <div class="text-panel-tech" id="text5">
           <p>
-            Google Apps Script automation — connecting Sheets, Search Console,
-            and Analytics into unified reporting dashboards.
+            Built a Chrome Extension to automate content publishing for
+            Glodival's CMS. It converts raw Markdown to HTML, extracts SEO
+            metadata, and injects everything into CKEditor automatically.
+            Reduced article upload time from ~10 minutes to under 1 minute.
           </p>
         </div>
 
         <div class="nav-labels">
-          <span id="labelLeft">Experience Highlights</span>
+          <!-- <span id="labelLeft">Experience Highlights</span> -->
           <!-- <span id="labelRight">Skip town, let's fly</span> -->
         </div>
       </div>
@@ -1725,50 +1690,56 @@
               <!-- LEFT NAV -->
               <nav class="ps-nav" id="ps-nav">
                 <button class="ps-nav-item active" data-index="0">
-                  Shopee SEO
+                  E-commerce Operations
                 </button>
-                <button class="ps-nav-item" data-index="1">YouTube</button>
-                <button class="ps-nav-item" data-index="2">Design</button>
-                <button class="ps-nav-item" data-index="3">WordPress</button>
-                <button class="ps-nav-item" data-index="4">Freelance</button>
-                <button class="ps-nav-item" data-index="5">Education</button>
+                <button class="ps-nav-item" data-index="1">
+                  YouTube Management
+                </button>
+                <button class="ps-nav-item" data-index="2">
+                  Data Analysis
+                </button>
+                <button class="ps-nav-item" data-index="3">
+                  Event Activation & Planning
+                </button>
+                <button class="ps-nav-item" data-index="4">
+                  TVC Production
+                </button>
+                <!-- <button class="ps-nav-item" data-index="5">Education</button> -->
               </nav>
 
               <!-- CENTER IMAGE -->
               <div id="ps-frame-wrap">
                 <div class="ps-image-frame">
-                  <div class="ps-image-frame">
-                    <img
-                      class="ps-slide show"
-                      data-index="0"
-                      src="./public/images/anhtest-4.jpg"
-                    />
-                    <img
-                      class="ps-slide"
-                      data-index="1"
-                      src="./public/images/anhtest-1.jpg"
-                    />
-                    <img
-                      class="ps-slide"
-                      data-index="2"
-                      src="./public/images/anhtest-2.jpg"
-                    />
-                    <img
-                      class="ps-slide"
-                      data-index="3"
-                      src="./public/images/anhtest-3.jpg"
-                    />
-                    <img
-                      class="ps-slide"
-                      data-index="4"
-                      src="./public/images/anhtest-4.jpg"
-                    />
-                    <img
+                  <img
+                    class="ps-slide show"
+                    data-index="0"
+                    src="./public/images/section-others-1.png"
+                  />
+                  <img
+                    class="ps-slide"
+                    data-index="1"
+                    src="./public/images/section-others-2.jpg"
+                  />
+                  <img
+                    class="ps-slide"
+                    data-index="2"
+                    src="./public/images/section-others-3.jpg"
+                  />
+                  <img
+                    class="ps-slide"
+                    data-index="3"
+                    src="./public/images/section-others-4.jpg"
+                  />
+                  <img
+                    class="ps-slide"
+                    data-index="4"
+                    src="./public/images/section-others-5.jpg"
+                  />
+                  <!-- <img
                       class="ps-slide"
                       data-index="5"
                       src="./public/images/anhtest-1.jpg"
-                    />
-                  </div>
+                    /> -->
                 </div>
                 <!-- /.ps-image-frame -->
               </div>
@@ -1778,51 +1749,62 @@
               <div class="ps-right" id="ps-right">
                 <div class="ps-panel show" data-index="0">
                   <p>
-                    Shopee SEO for Royal Helmet Vietnam — optimized store
-                    content, product titles, descriptions, banners, and hashtags
-                    to improve search ranking within the Shopee marketplace.
+                    Shopee SEO for Royal Helmet Vietnam optimized store content,
+                    product titles, descriptions, banners, and hashtags to
+                    improve search ranking within the Shopee marketplace.
                   </p>
                 </div>
 
                 <div class="ps-panel" data-index="1">
                   <p>
-                    YouTube channel management for Royal Helmet — content
-                    strategy, thumbnail design, TVC and lookbook production to
-                    support brand awareness and product launches.
+                    YouTube channel optimization for Royal Helmet, including
+                    YouTube SEO, keyword and hashtag research, content planning,
+                    thumbnail optimization, and performance tracking to improve
+                    organic reach, audience growth, and brand visibility.
                   </p>
                 </div>
 
                 <div class="ps-panel" data-index="2">
                   <p>
-                    Brand and marketing materials for A Chau Group — product
-                    image editing, promotional banners, standees, event visuals,
-                    TVC production, and lookbook design.
+                    Data Analytics processed and standardized over 130,000 data
+                    records, transforming raw datasets into structured reports
+                    and interactive dashboards. Built visual reporting systems
+                    similar to Looker Studio to uncover performance trends,
+                    identify key issues, and support faster decision-making.
                   </p>
                 </div>
 
                 <div class="ps-panel" data-index="3">
                   <p>
-                    WordPress implementation and maintenance — on-page SEO
-                    configuration, UX/UI optimization, plugin management, and
-                    content publishing across multiple client projects.
+                    Supported event activation and brand experience activities
+                    for Royal Helmet & A Chau Group across major events
+                    including Vietnam Motor Show 2024, Vietnam Plas 2024, and
+                    the 2024 Traffic Safety Festival in HCMC.
+                    <br />
+                    <br />
+                    Contributed to event planning, product showcase setup,
+                    on-site coordination, partner engagement, and direct product
+                    consultation for visitors at exhibition booths.
                   </p>
                 </div>
 
                 <div class="ps-panel" data-index="4">
                   <p>
-                    Independent SEO and web projects since November 2022 —
-                    content strategy, UI/UX landing pages, and WordPress
-                    management across beauty, travel, sports, and e-commerce.
+                    Supported the TVC production process for Royal Helmet’s 2024
+                    M139 campaign, “Mua 1 được 2 - Nhân 2 bảo vệ”, including
+                    production coordination, studio setup, lighting preparation,
+                    behind-the-scenes (BTS) photography support, and visual
+                    content assistance throughout the campaign shooting process.
                   </p>
                 </div>
 
-                <div class="ps-panel" data-index="5">
+                <!-- <div class="ps-panel" data-index="5">
                   <p>
                     Bachelor's in Marketing Management, University of Finance
                     and Marketing (2021–2025). Certified: TOEIC 650, VSTEP B1,
                     Microsoft Office Specialist (MOS).
                   </p>
-                </div>
+                </div> -->
               </div>
               <!-- /.ps-right -->
             </div>
@@ -1838,14 +1820,54 @@
     <!-- Scroll space cho curtain reveal animation -->
     <div class="reveal-trigger-spacer"></div>
 
-    <svg style="display: none">
-      <filter id="diagonal-streak">
-        <feGaussianBlur in="SourceGraphic" stdDeviation="35 1.8" />
+    <svg style="display: none" xmlns="http://www.w3.org/2000/svg">
+      <filter
+        id="oil-paint"
+        x="-10%"
+        y="-25%"
+        width="120%"
+        height="150%"
+        color-interpolation-filters="sRGB"
+      >
+        <!-- Pass 1: vệt dọc chủ đạo — Y freq 0.006 → period ~167px, scale 90 → max shift 45px < 83px → không tile -->
+        <feTurbulence
+          type="fractalNoise"
+          baseFrequency="0.018 0.006"
+          numOctaves="4"
+          seed="42"
+          result="noise1"
+        />
+        <feDisplacementMap
+          in="SourceGraphic"
+          in2="noise1"
+          scale="90"
+          xChannelSelector="R"
+          yChannelSelector="G"
+          result="pass1"
+        />
+        <!-- Pass 2: rìa cọ, texture bề mặt -->
+        <feTurbulence
+          type="fractalNoise"
+          baseFrequency="0.055 0.02"
+          numOctaves="2"
+          seed="9"
+          result="noise2"
+        />
+        <feDisplacementMap
+          in="pass1"
+          in2="noise2"
+          scale="30"
+          xChannelSelector="G"
+          yChannelSelector="B"
+          result="pass2"
+        />
+        <feGaussianBlur in="pass2" stdDeviation="2" />
       </filter>
     </svg>
 
     <div class="reveal-container" id="handler">
       <div class="bg sharp"></div>
+      <div class="bg reveal"></div>
       <div class="bg streaky-blur"></div>
       <main class="content">
         <nav>Percy Huynh · Portfolio</nav>
@@ -1891,7 +1913,13 @@
       </main>
     </div>
 
-    <!-- <script src="public/js/intro.js"></script> -->
+    <!-- BACK TO TOP -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+      ↑
+    </button>
+
+    <script src="public/js/intro.js"></script>
+    <script src="public/js/banner.js"></script>
     <script src="public/js/sidenav.js"></script>
     <script src="public/js/section-about.js"></script>
     <script src="public/js/section-work.js"></script>
@@ -1901,6 +1929,7 @@
     <script src="public/js/section-tech.js"></script>
     <script src="public/js/section-others.js"></script>
     <script src="public/js/curtain-reveal.js"></script>
+
     <!-- <script src="public/js/gallery-tunnel.js"></script> -->
   </body>
 </html>

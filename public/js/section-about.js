@@ -99,10 +99,13 @@ new Typed('.input', {
 
   let W = 0, H = 0;
   let srcCanvas, srcCtx;
+  let srcCache, outBuf;          /* cached pixel buffers — rebuilt on resize */
   let mouse = { x: -9999, y: -9999 };
   let isHovering = false;
   let raf = null;
+  let loopT0 = null;
   let tick = 0;
+  let prevRenderMX = -9999, prevRenderMY = -9999, smoothVelMag = 0, lastFrameT = 0;
 
   function setupSize() {
     const availW = wrap.clientWidth;
@@ -184,6 +187,8 @@ new Typed('.input', {
       }
     }
     srcCtx.putImageData(imgData, 0, 0);
+    srcCache = srcCtx.getImageData(0, 0, sw, sh);          /* snapshot for render loop */
+    outBuf   = ctx.createImageData(sw, sh);                /* reusable output buffer   */
   }
 
   function initCanvas() {
@@ -194,64 +199,89 @@ new Typed('.input', {
     ctx.scale(DPR, DPR);
   }
 
-  function drawStatic() {
-    ctx.clearRect(0, 0, W, H);
-    ctx.drawImage(srcCanvas, 0, 0, W * DPR, H * DPR, 0, 0, W, H);
-  }
-
-  function renderFrame() {
+  /* ── unified render: water always on, mouse ink-bleed added when hovering ── */
+  function renderFrame(now) {
     tick++;
-    const sw = srcCanvas.width, sh = srcCanvas.height;
-    const srcData = srcCtx.getImageData(0, 0, sw, sh);
-    const src = srcData.data;
-    const out = ctx.createImageData(sw, sh);
-    const dst = out.data;
-    const RADIUS = 90, STRENGTH = 22, WAVE = 6;
+    const t    = (now - loopT0) / 1000;
+    const flow = t * 0.9;
+    const AMP  = 3.0;
+
+    // Velocity tracking — normalize to 16ms (60fps) so high-refresh screens feel the same
+    const dt = lastFrameT > 0 ? Math.max(4, now - lastFrameT) : 16;
+    lastFrameT = now;
+    if (isHovering && prevRenderMX > -999) {
+      const vdx = mouse.x - prevRenderMX;
+      const vdy = mouse.y - prevRenderMY;
+      const raw = Math.sqrt(vdx * vdx + vdy * vdy) * (16 / dt);
+      smoothVelMag = smoothVelMag * 0.72 + raw * 0.28;
+    } else {
+      smoothVelMag *= 0.85;
+    }
+    prevRenderMX = mouse.x;
+    prevRenderMY = mouse.y;
+
+    // velBoost: 1.0 at rest → up to 2.8 when cursor moves fast (~18+ px/frame)
+    const velBoost = 1 + Math.min(smoothVelMag / 18, 1.8);
+    const RADIUS = 90, STRENGTH = 22 * velBoost, WAVE = 6;
+
+    const sw  = srcCanvas.width, sh = srcCanvas.height;
+    const src = srcCache.data;
+    const dst = outBuf.data;
 
     for (let y = 0; y < sh; y++) {
       for (let x = 0; x < sw; x++) {
         const px = x / DPR, py = y / DPR;
-        const toMouseX = mouse.x - px, toMouseY = mouse.y - py;
-        const dist = Math.sqrt(toMouseX * toMouseX + toMouseY * toMouseY);
-        let srcX = x, srcY = y;
-        if (dist < RADIUS && dist > 0.1) {
-          const falloff = Math.pow(1 - dist / RADIUS, 2);
-          const pull = falloff * STRENGTH;
-          const angle = Math.atan2(toMouseY, toMouseX);
-          const perp = angle + Math.PI / 2;
-          const wobble = Math.sin(dist * 0.15 - tick * 0.08) * falloff * WAVE;
-          srcX = x - (toMouseX / dist) * pull * DPR + Math.cos(perp) * wobble * DPR;
-          srcY = y - (toMouseY / dist) * pull * DPR + Math.sin(perp) * wobble * DPR;
+
+        /* water displacement — always applied */
+        const w1 = Math.sin(px * 0.045 + py * 0.030 + flow * 1.10);
+        const w2 = Math.sin(px * 0.028 - py * 0.050 + flow * 0.75 + 1.57);
+        const w3 = Math.cos(px * 0.060 + py * 0.020 + flow * 1.40 + 3.20);
+        const w4 = Math.cos(px * 0.020 + py * 0.070 - flow * 0.55 + 0.80);
+        let dx = (w1 * 0.55 + w3 * 0.45) * AMP * DPR;
+        let dy = (w2 * 0.50 + w4 * 0.50) * AMP * DPR;
+
+        /* ink-bleed displacement — added on top when hovering */
+        if (isHovering) {
+          const toMX = mouse.x - px, toMY = mouse.y - py;
+          const dist = Math.sqrt(toMX * toMX + toMY * toMY);
+          if (dist < RADIUS && dist > 0.1) {
+            const falloff = Math.pow(1 - dist / RADIUS, 2);
+            const pull    = falloff * STRENGTH;
+            const angle   = Math.atan2(toMY, toMX);
+            const perp    = angle + Math.PI / 2;
+            const wobble  = Math.sin(dist * 0.15 - tick * 0.08) * falloff * WAVE;
+            dx += -(toMX / dist) * pull * DPR + Math.cos(perp) * wobble * DPR;
+            dy += -(toMY / dist) * pull * DPR + Math.sin(perp) * wobble * DPR;
+          }
         }
-        const fx = srcX - Math.floor(srcX), fy = srcY - Math.floor(srcY);
-        const x0 = Math.floor(srcX), y0 = Math.floor(srcY);
-        const x1 = x0 + 1, y1 = y0 + 1;
-        function g(xx, yy, c) {
-          if (xx < 0 || xx >= sw || yy < 0 || yy >= sh) return 0;
-          return src[(yy * sw + xx) * 4 + c];
-        }
+
+        const sx = Math.max(0, Math.min(sw - 1, x + dx));
+        const sy = Math.max(0, Math.min(sh - 1, y + dy));
+        const fx = sx - Math.floor(sx), fy = sy - Math.floor(sy);
+        const x0 = Math.floor(sx), y0 = Math.floor(sy);
+        const x1 = Math.min(x0 + 1, sw - 1), y1 = Math.min(y0 + 1, sh - 1);
         const di = (y * sw + x) * 4;
         for (let c = 0; c < 4; c++) {
-          dst[di+c] = g(x0,y0,c)*(1-fx)*(1-fy) + g(x1,y0,c)*fx*(1-fy)
-                    + g(x0,y1,c)*(1-fx)*fy      + g(x1,y1,c)*fx*fy;
+          dst[di+c] = src[(y0*sw+x0)*4+c]*(1-fx)*(1-fy) + src[(y0*sw+x1)*4+c]*fx*(1-fy)
+                    + src[(y1*sw+x0)*4+c]*(1-fx)*fy      + src[(y1*sw+x1)*4+c]*fx*fy;
         }
       }
     }
     ctx.clearRect(0, 0, W, H);
-    ctx.putImageData(out, 0, 0);
+    ctx.putImageData(outBuf, 0, 0);
   }
 
   function startLoop() {
     if (raf) return;
-    function loop() {
-      if (!isHovering) { raf = null; drawStatic(); return; }
-      renderFrame();
+    loopT0 = performance.now();
+    function loop(now) {
+      renderFrame(now);
       raf = requestAnimationFrame(loop);
     }
     raf = requestAnimationFrame(loop);
   }
 
-  canvas.addEventListener('mouseenter', () => { isHovering = true; startLoop(); });
+  canvas.addEventListener('mouseenter', () => { isHovering = true; });
   canvas.addEventListener('mousemove', e => {
     const r = canvas.getBoundingClientRect();
     mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
@@ -261,16 +291,16 @@ new Typed('.input', {
     e.preventDefault();
     const r = canvas.getBoundingClientRect();
     mouse.x = e.touches[0].clientX - r.left; mouse.y = e.touches[0].clientY - r.top;
-    isHovering = true; startLoop();
+    isHovering = true;
   }, { passive: false });
   canvas.addEventListener('touchend', () => { isHovering = false; mouse.x = -9999; mouse.y = -9999; });
   window.addEventListener('resize', () => {
     cancelAnimationFrame(raf); raf = null;
     ctx.setTransform(1,0,0,1,0,0);
-    setupSize(); buildSource(); initCanvas(); drawStatic();
+    setupSize(); buildSource(); initCanvas(); startLoop();
   });
 
-  setupSize(); buildSource(); initCanvas(); drawStatic();
+  setupSize(); buildSource(); initCanvas(); startLoop();
 })();
 
 // SCROLL REVEAL — ab-text-block lines fade in as you scroll

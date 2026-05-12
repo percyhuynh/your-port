@@ -233,16 +233,16 @@ gsap.registerPlugin(ScrollTrigger);
 
   const nfaData = [
     {
-      img: "https://images.unsplash.com/photo-1569025690938-a00729c9e1f9?w=1400&q=88",
-      cap: "Joby Completes Piloted Electric Air Taxi Flight Across San Francisco Bay",
+      img: "public/images/section-contentseo-1.jpg",
+      cap: "GTrip — Keyword strategy & English blog content for global audiences",
     },
     {
-      img: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1400&q=88",
-      cap: "Joby's First FAA-Conforming Aircraft Takes Flight",
+      img: "public/images/section-contentseo-2.jpg",
+      cap: "Royal Helmet — SEO blog content & supporting visuals",
     },
     {
-      img: "https://images.unsplash.com/photo-1464983953574-0892a716854b?w=1400&q=88",
-      cap: "Joby to Begin U.S. Operations in 2026 Under White House Air Taxi Program",
+      img: "public/images/section-contentseo-3.jpg",
+      cap: "Freelance Content SEO — Beauty, investment, healthcare & sports niches",
     },
   ];
 
@@ -363,8 +363,9 @@ gsap.registerPlugin(ScrollTrigger);
   // Refresh ScrollTrigger sau khi layout settle xong (fix embedded component)
   setTimeout(() => ScrollTrigger.refresh(), 300);
 
-  document.getElementById("nfaOverlay").addEventListener("click", nfaClose);
-  document.getElementById("nfaLbX").addEventListener("click", nfaClose);
+  document.getElementById("nfaLb").addEventListener("click", function (e) {
+    if (!document.getElementById("nfaLbBox").contains(e.target)) nfaClose();
+  });
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") nfaClose();
   });

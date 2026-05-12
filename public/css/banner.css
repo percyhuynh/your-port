@@ -1,0 +1,60 @@
+/* banner.css */
+.banner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: block;
+  cursor: none;
+}
+#banner-bg,
+#banner-canvas,
+#banner-ui {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+#banner-bg {
+  z-index: 0;
+}
+#banner-canvas {
+  z-index: 1;
+}
+#banner-ui {
+  z-index: 2;
+  pointer-events: none;
+}
+
+#banner-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  pointer-events: none;
+  z-index: 3;
+  user-select: none;
+}
+#banner-text h1 {
+  font-family: "DM Serif Display", "Playfair Display", Georgia, serif;
+  font-size: clamp(36px, 5.5vw, 76px);
+  font-weight: 400;
+  letter-spacing: 0.28em;
+  color: rgba(8, 2, 2, 0.58);
+  text-transform: uppercase;
+  line-height: 1;
+  margin: 0;
+}
+#banner-text p {
+  margin-top: 16px;
+  font-family: "DM Mono", "Syne Mono", monospace;
+  font-size: clamp(9px, 1vw, 12px);
+  font-weight: 400;
+  letter-spacing: 0.5em;
+  color: rgba(8, 2, 2, 0.3);
+  text-transform: uppercase;
+}
