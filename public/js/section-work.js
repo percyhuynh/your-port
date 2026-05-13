@@ -67,37 +67,37 @@ const slides = [
   {
     title: "©Percy\nHuynh",
     desc: "A curated showcase of multidisciplinary work spanning branding, SEO, product thinking, and digital execution.",
-    img: "public/images/section-work-1.png",
+    img: "public/images/section-work-1.webp",
     link: "#about",          // ← đổi link slide 1
   },
   {
     title: "©Digital\nStrategy",
     desc: "Data-driven digital strategies built to strengthen positioning, accelerate growth, and maximise business impact.",
-    img: "public/images/section-work-2.png",
+    img: "public/images/section-work-2.webp",
     link: "#s0",             // ← đổi link slide 2
   },
   {
     title: "©Content\nSEO",
     desc: "Search-focused content systems engineered to improve rankings, capture intent, and drive sustainable traffic.",
-    img: "public/images/section-work-3.png",
+    img: "public/images/section-work-3.webp",
     link: "#s1",             // ← đổi link slide 3
   },
   {
     title: "©UI/UX\nDesign",
     desc: "User-centered interfaces crafted to balance visual clarity, intuitive interaction, and conversion performance.",
-    img: "public/images/section-work-4.png",
+    img: "public/images/section-work-4.webp",
     link: "#s2",             // ← đổi link slide 4
   },
   {
     title: "©Automation\nTechnical",
     desc: "Technical workflows and automation systems designed to streamline operations, reduce friction, and scale efficiently.",
-    img: "public/images/section-work-5.png",
+    img: "public/images/section-work-5.webp",
     link: "#scrollSection",  // ← đổi link slide 5
   },
   {
     title: "©Others",
     desc: "Extended expertise in marketplace operations, YouTube growth management, event execution, and multi-channel business coordination.",
-    img: "public/images/section-work-6.jpg",
+    img: "public/images/section-work-6.webp",
     link: "#s4",             // ← đổi link slide 6
   },
 ];
@@ -232,7 +232,7 @@ ScrollTrigger.create({
   pinSpacing: false,
   scrub: 1.6,
   onUpdate(self) {
-    // convert scroll progress to slide units; TAIL region clamps at N-1
+    if (window.__isJumping) return; // OPT: skip khi navigate
     applyProgress(self.progress * totalScroll / SCROLL_DISTANCE);
   },
 });

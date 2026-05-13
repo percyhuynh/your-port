@@ -9,6 +9,9 @@ new Typed('.input', {
 
 // AB-PAINTING-SCREEN — museum spotlight reveal + hover B&W→color
 (function () {
+  /* Mobile: tắt spotlight animation nặng — CSS hiện ảnh trực tiếp */
+  if (window.innerWidth <= 768) return;
+
   var screen = document.getElementById('ab-painting-screen');
   var dark   = document.getElementById('ab-spot-dark');
   var glow   = document.getElementById('ab-spot-glow');
@@ -88,6 +91,9 @@ new Typed('.input', {
 
 // PH-CANVAS — interactive "Percy Huynh" ink-bleed canvas
 (function () {
+  /* Mobile: tắt canvas rAF loop — CSS đã ẩn #ph-root */
+  if (window.innerWidth <= 768) return;
+
   const wrap = document.getElementById('ph-wrap');
   const canvas = document.getElementById('ph-canvas');
   if (!wrap || !canvas) return;

@@ -132,6 +132,8 @@
       }
     }
 
+    var rafId = null; // OPT: track rAF để có thể cancel
+
     /* ── Main loop ── */
     function frame() {
       ctx.clearRect(0, 0, W, H);
@@ -225,7 +227,7 @@
         uiCtx.fill();
       }
 
-      requestAnimationFrame(frame);
+      rafId = requestAnimationFrame(frame);
     }
 
     /* ── Resize ── */
@@ -260,7 +262,20 @@
     }
 
     resize();
-    requestAnimationFrame(frame);
+
+    /* OPT: IntersectionObserver — tắt hoàn toàn rAF loop khi banner
+       không trong viewport. 180 particles O(n²) mỗi frame = ~16k phép tính.
+       Khi ở cuối trang scroll lên, banner visible → loop bật lại ngay. */
+    var bannerObserver = new IntersectionObserver(function(entries) {
+      if (entries[0].isIntersecting) {
+        if (!rafId) rafId = requestAnimationFrame(frame);
+      } else {
+        if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+      }
+    }, { threshold: 0.01 });
+    bannerObserver.observe(section);
+
+    rafId = requestAnimationFrame(frame);
 
   });
 })();

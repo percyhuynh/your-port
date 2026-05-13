@@ -7,7 +7,8 @@
       "Bash(npm install *)",
       "Bash(head -n 844 public/css/section-seo.css)",
       "Bash(mv /tmp/seo_css_fixed.css public/css/section-seo.css)",
-      "Bash(python -c \"from PIL import Image; img = Image.open\\('g:/workspace/your-port/public/images/main-logo.png'\\); print\\(img.size, img.mode\\)\")"
+      "Bash(python -c \"from PIL import Image; img = Image.open\\('g:/workspace/your-port/public/images/main-logo.png'\\); print\\(img.size, img.mode\\)\")",
+      "Bash(cd \"g:\\\\workspace\\\\your-port\" && sed -i 's/\\\\.jpg/.webp/g; s/\\\\.png/.webp/g' index.html)"
     ]
   }
 }

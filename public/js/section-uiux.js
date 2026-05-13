@@ -1,5 +1,8 @@
 /* ── UIUX ZOOM INTRO ── */
 (function () {
+  /* Mobile: tắt hoàn toàn zoom animation — CSS đã hiện content trực tiếp */
+  if (window.innerWidth <= 768) return;
+
   var section = document.getElementById('uiux-sticky-wrap');
   var heading = document.getElementById('uiux-heading');
   var pivot   = document.getElementById('uiux-pivot');
@@ -10,6 +13,24 @@
 
   var MAX_SCALE = 100;
   var originSet = false;
+
+  /* IntersectionObserver — chỉ quản lý GPU layer, KHÔNG block applyZoom */
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) {
+        /* Section ra ngoài viewport hoàn toàn → giải phóng GPU layer */
+        heading.style.willChange = 'auto';
+        heading.style.transform  = 'scale(0.001)';
+        originSet = false; /* Force reinit khi scroll trở lại */
+      } else {
+        heading.style.willChange = 'transform';
+        /* Reinit origin nếu cần */
+        if (!originSet) initOrigin();
+      }
+    });
+  }, { rootMargin: '0px 0px 0px 0px' }); /* Không buffer — chỉ fire khi thật sự ra/vào */
+
+  observer.observe(section);
 
   function initOrigin() {
     // BƯỚC 1: reset transform TRƯỚC
@@ -31,14 +52,16 @@
       var pvy = pr.top  + pr.height * 0.45;
 
 
-      // Scale đủ phủ góc xa nhất × 6
+      // Scale đủ phủ góc xa nhất × 6, nhưng cap ở 30
+      // Trên 30x chữ đã phủ toàn màn hình — không cần scale thêm
+      // black overlay sẽ fade in che phần còn lại → nhẹ hơn rất nhiều
       var maxDist = Math.max(
         Math.hypot(pvx,     pvy),
         Math.hypot(W - pvx, pvy),
         Math.hypot(pvx,     H - pvy),
         Math.hypot(W - pvx, H - pvy)
       );
-      MAX_SCALE = (maxDist / (pr.width / 2)) * 6;
+      MAX_SCALE = Math.min((maxDist / (pr.width / 2)) * 6, 30);
 
       // BƯỚC 5: offset tâm F so với top-left của heading element
       var ox = pvx - hr.left;
@@ -58,47 +81,52 @@
   }
 
   function applyZoom(p) {
-    if (!originSet) return;
+    if (!originSet || window.__isJumping) return;
 
-    // ── 2-phase zoom ──
-    var P_SPLIT  = 0.788; // phase 1: 2000vh chậm, phase 2: 180vh nhanh
-    var MID_FRAC = 0.018; // tại p_split, scale ≈ 3× — full text vừa phủ ngang viewport
+    var P_SPLIT  = 0.788;
+    var MID_FRAC = 0.018;
 
     var scale;
     if (p <= P_SPLIT) {
-      // Phase 1: zoom chậm đều — người xem thấy chữ tăng kích cỡ
+      // Phase 1: zoom chậm từ 0 → MID_FRAC * MAX_SCALE (~3x)
       scale = (p / P_SPLIT) * MID_FRAC * MAX_SCALE;
     } else {
-      // Phase 2: zoom nhanh — thuần hiệu ứng chuyển cảnh
+      // Phase 2: zoom nhanh đến MAX_SCALE (capped ở 30)
       var t2 = (p - P_SPLIT) / (1 - P_SPLIT);
       scale  = (MID_FRAC + t2 * (1 - MID_FRAC)) * MAX_SCALE;
     }
     heading.style.transform = 'scale(' + Math.max(scale, 0.001) + ')';
 
-    // p2: tiến độ tương đối trong phase 2 (0→1), luôn đúng bất kể P_SPLIT
     var p2 = p <= P_SPLIT ? 0 : (p - P_SPLIT) / (1 - P_SPLIT);
 
-    // Black: giữ nguyên phase 1, fade toàn bộ trong phase 2
+    // Black: fade out trong phase 2 — cũng dùng để che khi scale chưa phủ hết
     black.style.opacity = String(Math.max(0, 1 - p2));
 
-    // Content: xuất hiện nửa sau phase 2
     if (content) {
-      var t3 = Math.max(0, (p2 - 0.4) / 0.6);
+      var t3 = Math.max(0, (p2 - 0.9) / 0.1);
       content.style.opacity       = String(Math.min(t3, 1));
       content.style.pointerEvents = t3 > 0.5 ? 'auto' : 'none';
     }
   }
 
+  var rafPending = false;
   function onScroll() {
-    var rect       = section.getBoundingClientRect();
-    var sectionH   = section.offsetHeight;
-    var viewportH  = window.innerHeight;
-    var scrolled   = -rect.top;
-    var scrollable = sectionH - viewportH;
+    /* Skip hoàn toàn khi đang navigate bằng menu — không render animation khi jump */
+    if (window.__isJumping) return;
+    if (rafPending) return;
+    rafPending = true;
+    requestAnimationFrame(function () {
+      rafPending = false;
+      var rect      = section.getBoundingClientRect();
+      var sectionH  = section.offsetHeight;
+      var viewportH = window.innerHeight;
+      var scrolled  = -rect.top;
+      var scrollable= sectionH - viewportH;
 
-    if (scrolled <= 0)               applyZoom(0);
-    else if (scrolled >= scrollable) applyZoom(1);
-    else                             applyZoom(scrolled / scrollable);
+      if (scrolled <= 0)               applyZoom(0);
+      else if (scrolled >= scrollable) applyZoom(1);
+      else                             applyZoom(scrolled / scrollable);
+    });
   }
 
   requestAnimationFrame(function () {
@@ -118,58 +146,65 @@
 })();
 
 (function () {
+  /* Mobile: dùng CSS scroll-snap thay GSAP pin — nhẹ hơn, không cần JS */
+  if (window.innerWidth <= 768) return;
+
   gsap.registerPlugin(ScrollTrigger);
 
-  const section  = document.getElementById("hsSection");
-  const track    = document.getElementById("hsTrack");
-  const panels   = gsap.utils.toArray(".hs-panel");
-  const progress = document.getElementById("hsProgress");
-  const dotsWrap = document.getElementById("hsDots");
-  const N = panels.length;
+  var section  = document.getElementById("hsSection");
+  var track    = document.getElementById("hsTrack");
+  var panels   = document.querySelectorAll(".hs-panel");
+  var progress = document.getElementById("hsProgress");
+  var dotsWrap = document.getElementById("hsDots");
+  var N = panels.length;
 
-  section.style.setProperty("--hs-np", N);
+  if (!section || !track || !N) return;
 
-  panels.forEach((_, i) => {
-    const d = document.createElement("div");
+  panels.forEach(function(_, i) {
+    var d = document.createElement("div");
     d.className = "hs-dot" + (i === 0 ? " active" : "");
     dotsWrap.appendChild(d);
   });
-  const dots = dotsWrap.querySelectorAll(".hs-dot");
+  var dots = dotsWrap.querySelectorAll(".hs-dot");
 
-  const st = gsap.to(track, {
-  x: () => -(track.scrollWidth - section.offsetWidth),
-  ease: "none",
-  scrollTrigger: {
-    trigger: section,
-    start: "top top",
-    end: () => `+=${track.scrollWidth - section.offsetWidth}`,
+  /* OPT: scrub: 0.8 thay vì scrub: 1 → giảm bounce/nảy khi scroll nhanh.
+     anticipatePin: 1 giữ nguyên để tránh flicker khi pin bắt đầu.
+     Thêm __isJumping check trong onUpdate → skip khi đang navigate bằng menu */
+  gsap.to(track, {
+    x: function() { return -(track.scrollWidth - section.offsetWidth); },
+    ease: "none",
+    scrollTrigger: {
+      trigger: section,
+      start: "top top",
+      end: function() { return "+=" + (track.scrollWidth - section.offsetWidth); },
       pin: true,
-      scrub: 1,
+      scrub: 0.8,
       anticipatePin: 1,
       invalidateOnRefresh: true,
-      onEnter:     () => { dotsWrap.style.opacity = "1"; progress.style.opacity = "1"; },
-      onLeave:     () => { dotsWrap.style.opacity = "0"; progress.style.opacity = "0"; },
-      onEnterBack: () => { dotsWrap.style.opacity = "1"; progress.style.opacity = "1"; },
-      onLeaveBack: () => { dotsWrap.style.opacity = "0"; progress.style.opacity = "0"; },
-      onUpdate(self) {
-        progress.style.width = self.progress * 100 + "%";
-        const idx = Math.round(self.progress * (N - 1));
-        dots.forEach((d, i) => d.classList.toggle("active", i === idx));
+      fastScrollEnd: true,
+      onEnter:     function() { dotsWrap.style.opacity = "1"; progress.style.opacity = "1"; },
+      onLeave:     function() { dotsWrap.style.opacity = "0"; progress.style.opacity = "0"; },
+      onEnterBack: function() { dotsWrap.style.opacity = "1"; progress.style.opacity = "1"; },
+      onLeaveBack: function() { dotsWrap.style.opacity = "0"; progress.style.opacity = "0"; },
+      onUpdate: function(self) {
+        if (window.__isJumping) return; // skip khi đang navigate
+        progress.style.width = (self.progress * 100) + "%";
+        var idx = Math.round(self.progress * (N - 1));
+        dots.forEach(function(d, i) { d.classList.toggle("active", i === idx); });
       },
     },
   });
 
-  dots.forEach((dot, i) => {
-    dot.addEventListener("click", () => {
-      const tr = st.scrollTrigger;
-      const target = tr.start + (tr.end - tr.start) * (i / (N - 1));
-      gsap.to(window, { scrollTo: target, duration: .8, ease: "power2.inOut" });
+  dots.forEach(function(dot, i) {
+    dot.addEventListener("click", function() {
+      // scroll ngang bằng GSAP — không ảnh hưởng scroll dọc
+      var tr = ScrollTrigger.getById("hs");
+      if (!tr) return;
+      var target = tr.start + (tr.end - tr.start) * (i / (N - 1));
+      gsap.to(window, { scrollTo: target, duration: 0.6, ease: "power2.inOut" });
     });
   });
 
-  ScrollTrigger.addEventListener("refreshInit", () => {
-    section.style.setProperty("--hs-np", N);
-  });
 })();
 
 

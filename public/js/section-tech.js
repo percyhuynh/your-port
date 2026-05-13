@@ -29,6 +29,17 @@ document.addEventListener('DOMContentLoaded', function() {
         navRight.style.color = isBlack ? "#fff" : "#0f0f0e";
       }
 
+      /* Sau jump: tính lại màu từ DOM ngay lập tức */
+      window.addEventListener('__jumpdone', function() {
+        const el = document.getElementById('scrollSection');
+        if (!el) return;
+        const rect = el.getBoundingClientRect();
+        const total = el.offsetHeight - window.innerHeight;
+        const p = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0;
+        snapped = !snapped; // force re-apply
+        applyColour(p >= SNAP_PROGRESS);
+      });
+
       /*
         Layout:
         • frame: left=27vw, top=2.5vh, width=47vw, height=95vh
@@ -60,7 +71,9 @@ document.addEventListener('DOMContentLoaded', function() {
           end: "bottom bottom",
           scrub: 1.8,
           invalidateOnRefresh: true,
+          fastScrollEnd: true,
           onUpdate(self) {
+            if (window.__isJumping) return;
             applyColour(self.progress >= SNAP_PROGRESS);
           },
         },

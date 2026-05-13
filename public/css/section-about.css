@@ -273,7 +273,7 @@
   line-height: 1.1;
   transition:
     transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity  0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .ab-btn-line-b {
@@ -284,7 +284,7 @@
   transform: translate(-5px, 0);
   transition:
     transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity  0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .ab-btn:hover .ab-btn-line-a {
@@ -313,7 +313,7 @@
 }
 
 .ab-social a:hover {
-  color: rgba(255, 240, 180, 0.85);
+  color: #6b1a1a;
   transform: translateY(-4px);
 }
 
@@ -346,8 +346,8 @@
 }
 
 #sk-root .sk-pills {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 10px;
 }
 
@@ -355,18 +355,21 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 9px 20px;
+  padding: 9px 12px;
   border-radius: 100px;
   border: 1px solid rgba(255, 255, 255, 0.14);
   background: transparent;
   color: rgba(255, 255, 255, 0.5);
   font-family: "Courier Prime", monospace;
-  font-size: clamp(0.78rem, 1vw, 0.9rem);
+  font-size: clamp(0.72rem, 0.9vw, 0.9rem);
   font-weight: 400;
   letter-spacing: 0.02em;
   cursor: default;
   user-select: none;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
   transition:
     background 0.3s ease,
     border-color 0.3s ease,
@@ -417,7 +420,7 @@
   position: relative;
   background: linear-gradient(
     to bottom,
-    #000000  0%,
+    #000000 0%,
     #0a0a0a 12%,
     #303030 26%,
     #909090 38%,
@@ -493,5 +496,23 @@
 
   #sk-root {
     padding: 44px 24px 48px;
+  }
+
+  /* Mobile: 2 cột thay 4 cột */
+  #sk-root .sk-pills {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 430px) {
+  /* iPhone 14 Pro Max: 2 cột vừa đủ */
+  #sk-root .sk-pills {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  #sk-root .sk-pill {
+    font-size: 0.7rem;
+    padding: 8px 8px;
   }
 }

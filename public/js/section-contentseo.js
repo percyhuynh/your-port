@@ -61,6 +61,7 @@
       trigger: "#cs-dark-zone",
       start: "top bottom", end: "bottom top",
       scrub: 1.5,
+      onUpdate: function(self) { if (window.__isJumping) return; }, // OPT
     },
     yPercent: -18, ease: "none",
   });

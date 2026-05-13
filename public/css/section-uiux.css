@@ -57,7 +57,8 @@
   white-space: nowrap;
   display: flex;
   align-items: center;
-  will-change: transform;
+  /* OPT: bỏ will-change cố định — JS bật/tắt động theo IntersectionObserver
+     Tránh giữ GPU layer 24/7 dù section không visible → giảm VRAM */
   -webkit-font-smoothing: antialiased;
   backface-visibility: hidden;
   /* KHÔNG set transform ở đây — JS set sau khi đo xong */
@@ -119,7 +120,7 @@
 .section.s3 > .body {
   margin-left: 13.3vw;
   margin-right: 0;
-  white-space: nowrap;
+  /* OPT: bỏ white-space:nowrap thừa — mâu thuẫn với text-align:justify, không có tác dụng */
   text-align: justify;
   text-align-last: justify;
   color: #000;
@@ -167,12 +168,10 @@
 }
 
 .hs-track {
-  /* display: flex;
-    width: calc(var(--hs-np) * 100vw); */
   display: flex;
   width: max-content;
   height: 100vh;
-  will-change: transform;
+  /* OPT: bỏ will-change thường trực — GSAP tự quản lý khi cần */
 }
 
 .hs-panel {
@@ -468,8 +467,13 @@
   width: 100%;
   aspect-ratio: 3 / 4;
   opacity: 0;
-  will-change: transform, opacity;
+  /* OPT: bỏ will-change thường trực — tạo GPU layer cho tất cả cards cùng lúc → VRAM 5GB
+     Chỉ bật khi hover để browser tạo layer đúng lúc cần */
   backface-visibility: hidden;
+}
+
+.pf-card:hover {
+  will-change: transform;
 }
 
 .pf-card img {
@@ -505,8 +509,9 @@
   align-items: center;
   justify-content: center;
   background: rgba(240, 237, 223, 0.08);
-  backdrop-filter: blur(22px) saturate(1.2);
-  -webkit-backdrop-filter: blur(22px) saturate(1.2);
+  /* OPT: giảm blur 22→12px — bớt ~40% GPU cost, mắt thường không phân biệt được */
+  backdrop-filter: blur(12px) saturate(1.2);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
   cursor: pointer;
 }
 .pf-lightbox.pf-open {
@@ -571,5 +576,167 @@
   }
   .pf-col:nth-child(3) {
     display: flex;
+  }
+}
+
+/* ══════════════════════════════════════════════════
+   MOBILE — section UIUX (≤768px)
+   Tắt animation nặng, hiện content trực tiếp
+══════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* ── ZOOM INTRO: tắt hoàn toàn, rút height về 0 ── */
+  #uiux-sticky-wrap {
+    height: auto;
+  }
+
+  #uiux-sticky {
+    position: relative;
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Ẩn black overlay và heading zoom */
+  #uiux-black,
+  #uiux-text-layer {
+    display: none;
+  }
+
+  /* Hiện thẳng white background */
+  #uiux-white {
+    display: none;
+  }
+
+  /* Hiện content trực tiếp, không cần opacity:0 từ JS */
+  #uiux-content {
+    position: relative;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    padding: 60px 6vw 40px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100vh;
+  }
+
+  #uiux-content .uiux-ttl {
+    font-size: clamp(28px, 8vw, 48px);
+    white-space: normal;
+    margin-bottom: 16px;
+  }
+
+  #uiux-content .uiux-body {
+    font-size: 14px;
+    max-width: 100%;
+  }
+
+  /* ── s3 section text ── */
+  .section.s3 > .lbl,
+  .section.s3 > .ttl {
+    margin-left: 6vw;
+    margin-right: 6vw;
+  }
+
+  .section.s3 > .body {
+    margin-left: 6vw;
+    text-align: left;
+    text-align-last: left;
+  }
+
+  .section.s3 > .ttl {
+    font-size: clamp(28px, 8vw, 48px);
+    white-space: normal;
+  }
+
+  /* ── Horizontal scroll gallery: CSS snap thay GSAP pin ── */
+  .hs-section {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    height: 80vw;
+    max-height: 480px;
+  }
+
+  .hs-section::-webkit-scrollbar {
+    display: none;
+  }
+
+  .hs-track {
+    height: 100%;
+  }
+
+  .hs-panel {
+    width: 85vw;
+    height: 100%;
+    padding: 3vw;
+    scroll-snap-align: start;
+    flex-shrink: 0;
+  }
+
+  .hs-card {
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;
+  }
+
+  /* Ẩn progress bar và dots — dùng scroll tay */
+  .hs-progress,
+  .hs-dots {
+    display: none;
+  }
+
+  /* ── Figma embed ── */
+  .ui-figma-block {
+    padding: 40px 6vw 30px;
+  }
+
+  .ui-figma-heading {
+    font-size: clamp(1.1rem, 5vw, 1.6rem);
+  }
+
+  /* ── pf-section: portfolio grid ── */
+  .pf-section {
+    padding: 40px 6vw 60px;
+  }
+
+  .pf-section .pf-design-label {
+    font-size: clamp(28px, 8vw, 48px);
+    white-space: normal;
+    line-height: 1.4;
+    margin-bottom: 24px;
+  }
+
+  .pf-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .pf-col:nth-child(2) {
+    margin-top: 40px;
+  }
+
+  .pf-col:nth-child(3) {
+    display: none;
+  }
+}
+
+@media (max-width: 420px) {
+  .pf-grid {
+    grid-template-columns: 1fr;
+  }
+  .pf-col:nth-child(n) {
+    margin-top: 0;
+  }
+  .pf-col:nth-child(3) {
+    display: flex;
+  }
+  .hs-panel {
+    width: 90vw;
   }
 }

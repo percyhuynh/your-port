@@ -233,15 +233,15 @@ gsap.registerPlugin(ScrollTrigger);
 
   const nfaData = [
     {
-      img: "public/images/section-contentseo-1.jpg",
+      img: "public/images/section-contentseo-1.webp",
       cap: "GTrip — Keyword strategy & English blog content for global audiences",
     },
     {
-      img: "public/images/section-contentseo-2.jpg",
+      img: "public/images/section-contentseo-2.webp",
       cap: "Royal Helmet — SEO blog content & supporting visuals",
     },
     {
-      img: "public/images/section-contentseo-3.jpg",
+      img: "public/images/section-contentseo-3.webp",
       cap: "Freelance Content SEO — Beauty, investment, healthcare & sports niches",
     },
   ];

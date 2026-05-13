@@ -7,7 +7,8 @@ const initRevealEffect = () => {
 
   if (!others || !reveal) return;
 
-  gsap.set(reveal, { opacity: 0, pointerEvents: "none" });
+  reveal.style.opacity = '0';
+  reveal.style.pointerEvents = 'none';
 
   const tl = gsap.timeline({
     scrollTrigger: {
@@ -16,11 +17,10 @@ const initRevealEffect = () => {
       end: "bottom 50%",
       scrub: 1,
       onUpdate: (self) => {
-        if (self.progress > 0) {
-          gsap.set(reveal, { opacity: 1, pointerEvents: "all" });
-        } else {
-          gsap.set(reveal, { opacity: 0, pointerEvents: "none" });
-        }
+        if (window.__isJumping) return;
+        const visible = self.progress > 0;
+        reveal.style.opacity = visible ? '1' : '0';
+        reveal.style.pointerEvents = visible ? 'all' : 'none';
       },
     },
   });
@@ -66,9 +66,17 @@ window.addEventListener("load", () => {
       }
     }
 
+    /* OPT: track visibility bằng biến thay vì getComputedStyle mỗi mousemove
+       getComputedStyle là layout read — gọi liên tục theo chuột rất nặng */
+    let handlerVisible = false;
+    const visObserver = new IntersectionObserver(function(entries) {
+      handlerVisible = entries[0].isIntersecting;
+    }, { threshold: 0.01 });
+    visObserver.observe(handler);
+
     let pendingX = -9999, pendingY = -9999;
     window.addEventListener("mousemove", (e) => {
-      if (parseFloat(getComputedStyle(handler).opacity) === 0) return;
+      if (!handlerVisible) return;
       pendingX = e.clientX;
       pendingY = e.clientY;
       if (!rafQueued) {
@@ -82,6 +90,9 @@ window.addEventListener("load", () => {
   }
 });
 
+/* OPT: debounce resize — tránh ScrollTrigger.refresh() gọi liên tục khi resize */
+var _resizeTimer;
 window.addEventListener("resize", () => {
-  ScrollTrigger.refresh();
+  clearTimeout(_resizeTimer);
+  _resizeTimer = setTimeout(function() { ScrollTrigger.refresh(); }, 200);
 });

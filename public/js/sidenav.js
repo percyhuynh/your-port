@@ -180,6 +180,20 @@
   const layerDots = document.getElementById('layerDots');
   const layerLinks = document.getElementById('layerLinks');
 
+  function jumpTo(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    window.__isJumping = true;
+    el.scrollIntoView({ behavior: 'instant' });
+    clearTimeout(window.__jumpTimer);
+    window.__jumpTimer = setTimeout(function () {
+      window.__isJumping = false;
+      /* Reset snapped state để applyColour chạy lại đúng sau jump */
+      window.__techSnappedReset = true;
+      window.dispatchEvent(new Event('scroll'));
+    }, 200);
+  }
+
   const dotEls = SECTIONS.map((sec) => {
     const dot = document.createElement('div');
     dot.className = 'nav-dot';
@@ -188,9 +202,7 @@
     fill.className = 'dot-fill';
     dot.appendChild(fill);
     layerDots.appendChild(dot);
-    dot.addEventListener('click', () =>
-      document.getElementById(sec.id)?.scrollIntoView({ behavior: 'smooth' })
-    );
+    dot.addEventListener('click', () => jumpTo(sec.id));
     return { dot, fill };
   });
 
@@ -206,9 +218,7 @@
     btn.textContent = sec.name;
     btn.setAttribute('role', 'listitem');
     btn.setAttribute('aria-label', `Go to ${sec.name}`);
-    btn.addEventListener('click', () =>
-      document.getElementById(sec.id)?.scrollIntoView({ behavior: 'smooth' })
-    );
+    btn.addEventListener('click', () => jumpTo(sec.id));
     layerLinks.appendChild(btn);
     return btn;
   });
@@ -327,8 +337,18 @@ ScrollTrigger.create({
   }, { passive: true });
 
   btn.addEventListener("click", () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    /* Chỉ cần: hide reveal → scroll instant → bật isJumping để onUpdate skip
+       Không cần ScrollTrigger.update() — nó trigger onUpdate lại gây reveal bật nhầm */
+    const reveal = document.querySelector('.reveal-container');
+    if (reveal) {
+      reveal.style.opacity = '0';
+      reveal.style.pointerEvents = 'none';
+    }
+    window.__isJumping = true;
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    clearTimeout(window.__jumpTimer);
+    window.__jumpTimer = setTimeout(function () {
+      window.__isJumping = false;
+    }, 200);
   });
 }());
-
-
