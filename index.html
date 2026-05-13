@@ -1923,7 +1923,34 @@
     <button class="back-to-top" id="backToTop" aria-label="Back to top">
       ↑
     </button>
-
+    <script>
+      if (
+        /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+          navigator.userAgent,
+        ) ||
+        window.innerWidth < 1024
+      ) {
+        document.documentElement.innerHTML = `
+      <html><head><meta name="viewport" content="width=device-width,initial-scale=1">
+      <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { background:#000; display:flex; align-items:center; 
+               justify-content:center; height:100vh; 
+               font-family:'Courier Prime',monospace; }
+        .msg { text-align:center; color:#6b1a1a; padding:40px; }
+        .msg h2 { font-size:1.1rem; font-weight:400; letter-spacing:0.25em; 
+                  text-transform:uppercase; margin-bottom:20px; color:#6b1a1a; }
+        .msg p { font-size:0.72rem; color:rgba(255,255,255,0.3); 
+                 letter-spacing:0.08em; line-height:2; }
+      </style></head>
+      <body><div class="msg">
+        <h2>Desktop Only</h2>
+        <p>This portfolio is optimized<br>for desktop viewing.<br><br>
+        Please visit on a larger screen.</p>
+      </div></body></html>
+    `;
+      }
+    </script>
     <script src="public/js/intro.js"></script>
     <script src="public/js/banner.js"></script>
     <script src="public/js/sidenav.js"></script>
