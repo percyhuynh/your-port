@@ -107,6 +107,8 @@
           t     : t
         });
       }
+      /* OPT: sort 1 lần sau init — size không đổi, tránh P.slice().sort() mỗi frame */
+      P.sort(function(a, b) { return a.size - b.size; });
     }
 
     /* ── Connections — opacity cao hơn, maxD rộng hơn ── */
@@ -132,9 +134,9 @@
       }
     }
 
-    var rafId = null; // OPT: track rAF để có thể cancel
-
     /* ── Main loop ── */
+    var rafId = null;
+
     function frame() {
       ctx.clearRect(0, 0, W, H);
 
@@ -169,10 +171,9 @@
 
       drawConns();
 
-      /* nhỏ → to */
-      var sorted = P.slice().sort(function (a, b) { return a.size - b.size; });
-      for (var si = 0; si < sorted.length; si++) {
-        var p = sorted[si];
+      /* nhỏ → to — P đã được sort sẵn trong initParticles */
+      for (var si = 0; si < P.length; si++) {
+        var p = P[si];
 
         if (p.glow) {
           var gg = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 3.2);
@@ -263,18 +264,17 @@
 
     resize();
 
-    /* OPT: IntersectionObserver — tắt hoàn toàn rAF loop khi banner
-       không trong viewport. 180 particles O(n²) mỗi frame = ~16k phép tính.
-       Khi ở cuối trang scroll lên, banner visible → loop bật lại ngay. */
-    var bannerObserver = new IntersectionObserver(function(entries) {
+    /* OPT: IntersectionObserver — chỉ chạy loop khi banner visible
+       Khi scroll xuống dưới, cancelAnimationFrame → 0% CPU từ banner */
+    new IntersectionObserver(function(entries) {
       if (entries[0].isIntersecting) {
         if (!rafId) rafId = requestAnimationFrame(frame);
       } else {
         if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
       }
-    }, { threshold: 0.01 });
-    bannerObserver.observe(section);
+    }, { threshold: 0.01 }).observe(section);
 
+    /* Khởi động ngay nếu đang visible */
     rafId = requestAnimationFrame(frame);
 
   });

@@ -26,29 +26,29 @@ document.fonts.ready.then(() => {
       { opacity: 0, y: -60, z: 280 },
       {
         opacity: 1, y: 0, z: 0,
-        duration: 0.55,
+        duration: 0.35,        // 0.55 → 0.35
         ease: 'power4.out',
         onComplete() {
           gsap.to(letter, {
             scaleY: 0.87, scaleX: 1.09,
-            duration: 0.055, yoyo: true, repeat: 1,
+            duration: 0.04, yoyo: true, repeat: 1,
             ease: 'power2.inOut'
           });
         }
       },
-      0.12 + i * 0.08
+      0.08 + i * 0.055         // 0.12 + i*0.08 → 0.08 + i*0.055
     );
   });
 
   // ── SEQ 2: Percy shifts left, secondary fades in ──
-  tl.to(percyWrap, { x: -12, duration: 0.4, ease: 'power2.inOut' }, '+=0.18');
-  tl.to(secWrap, { opacity: 1, duration: 0.2 }, '<0.05');
+  tl.to(percyWrap, { x: -12, duration: 0.28, ease: 'power2.inOut' }, '+=0.1');  // 0.4 → 0.28
+  tl.to(secWrap, { opacity: 1, duration: 0.15 }, '<0.05');
 
   // ── SEQ 3: Cycle words — accelerating ──
   const cycles = [
-    { hold: 0.5,  slide: 0.35 },
-    { hold: 0.42, slide: 0.28 },
-    { hold: 0.32, slide: 0.22 },
+    { hold: 0.32, slide: 0.22 },   // nhanh hơn ~35%
+    { hold: 0.26, slide: 0.18 },
+    { hold: 0.20, slide: 0.14 },
   ];
 
   cycles.forEach(({ hold, slide }, i) => {
@@ -63,13 +63,13 @@ document.fonts.ready.then(() => {
   tl.to(wordsWrap, {
     scale: 1.18,
     opacity: 0,
-    duration: 0.75,
+    duration: 0.5,             // 0.75 → 0.5
     ease: 'power3.in'
-  }, '+=0.28');
+  }, '+=0.16');
 
   tl.to(overlay, {
     yPercent: -100,
-    duration: 0.75,
+    duration: 0.55,            // 0.75 → 0.55
     ease: 'power4.inOut',
     onComplete() {
       overlay.style.display = 'none';

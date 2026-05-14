@@ -142,7 +142,7 @@
     margin   : "0",
     padding  : "0",
     position : "relative",
-    height   : (N * 70) + "vh",   // 4 steps = 280vh scroll room (shorter)
+    height   : (N * 45) + "vh",   // OPT: giảm từ 70vh → 45vh/step để scroll nhanh hơn
   });
 
   /* Sticky panel chiếm đúng 1 viewport, dính top */

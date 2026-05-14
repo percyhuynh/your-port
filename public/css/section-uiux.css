@@ -7,10 +7,10 @@
   background: #000;
 }
 
-/* Wrapper: 2180vh tổng — phase 1: 2000vh (chậm), phase 2: 180vh (nhanh) */
+/* Wrapper: giảm từ 581vh → 350vh để scroll zoom nhanh hơn */
 #uiux-sticky-wrap {
   position: relative;
-  height: 581vh;
+  height: 350vh;
 }
 
 #uiux-sticky {
@@ -157,9 +157,6 @@
   --hs-card-bg: #fff;
   --hs-radius: 28px;
   --hs-np: 6;
-}
-
-.hs-section {
   overflow: hidden;
   position: relative;
   height: 100vh;
@@ -171,7 +168,8 @@
   display: flex;
   width: max-content;
   height: 100vh;
-  /* OPT: bỏ will-change thường trực — GSAP tự quản lý khi cần */
+  /* OPT: contain layout — giới hạn phạm vi repaint khi GSAP translate ngang */
+  contain: layout;
 }
 
 .hs-panel {
@@ -554,29 +552,6 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-@media (max-width: 700px) {
-  .pf-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .pf-col:nth-child(2) {
-    margin-top: 60px;
-  }
-  .pf-col:nth-child(3) {
-    display: none;
-  }
-}
-@media (max-width: 420px) {
-  .pf-grid {
-    grid-template-columns: 1fr;
-  }
-  .pf-col:nth-child(n) {
-    margin-top: 0;
-  }
-  .pf-col:nth-child(3) {
-    display: flex;
-  }
 }
 
 /* ══════════════════════════════════════════════════

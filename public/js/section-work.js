@@ -48,12 +48,22 @@ ScrollTrigger.create({
 document.querySelectorAll('.brand-card').forEach(function(card) {
   var bg = card.querySelector('.card-bg');
   if (!bg) return;
+
+  /* OPT: cache rect, chỉ update khi resize thay vì đọc mỗi mousemove */
+  var rect = card.getBoundingClientRect();
+  window.addEventListener('resize', function() {
+    rect = card.getBoundingClientRect();
+  }, { passive: true });
+
   card.addEventListener('mousemove', function(e) {
-    bg.style.transition = 'transform 0.18s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-    var rect = card.getBoundingClientRect();
     var xPct = (e.clientX - rect.left) / rect.width  - 0.5;
     var yPct = (e.clientY - rect.top)  / rect.height - 0.5;
     bg.style.transform = 'scale(1.0) translate(' + (xPct * -16) + 'px, ' + (yPct * -16) + 'px)';
+  });
+  card.addEventListener('mouseenter', function() {
+    /* Refresh rect khi hover vào — tránh stale value nếu layout thay đổi */
+    rect = card.getBoundingClientRect();
+    bg.style.transition = 'transform 0.18s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
   });
   card.addEventListener('mouseleave', function() {
     bg.style.transition = 'transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
@@ -65,40 +75,34 @@ document.querySelectorAll('.brand-card').forEach(function(card) {
 // ── 3. SCROLL-SPACE: pin khung cứng, nội dung trượt mượt ──
 const slides = [
   {
-    title: "©Percy\nHuynh",
-    desc: "A curated showcase of multidisciplinary work spanning branding, SEO, product thinking, and digital execution.",
-    img: "public/images/section-work-1.webp",
-    link: "#about",          // ← đổi link slide 1
-  },
-  {
     title: "©Digital\nStrategy",
     desc: "Data-driven digital strategies built to strengthen positioning, accelerate growth, and maximise business impact.",
     img: "public/images/section-work-2.webp",
-    link: "#s0",             // ← đổi link slide 2
+    link: "#s0",
   },
   {
     title: "©Content\nSEO",
     desc: "Search-focused content systems engineered to improve rankings, capture intent, and drive sustainable traffic.",
     img: "public/images/section-work-3.webp",
-    link: "#s1",             // ← đổi link slide 3
+    link: "#s1",
   },
   {
     title: "©UI/UX\nDesign",
     desc: "User-centered interfaces crafted to balance visual clarity, intuitive interaction, and conversion performance.",
     img: "public/images/section-work-4.webp",
-    link: "#s2",             // ← đổi link slide 4
+    link: "#s2",
   },
   {
     title: "©Automation\nTechnical",
     desc: "Technical workflows and automation systems designed to streamline operations, reduce friction, and scale efficiently.",
     img: "public/images/section-work-5.webp",
-    link: "#scrollSection",  // ← đổi link slide 5
+    link: "#scrollSection",
   },
   {
     title: "©Others",
     desc: "Extended expertise in marketplace operations, YouTube growth management, event execution, and multi-channel business coordination.",
     img: "public/images/section-work-6.webp",
-    link: "#s4",             // ← đổi link slide 6
+    link: "#s4",
   },
 ];
 
@@ -142,6 +146,17 @@ slides.forEach((s, i) => {
   dotEls.push(dot);
 });
 
+/* Ghost elements để giữ height — invisible, không phải slide thật */
+const ghostH = document.createElement("div");
+ghostH.className = "slide-heading is-ghost";
+ghostH.innerHTML = `<h2 class="slide-title">${slides[0].title.replace("\n", "<br>")}</h2>`;
+headingClip.insertBefore(ghostH, headingClip.firstChild);
+
+const ghostD = document.createElement("div");
+ghostD.className = "slide-desc is-ghost";
+ghostD.textContent = slides[0].desc;
+descClip.insertBefore(ghostD, descClip.firstChild);
+
 imgs.forEach((img, i) => {
   gsap.set(img, i === 0
     ? { y: "0%", scale: 1, opacity: 1, zIndex: N - i }
@@ -154,6 +169,9 @@ heads.forEach((h, i) => {
 descs.forEach((d, i) => {
   gsap.set(d, i === 0 ? { y: "0px", opacity: 1 } : { y: "60px", opacity: 0 });
 });
+
+/* Đảm bảo UI slide đầu hiện đúng ngay khi load */
+setTimeout(() => setUI(0), 0);
 
 function setUI(i) {
   if (counterEl) counterEl.textContent = `${String(i + 1).padStart(2, "0")} / ${String(N).padStart(2, "0")}`;
@@ -215,8 +233,8 @@ const pB = Math.max((stepProg - split) / (1 - split), 0);
 // Pin: scrub nhỏ = trượt mượt, không giật
 // Khung #pin-anchor được ghim → không nhảy
 // onUpdate chạy liên tục = nội dung trượt theo đúng progress
-const SCROLL_DISTANCE = 1400;
-const TAIL = 700; // extra scroll after last slide so last desc fully renders before section ends
+const SCROLL_DISTANCE = 900;
+const TAIL = 400; // extra scroll after last slide so last desc fully renders before section ends
 const totalScroll = (N - 1) * SCROLL_DISTANCE + TAIL;
 
 // set scroll-space tall enough for the full scroll range at any viewport height
@@ -231,8 +249,9 @@ ScrollTrigger.create({
   pin: false,
   pinSpacing: false,
   scrub: 1.6,
+  fastScrollEnd: true,
   onUpdate(self) {
-    if (window.__isJumping) return; // OPT: skip khi navigate
+    if (window.__isJumping) return;
     applyProgress(self.progress * totalScroll / SCROLL_DISTANCE);
   },
 });

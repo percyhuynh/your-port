@@ -33,46 +33,51 @@
   observer.observe(section);
 
   function initOrigin() {
-    // BƯỚC 1: reset transform TRƯỚC
-    heading.style.transform       = 'scale(1)';
+    // BƯỚC 1: reset transform TRƯỚC, ẩn heading tạm để không flicker
+    heading.style.opacity        = '0';
+    heading.style.transform      = 'scale(1)';
     heading.style.transformOrigin = '50% 50%';
 
-    // BƯỚC 2: đợi browser render xong scale(1) mới đo
+    // BƯỚC 2: double rAF — frame 1: browser apply style, frame 2: layout xong, đo được
     requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
 
-      // BƯỚC 3: đo cả 2 element SAU KHI browser đã apply scale(1)
-      var pr = pivot.getBoundingClientRect();   // vị trí chữ F
-      var hr = heading.getBoundingClientRect(); // vị trí toàn heading
+        // BƯỚC 3: force reflow trước khi đo
+        void heading.offsetWidth;
 
-      var W = window.innerWidth;
-      var H = window.innerHeight;
+        var pr = pivot.getBoundingClientRect();
+        var hr = heading.getBoundingClientRect();
 
-      // BƯỚC 4: tâm GIỮA chữ F trong viewport (center, không phải top-left)
-      var pvx = pr.left + pr.width  / 2.9;
-      var pvy = pr.top  + pr.height * 0.45;
+        // Validate: nếu đo ra 0 hoặc heading chưa trong viewport thì retry
+        if (pr.width === 0 || hr.width === 0) {
+          heading.style.opacity = '0';
+          heading.style.transform = 'scale(0.001)';
+          setTimeout(initOrigin, 100);
+          return;
+        }
 
+        var W = window.innerWidth;
+        var H = window.innerHeight;
 
-      // Scale đủ phủ góc xa nhất × 6, nhưng cap ở 30
-      // Trên 30x chữ đã phủ toàn màn hình — không cần scale thêm
-      // black overlay sẽ fade in che phần còn lại → nhẹ hơn rất nhiều
-      var maxDist = Math.max(
-        Math.hypot(pvx,     pvy),
-        Math.hypot(W - pvx, pvy),
-        Math.hypot(pvx,     H - pvy),
-        Math.hypot(W - pvx, H - pvy)
-      );
-      MAX_SCALE = Math.min((maxDist / (pr.width / 2)) * 6, 30);
+        var pvx = pr.left + pr.width  / 2.9;
+        var pvy = pr.top  + pr.height * 0.45;
 
-      // BƯỚC 5: offset tâm F so với top-left của heading element
-      var ox = pvx - hr.left;
-      var oy = pvy - hr.top;
+        var maxDist = Math.max(
+          Math.hypot(pvx,     pvy),
+          Math.hypot(W - pvx, pvy),
+          Math.hypot(pvx,     H - pvy),
+          Math.hypot(W - pvx, H - pvy)
+        );
+        MAX_SCALE = Math.min((maxDist / (pr.width / 2)) * 6, 30);
 
-      // BƯỚC 6: set transform-origin bằng px tuyệt đối
-      heading.style.transformOrigin = ox + 'px ' + oy + 'px';
+        var ox = pvx - hr.left;
+        var oy = pvy - hr.top;
 
-      // BƯỚC 7: SAU ĐÓ mới reset về scale(0)
-      heading.style.transform = 'scale(0)';
-      originSet = true;
+        heading.style.transformOrigin = ox + 'px ' + oy + 'px';
+        heading.style.transform       = 'scale(0.001)';
+        heading.style.opacity         = '1';
+        originSet = true;
+      });
     });
   }
 
@@ -84,7 +89,7 @@
     if (!originSet || window.__isJumping) return;
 
     var P_SPLIT  = 0.788;
-    var MID_FRAC = 0.018;
+    var MID_FRAC = 0.06; /* OPT: tăng 0.018→0.06 — phase 1 zoom nhanh hơn, thấy chữ to sớm hơn */
 
     var scale;
     if (p <= P_SPLIT) {
@@ -129,12 +134,26 @@
     });
   }
 
-  requestAnimationFrame(function () {
+  /* OPT: chờ font load xong mới initOrigin — font chưa load làm đo sai → lệch */
+  function init() {
+    /* Đợi thêm 1 rAF sau fonts.ready — fonts.ready resolve nhưng
+       layout chưa reflow xong, getBoundingClientRect vẫn có thể sai */
     requestAnimationFrame(function () {
-      initOrigin();
-      requestAnimationFrame(onScroll);
+      requestAnimationFrame(function () {
+        initOrigin();
+        requestAnimationFrame(onScroll);
+      });
     });
-  });
+  }
+
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(function () {
+      /* Thêm timeout nhỏ sau fonts.ready để đảm bảo browser đã paint xong */
+      setTimeout(init, 50);
+    });
+  } else {
+    setTimeout(init, 100);
+  }
 
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', function () {
@@ -167,27 +186,42 @@
   });
   var dots = dotsWrap.querySelectorAll(".hs-dot");
 
-  /* OPT: scrub: 0.8 thay vì scrub: 1 → giảm bounce/nảy khi scroll nhanh.
-     anticipatePin: 1 giữ nguyên để tránh flicker khi pin bắt đầu.
-     Thêm __isJumping check trong onUpdate → skip khi đang navigate bằng menu */
+  var trackW = function() { return track.scrollWidth - section.offsetWidth; };
+  /* OPT: scroll distance = 60% trackW → cùng lượng scroll nhưng track chạy nhanh hơn */
+  var scrollDist = function() { return Math.round(trackW() * 0.6); };
+
+  /* ST 1: chỉ pin — không animation, không scrub
+     Pin lock xong section trước, ST 2 mới chạy track */
+  ScrollTrigger.create({
+    trigger: section,
+    start: "top top",
+    end: function() { return "+=" + scrollDist(); },
+    pin: true,
+    pinSpacing: true,
+    anticipatePin: 1,
+    invalidateOnRefresh: true,
+    onEnter:     function() { dotsWrap.style.opacity = "1"; progress.style.opacity = "1"; },
+    onLeave:     function() { dotsWrap.style.opacity = "0"; progress.style.opacity = "0"; },
+    onEnterBack: function() { dotsWrap.style.opacity = "1"; progress.style.opacity = "1"; },
+    onLeaveBack: function() { dotsWrap.style.opacity = "0"; progress.style.opacity = "0"; },
+  });
+
+  /* ST 2: chạy track ngang — không pin, scrub 1:1
+     Cùng trigger/start/end với ST1 nhưng tách riêng
+     → pin và track sync nhau không giật */
   gsap.to(track, {
-    x: function() { return -(track.scrollWidth - section.offsetWidth); },
+    x: function() { return -trackW(); },
     ease: "none",
     scrollTrigger: {
       trigger: section,
       start: "top top",
-      end: function() { return "+=" + (track.scrollWidth - section.offsetWidth); },
-      pin: true,
-      scrub: 0.8,
-      anticipatePin: 1,
+      end: function() { return "+=" + scrollDist(); },
+      pin: false,
+      scrub: true,
       invalidateOnRefresh: true,
       fastScrollEnd: true,
-      onEnter:     function() { dotsWrap.style.opacity = "1"; progress.style.opacity = "1"; },
-      onLeave:     function() { dotsWrap.style.opacity = "0"; progress.style.opacity = "0"; },
-      onEnterBack: function() { dotsWrap.style.opacity = "1"; progress.style.opacity = "1"; },
-      onLeaveBack: function() { dotsWrap.style.opacity = "0"; progress.style.opacity = "0"; },
       onUpdate: function(self) {
-        if (window.__isJumping) return; // skip khi đang navigate
+        if (window.__isJumping) return;
         progress.style.width = (self.progress * 100) + "%";
         var idx = Math.round(self.progress * (N - 1));
         dots.forEach(function(d, i) { d.classList.toggle("active", i === idx); });
@@ -197,10 +231,10 @@
 
   dots.forEach(function(dot, i) {
     dot.addEventListener("click", function() {
-      // scroll ngang bằng GSAP — không ảnh hưởng scroll dọc
-      var tr = ScrollTrigger.getById("hs");
-      if (!tr) return;
-      var target = tr.start + (tr.end - tr.start) * (i / (N - 1));
+      var sts = ScrollTrigger.getAll();
+      var pinST = sts.find(function(t) { return t.pin === section; });
+      if (!pinST) return;
+      var target = pinST.start + (pinST.end - pinST.start) * (i / (N - 1));
       gsap.to(window, { scrollTo: target, duration: 0.6, ease: "power2.inOut" });
     });
   });

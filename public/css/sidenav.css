@@ -172,16 +172,17 @@ header * {
   -webkit-backdrop-filter: blur(10px);
   overflow: hidden;
   transition:
-    height var(--transition-speed) var(--bezier),
-    border-radius var(--transition-speed),
+    height 0.4s var(--bezier),
+    border-radius 0.4s,
     background-color 0.3s;
 }
 
-.smart-container:hover {
+/* Dùng .is-open từ JS thay vì :hover — tránh đóng ngay khi chuột ra 1px */
+.smart-container.is-open {
   width: 320px;
 }
 
-.smart-container:hover .smart-box {
+.smart-container.is-open .smart-box {
   height: 320px;
   border-radius: 20px;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
@@ -201,7 +202,7 @@ header * {
     opacity 0.3s;
 }
 
-.smart-container:hover .box-label {
+.smart-container.is-open .box-label {
   transform: translateY(-100%);
   opacity: 0;
 }
@@ -216,7 +217,7 @@ header * {
     transform 0.5s ease 0.3s;
 }
 
-.smart-container:hover .box-hidden-content {
+.smart-container.is-open .box-hidden-content {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
@@ -279,7 +280,9 @@ header * {
   margin-left: calc(-50vw + 50%);
   overflow: hidden;
   transform-origin: top center;
-  will-change: transform, border-radius;
+  /* OPT: bỏ border-radius khỏi will-change — không GPU-accelerated, browser dùng CPU
+     GSAP animate border-radius sẽ tự promote layer khi cần */
+  will-change: transform;
   z-index: 10;
 }
 
@@ -302,7 +305,7 @@ header * {
   height: 120%;
   object-fit: cover;
   display: block;
-  will-change: transform;
+  /* OPT: bỏ will-change thường trực — GSAP tự promote layer khi animation bắt đầu */
 }
 
 /* ── CONTENT BANER ──────────────────────────────── */

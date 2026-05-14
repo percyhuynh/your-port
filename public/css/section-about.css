@@ -30,7 +30,7 @@
 
 /* ── Child 2: Painting screen — tall scroll container ── */
 .ab-painting-screen {
-  height: 450vh;
+  height: 280vh;
   position: relative;
   background: #050505;
 }

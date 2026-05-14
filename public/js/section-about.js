@@ -287,6 +287,10 @@ new Typed('.input', {
     raf = requestAnimationFrame(loop);
   }
 
+  function stopLoop() {
+    if (raf) { cancelAnimationFrame(raf); raf = null; }
+  }
+
   canvas.addEventListener('mouseenter', () => { isHovering = true; });
   canvas.addEventListener('mousemove', e => {
     const r = canvas.getBoundingClientRect();
@@ -300,13 +304,25 @@ new Typed('.input', {
     isHovering = true;
   }, { passive: false });
   canvas.addEventListener('touchend', () => { isHovering = false; mouse.x = -9999; mouse.y = -9999; });
+
+  let _resizeTimer;
   window.addEventListener('resize', () => {
-    cancelAnimationFrame(raf); raf = null;
-    ctx.setTransform(1,0,0,1,0,0);
-    setupSize(); buildSource(); initCanvas(); startLoop();
+    clearTimeout(_resizeTimer);
+    _resizeTimer = setTimeout(() => {
+      cancelAnimationFrame(raf); raf = null;
+      ctx.setTransform(1,0,0,1,0,0);
+      setupSize(); buildSource(); initCanvas(); startLoop();
+    }, 200);
   });
 
-  setupSize(); buildSource(); initCanvas(); startLoop();
+  setupSize(); buildSource(); initCanvas();
+
+  /* OPT: IntersectionObserver — tắt loop khi canvas ra khỏi viewport
+     renderFrame O(W×H) chạy 60fps = 84% CPU — dừng khi không visible */
+  new IntersectionObserver(function(entries) {
+    if (entries[0].isIntersecting) startLoop();
+    else stopLoop();
+  }, { threshold: 0.01 }).observe(wrap);
 })();
 
 // SCROLL REVEAL — ab-text-block lines fade in as you scroll

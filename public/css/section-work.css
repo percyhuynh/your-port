@@ -173,7 +173,7 @@
   right: 10px;
   background: rgba(255, 255, 255, 0.1);
   color: rgba(255, 255, 255, 0.75);
-  font-family: 'Courier Prime', monospace;
+  font-family: "Courier Prime", monospace;
   font-size: 10px;
   font-weight: 400;
   letter-spacing: 0.03em;
@@ -253,7 +253,7 @@
 
 /* ── NỘI DUNG TESTIMONIAL (text only, bỏ avatar) ── */
 .testimonial-quote {
-  font-family: 'Courier Prime', monospace;
+  font-family: "Courier Prime", monospace;
   font-size: 12px;
   line-height: 1.7;
   color: #ffffff;
@@ -285,7 +285,7 @@
 }
 
 .testimonial-name {
-  font-family: 'Courier Prime', monospace;
+  font-family: "Courier Prime", monospace;
   font-size: 11px;
   font-weight: 700;
   color: #ffffff;
@@ -294,14 +294,19 @@
 }
 
 .testimonial-role {
-  font-family: 'Courier Prime', monospace;
+  font-family: "Courier Prime", monospace;
   font-size: 10px;
   color: rgba(255, 255, 255, 0.45);
 }
 
 /* ── SCROLL ANIMATION: cards bắt đầu ẩn (GSAP xử lý) ── */
 .brand-card {
-  will-change: transform, opacity;
+  /* OPT: bỏ will-change thường trực — tạo GPU layer cho 8 cards cùng lúc
+     Chỉ bật khi hover để browser tạo layer đúng lúc cần */
+}
+
+.brand-card:hover {
+  will-change: transform;
 }
 
 /* ── RESPONSIVE ── */
@@ -472,13 +477,14 @@
   width: 100%;
   will-change: transform, opacity;
 }
-.slide-heading:first-child {
+.slide-heading.is-ghost {
   position: relative;
   visibility: hidden;
 } /* height ghost */
 
 h2.slide-title {
-  font-family: 'Courier Prime', monospace !important; /* giữ Syne — Merriweather thay đổi ghost height làm lệch layout */
+  font-family:
+    "Courier Prime", monospace !important; /* giữ Syne — Merriweather thay đổi ghost height làm lệch layout */
   font-size: clamp(1.45rem, 3vw, 2.45rem);
   font-weight: 800;
   line-height: 1.07;
@@ -508,7 +514,7 @@ h2.slide-title {
   max-width: 100%;
   will-change: transform, opacity;
 }
-.slide-desc:first-child {
+.slide-desc.is-ghost {
   position: relative;
   visibility: hidden;
 }
@@ -526,7 +532,7 @@ h2.slide-title {
   background: transparent;
   color: var(--white);
   border: 1px solid rgba(255, 255, 255, 0.25);
-  font-family: 'Courier Prime', monospace;
+  font-family: "Courier Prime", monospace;
   font-size: 0.75rem;
   font-weight: 400;
   letter-spacing: 0.08em;
@@ -624,7 +630,7 @@ h2.slide-title {
   position: absolute;
   bottom: 26px;
   right: 42px;
-  font-family: 'Courier Prime', monospace;
+  font-family: "Courier Prime", monospace;
   font-size: 0.63rem;
   color: var(--gray);
   letter-spacing: 0.1em;

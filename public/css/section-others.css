@@ -120,7 +120,7 @@
   position: relative;
   width: 100%;
   transform-origin: center center;
-  will-change: transform, opacity;
+  /* OPT: bỏ will-change thường trực — JS set transform trực tiếp qua style */
 }
 
 .ps-image-frame {

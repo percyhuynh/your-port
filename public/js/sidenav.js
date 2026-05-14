@@ -1,29 +1,18 @@
 /**
- * cursor-effect.js
- *
- * - Chấm tròn chạy theo chuột, tự đổi màu tương phản với nền phía dưới
- * - Hover vào a/button/[data-cursor]: chấm phình to nhẹ
- * - Click: sóng lan ra 1 lần như gợn mặt nước
- * - Chấm tròn ẩn: .reveal-container (cursor hệ thống ẩn toàn trang)
+ * cursor.js — custom cursor đơn giản
+ * - Chấm tròn trắng chạy theo chuột với smoothing
+ * - Phình to khi hover vào interactive elements
+ * - Ẩn khi ở .banner và .reveal-container (các section đó tự xử lý cursor)
+ * - Không tự đổi màu — tránh getComputedStyle mỗi frame
  */
 
 (function () {
   'use strict';
 
-  /* ── Elements/selectors ẩn chấm tròn ── */
-  const EXCLUDE = '.reveal-container, .banner';
-
-  function isExcluded(el) {
-    if (!el || el.nodeType !== 1) return false;
-    return !!el.closest(EXCLUDE);
-  }
-
-  /* ── Inject keyframe + ẩn cursor gốc toàn trang ── */
-  const style = document.createElement('style');
-  style.textContent =
-    '@keyframes _ce_r{to{transform:scale(1);opacity:0;}}' +
-    '*,*::before,*::after{cursor:none!important;}';
-  document.head.appendChild(style);
+  /* ── Ẩn cursor hệ thống toàn trang ── */
+  const cursorStyle = document.createElement('style');
+  cursorStyle.textContent = '*,*::before,*::after{cursor:none!important;}';
+  document.head.appendChild(cursorStyle);
 
   /* ── Tạo chấm ── */
   const dot = document.createElement('div');
@@ -32,136 +21,125 @@
     width:         '10px',
     height:        '10px',
     borderRadius:  '50%',
-    background:    '#ffffff',
+    background:    '#6b1a1a',
     pointerEvents: 'none',
     transform:     'translate(-50%,-50%)',
-    transition:    'width .15s, height .15s, background .22s',
+    transition:    'width .15s ease, height .15s ease, opacity .2s ease',
     zIndex:        '2147483647',
     opacity:       '0',
+    left:          '-100px',
+    top:           '-100px',
   });
   document.body.appendChild(dot);
 
-  let mx = 0, my = 0, cx = 0, cy = 0, started = false;
+  /* ── Vùng ẩn cursor ── */
+  const HIDE_ZONES = ['.banner', '.reveal-container'];
 
+  function isInHideZone(el) {
+    if (!el || el.nodeType !== 1) return false;
+    return HIDE_ZONES.some(sel => el.closest(sel));
+  }
+
+  /* ── Track reveal visibility bằng MutationObserver ── */
+  let revealVisible = false;
   const revealEl = document.querySelector('.reveal-container');
-  function isRevealActive() {
-    return revealEl && parseFloat(getComputedStyle(revealEl).opacity) > 0;
+  if (revealEl) {
+    new MutationObserver(() => {
+      revealVisible = parseFloat(revealEl.style.opacity || '0') > 0;
+    }).observe(revealEl, { attributes: true, attributeFilter: ['style'] });
   }
 
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX; my = e.clientY;
-    if (!started) { cx = mx; cy = my; started = true; }
-    dot.style.opacity = (isExcluded(e.target) || isRevealActive()) ? '0' : '1';
-  });
-  document.addEventListener('mouseleave', () => dot.style.opacity = '0');
-  document.addEventListener('mouseenter', e => {
-    dot.style.opacity = isRevealActive() ? '0' : '1';
-  });
+  /* ── Smoothing ── */
+  let mx = 0, my = 0, cx = 0, cy = 0, started = false;
+  let loopRunning = false;
 
-  (function loop() {
-    cx += (mx - cx) * 0.14;
-    cy += (my - cy) * 0.14;
-    dot.style.left = cx + 'px';
-    dot.style.top  = cy + 'px';
-    requestAnimationFrame(loop);
-  })();
-
-  /* ── Lấy màu nền thực, leo lên cha nếu transparent ── */
-  function getBg(el) {
-    let node = el;
-    while (node && node.nodeType === 1) {
-      const c = getComputedStyle(node).backgroundColor;
-      const m = c.match(/[\d.]+/g);
-      if (!m || m.length < 3) { node = node.parentElement; continue; }
-      const a = m[3] !== undefined ? +m[3] : 1;
-      if (a < 0.05 || (+m[0] === 0 && +m[1] === 0 && +m[2] === 0 && a < 0.05)) {
-        node = node.parentElement; continue;
+  function startLoop() {
+    if (loopRunning) return;
+    loopRunning = true;
+    function loop() {
+      cx += (mx - cx) * 0.14;
+      cy += (my - cy) * 0.14;
+      dot.style.left = cx + 'px';
+      dot.style.top  = cy + 'px';
+      /* Dừng loop khi cursor đã đến đích — tránh chạy 60fps vĩnh viễn */
+      const dx = mx - cx, dy = my - cy;
+      if (Math.abs(dx) < 0.1 && Math.abs(dy) < 0.1) {
+        loopRunning = false;
+        return;
       }
-      return { r: +m[0], g: +m[1], b: +m[2] };
+      requestAnimationFrame(loop);
     }
-    return { r: 255, g: 255, b: 255 };
+    requestAnimationFrame(loop);
   }
 
-  function lum({ r, g, b }) {
-    return [r, g, b].reduce((s, v, i) => {
-      v /= 255;
-      v = v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
-      return s + v * [0.2126, 0.7152, 0.0722][i];
-    }, 0);
-  }
-
-  function contrast(el) {
-    return lum(getBg(el)) > 0.35 ? '#111111' : '#ffffff';
-  }
-
-  /* ── Cập nhật màu chấm theo element dưới chuột ── */
   document.addEventListener('mousemove', e => {
-    if (isExcluded(e.target)) return;
-    dot.style.display = 'none';
-    const under = document.elementFromPoint(e.clientX, e.clientY);
-    dot.style.display = '';
-    if (under && !isExcluded(under)) dot.style.background = contrast(under);
-  });
+    mx = e.clientX;
+    my = e.clientY;
+    if (!started) { cx = mx; cy = my; started = true; }
+    const hide = isInHideZone(e.target) || revealVisible;
+    dot.style.opacity = hide ? '0' : '1';
+    startLoop(); /* chỉ bật loop khi chuột di chuyển */
+  }, { passive: true });
 
-  /* ── Ripple chỉ khi click ── */
-  function spawnRipple(e, el) {
-    if (isExcluded(el)) return;
-    const rect = el.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const r = Math.hypot(Math.max(x, rect.width - x), Math.max(y, rect.height - y));
-    const fg = contrast(el);
+  /* ── Phình to khi hover interactive elements ── */
+  const INTERACTIVE = 'a, button, [data-cursor], [role="button"]';
 
-    const rip = document.createElement('span');
-    Object.assign(rip.style, {
-      position:      'absolute',
-      borderRadius:  '50%',
-      width:         r * 2 + 'px',
-      height:        r * 2 + 'px',
-      left:          (x - r) + 'px',
-      top:           (y - r) + 'px',
-      background:    fg,
-      opacity:       '0.18',
-      transform:     'scale(0)',
-      animation:     '_ce_r 0.6s ease-out forwards',
-      pointerEvents: 'none',
+  function bindCursor(el) {
+    if (el._cursorBound || isInHideZone(el)) return;
+    el._cursorBound = true;
+    el.addEventListener('mouseenter', () => {
+      dot.style.width = '18px';
+      dot.style.height = '18px';
     });
-
-    if (getComputedStyle(el).position === 'static') el.style.position = 'relative';
-    el.style.overflow = 'hidden';
-    el.appendChild(rip);
-    rip.addEventListener('animationend', () => rip.remove());
+    el.addEventListener('mouseleave', () => {
+      dot.style.width = '10px';
+      dot.style.height = '10px';
+    });
   }
 
-  /* ── Bind elements (bỏ qua excluded) ── */
-  const SEL = 'a, button, [data-cursor], [role="button"], input[type="submit"], input[type="button"]';
-
-  function bind(el) {
-    if (el._ce || isExcluded(el)) return;
-    el._ce = true;
-    el.addEventListener('mouseenter', () => { dot.style.width = '18px'; dot.style.height = '18px'; });
-    el.addEventListener('mouseleave', () => { dot.style.width = '10px'; dot.style.height = '10px'; });
-    el.addEventListener('click', e => spawnRipple(e, el));
-  }
-
-  document.querySelectorAll(SEL).forEach(bind);
-  new MutationObserver(ms => ms.forEach(m =>
-    m.addedNodes.forEach(n => {
+  document.querySelectorAll(INTERACTIVE).forEach(bindCursor);
+  new MutationObserver(mutations => {
+    mutations.forEach(m => m.addedNodes.forEach(n => {
       if (n.nodeType !== 1) return;
-      if (n.matches && n.matches(SEL)) bind(n);
-      n.querySelectorAll && n.querySelectorAll(SEL).forEach(bind);
-    })
-  )).observe(document.body, { childList: true, subtree: true });
+      if (n.matches?.(INTERACTIVE)) bindCursor(n);
+      n.querySelectorAll?.(INTERACTIVE).forEach(bindCursor);
+    }));
+  }).observe(document.body, { childList: true, subtree: true });
 
   document.addEventListener('mousedown', e => {
-    if (isExcluded(e.target)) return;
-    dot.style.width = '7px'; dot.style.height = '7px';
+    if (!isInHideZone(e.target)) {
+      dot.style.width = '7px';
+      dot.style.height = '7px';
+    }
   });
   document.addEventListener('mouseup', () => {
-    dot.style.width = '10px'; dot.style.height = '10px';
+    dot.style.width = '10px';
+    dot.style.height = '10px';
   });
 
 })();
+
+/* ── Smart Nav expand — JS controlled với delay đóng ── */
+(function () {
+  const containers = document.querySelectorAll('.smart-container');
+  containers.forEach(container => {
+    let closeTimer = null;
+
+    container.addEventListener('mouseenter', () => {
+      clearTimeout(closeTimer);
+      container.classList.add('is-open');
+    });
+
+    container.addEventListener('mouseleave', () => {
+      /* Delay 400ms trước khi đóng — user có thể di chuột ra ngoài 1 chút mà không bị đóng */
+      closeTimer = setTimeout(() => {
+        container.classList.remove('is-open');
+      }, 400);
+    });
+  });
+})();
+
+// <---->
 
 // <---->
 
@@ -184,12 +162,18 @@
     const el = document.getElementById(id);
     if (!el) return;
     window.__isJumping = true;
-    el.scrollIntoView({ behavior: 'instant' });
+
+    /* s4 (Others): skip zoom phase, scroll thẳng vào content */
+    if (id === 's4' && typeof window.__othersJumpToContent === 'function') {
+      window.__othersJumpToContent();
+    } else {
+      el.scrollIntoView({ behavior: 'instant' });
+    }
+
     clearTimeout(window.__jumpTimer);
     window.__jumpTimer = setTimeout(function () {
       window.__isJumping = false;
-      /* Reset snapped state để applyColour chạy lại đúng sau jump */
-      window.__techSnappedReset = true;
+      window.dispatchEvent(new Event('__jumpdone'));
       window.dispatchEvent(new Event('scroll'));
     }, 200);
   }

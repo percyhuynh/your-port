@@ -1,98 +1,115 @@
 gsap.registerPlugin(ScrollTrigger);
 
-const initRevealEffect = () => {
-  const others = document.querySelector(".section-others");
-  const reveal = document.querySelector(".reveal-container");
-  const svgContent = document.querySelector(".reveal-container svg");
+(function () {
+  'use strict';
 
-  if (!others || !reveal) return;
+  const reveal  = document.querySelector('.reveal-container');
+  const others  = document.querySelector('.section-others');
+  const handler = document.getElementById('handler');
+  const svgContent = reveal ? reveal.querySelector('svg') : null;
 
-  reveal.style.opacity = '0';
+  if (!reveal || !others) return;
+
+  /* ── Initial state — hidden ── */
+  reveal.style.opacity       = '0';
   reveal.style.pointerEvents = 'none';
 
+  /* ── Helper: hide reveal ngay lập tức, kill scrub tween ── */
+  function forceHide() {
+    gsap.killTweensOf(reveal);
+    reveal.style.opacity       = '0';
+    reveal.style.pointerEvents = 'none';
+  }
+
+  /* ── ScrollTrigger curtain ── */
   const tl = gsap.timeline({
     scrollTrigger: {
-      trigger: ".reveal-trigger-spacer",
-      start: "top bottom",
-      end: "bottom 50%",
-      scrub: 1,
-      onUpdate: (self) => {
-        if (window.__isJumping) return;
+      trigger: '.reveal-trigger-spacer',
+      start:   'top bottom',
+      end:     'bottom 50%',
+      scrub:   1,
+      onUpdate(self) {
+        /* Skip khi đang jump HOẶC đã về gần top — tránh reveal bật lại sau back-to-top */
+        if (window.__isJumping || window.scrollY < window.innerHeight * 0.5) {
+          forceHide();
+          return;
+        }
         const visible = self.progress > 0;
-        reveal.style.opacity = visible ? '1' : '0';
+        reveal.style.opacity       = visible ? '1' : '0';
         reveal.style.pointerEvents = visible ? 'all' : 'none';
+      },
+      onLeaveBack() {
+        /* Scroll ngược ra khỏi vùng trigger → hide ngay */
+        forceHide();
       },
     },
   });
 
-  tl.to(others, {
-    clipPath: "inset(0% 0% 100% 0%)",
-    ease: "none",
-  });
+  tl.to(others, { clipPath: 'inset(0% 0% 100% 0%)', ease: 'none' });
 
   if (svgContent) {
-    tl.fromTo(
-      svgContent,
+    tl.fromTo(svgContent,
       { scale: 0.5, opacity: 0 },
-      { scale: 1, opacity: 1, ease: "power2.out" },
+      { scale: 1,   opacity: 1, ease: 'power2.out' },
       0
     );
   }
-};
 
-window.addEventListener("load", () => {
-  initRevealEffect();
-  ScrollTrigger.refresh();
+  /* ── Jump: force hide reveal ngay khi __isJumping bật ── */
+  window.addEventListener('__jumpdone', forceHide);
 
-  // REVEAL MASK — thêm vào đây, sau initRevealEffect
-  const handler = document.getElementById("handler");
+  /* ── Reveal mask — mousemove với rAF throttle ── */
   if (handler) {
-    const RADIUS = 150;
-    const streaky = handler.querySelector(".streaky-blur");
-    const revealLayer = handler.querySelector(".reveal");
-    let rafQueued = false;
+    const RADIUS    = 150;
+    const streaky   = handler.querySelector('.streaky-blur');
+    const revealLyr = handler.querySelector('.reveal');
+    let rafQueued   = false;
+    let pendingX    = -9999;
+    let pendingY    = -9999;
+
+    /* Track visibility bằng IntersectionObserver — không đọc style mỗi mousemove */
+    let handlerVisible = false;
+    new IntersectionObserver(function (entries) {
+      handlerVisible = entries[0].isIntersecting;
+    }, { threshold: 0.01 }).observe(handler);
 
     function applyMask(mx, my) {
-      const x = mx + "px", y = my + "px", r = RADIUS + "px";
+      const x = mx + 'px', y = my + 'px', r = RADIUS + 'px';
       const mReveal = `radial-gradient(${r} circle at ${x} ${y}, black 0%, black 55%, transparent 85%)`;
       const mStreak = `radial-gradient(${r} circle at ${x} ${y}, transparent 0%, transparent 45%, black 85%)`;
-      if (revealLayer) {
-        revealLayer.style.webkitMaskImage = mReveal;
-        revealLayer.style.maskImage = mReveal;
+      if (revealLyr) {
+        revealLyr.style.webkitMaskImage = mReveal;
+        revealLyr.style.maskImage       = mReveal;
       }
       if (streaky) {
         streaky.style.webkitMaskImage = mStreak;
-        streaky.style.maskImage = mStreak;
+        streaky.style.maskImage       = mStreak;
       }
     }
 
-    /* OPT: track visibility bằng biến thay vì getComputedStyle mỗi mousemove
-       getComputedStyle là layout read — gọi liên tục theo chuột rất nặng */
-    let handlerVisible = false;
-    const visObserver = new IntersectionObserver(function(entries) {
-      handlerVisible = entries[0].isIntersecting;
-    }, { threshold: 0.01 });
-    visObserver.observe(handler);
-
-    let pendingX = -9999, pendingY = -9999;
-    window.addEventListener("mousemove", (e) => {
+    window.addEventListener('mousemove', function (e) {
       if (!handlerVisible) return;
       pendingX = e.clientX;
       pendingY = e.clientY;
       if (!rafQueued) {
         rafQueued = true;
-        requestAnimationFrame(() => {
+        requestAnimationFrame(function () {
           applyMask(pendingX, pendingY);
           rafQueued = false;
         });
       }
-    });
+    }, { passive: true });
   }
-});
 
-/* OPT: debounce resize — tránh ScrollTrigger.refresh() gọi liên tục khi resize */
-var _resizeTimer;
-window.addEventListener("resize", () => {
-  clearTimeout(_resizeTimer);
-  _resizeTimer = setTimeout(function() { ScrollTrigger.refresh(); }, 200);
-});
+  /* ── ScrollTrigger.refresh debounced ── */
+  window.addEventListener('load', function () {
+    ScrollTrigger.refresh();
+  });
+
+  var _resizeTimer;
+  window.addEventListener('resize', function () {
+    clearTimeout(_resizeTimer);
+    _resizeTimer = setTimeout(function () { ScrollTrigger.refresh(); }, 200);
+  }, { passive: true });
+
+})();
