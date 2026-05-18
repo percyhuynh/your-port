@@ -292,3 +292,22 @@
     if (e.key === "Escape") closeLB();
   });
 })();
+
+
+/* ── FIGMA LAZY LOAD ──
+   Thay thế iframe Figma load ngay lúc đầu (gây TBT ~10s)
+   bằng placeholder click-to-load → iframe chỉ load khi user bấm
+   ─────────────────────────────────────────────────────────────── */
+(function () {
+  /* Hàm toàn cục — gọi từ onclick trong HTML */
+  window.loadFigmaIframe = function (el) {
+    var wrap = el.closest('.figma-lazy');
+    if (!wrap) return;
+    var src = wrap.dataset.src;
+    if (!src) return;
+    wrap.innerHTML =
+      '<iframe src="' + src + '" allowfullscreen ' +
+      'style="width:100%;height:100%;border:none;border-radius:16px;display:block;">' +
+      '</iframe>';
+  };
+})();

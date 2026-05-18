@@ -1,27 +1,49 @@
-@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+/* Courier Prime — loaded via <link> in HTML with preload + font-display:swap */
 
 *,
-html, body, button, input, select, textarea {
-  font-family: 'Courier Prime', monospace !important;
+html,
+body,
+button,
+input,
+select,
+textarea {
+  font-family: "Courier Prime", monospace !important;
 }
 
-h1, h2, h3, h4, h5, h6, p, a, span, div, li, td {
-  font-family: 'Courier Prime', monospace !important;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a,
+span,
+div,
+li,
+td {
+  font-family: "Courier Prime", monospace !important;
 }
 
-body { background: #000; }
+body {
+  background: #000;
+}
 
 /* Restore Font Awesome glyph font on pseudo-elements */
-.fa-solid::before, .fas::before,
-.fal::before, .fad::before {
+.fa-solid::before,
+.fas::before,
+.fal::before,
+.fad::before {
   font-family: "Font Awesome 7 Free" !important;
   font-weight: 900 !important;
 }
-.fa-regular::before, .far::before {
+.fa-regular::before,
+.far::before {
   font-family: "Font Awesome 7 Free" !important;
   font-weight: 400 !important;
 }
-.fa-brands::before, .fab::before {
+.fa-brands::before,
+.fab::before {
   font-family: "Font Awesome 7 Brands" !important;
   font-weight: 400 !important;
 }

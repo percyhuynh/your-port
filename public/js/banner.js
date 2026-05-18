@@ -84,7 +84,7 @@
     function rb() { return BLACKS[Math.floor(Math.random() * BLACKS.length)]; }
 
     /* ── Particles — tăng lên 180, size rõ hơn ── */
-    var TOTAL = 180;
+    var TOTAL = 160;
     var P = [];
 
     function initParticles() {
@@ -119,7 +119,7 @@
           var dx = a.x - b.x, dy = a.y - b.y;
           var d2 = dx * dx + dy * dy;
           /* tăng maxD và opacity */
-          var maxD = 100 + Math.min(a.size, b.size) * 10;
+          var maxD = 100 + Math.min(a.size, b.size) * 9;
           if (d2 < maxD * maxD) {
             var tv = 1 - Math.sqrt(d2) / maxD;
             ctx.beginPath();
@@ -134,11 +134,22 @@
       }
     }
 
+    /* ── Cached vignette — tạo 1 lần, dùng lại mỗi frame ── */
+    var vignetteGrad = null;
+    function buildVignette() {
+      vignetteGrad = ctx.createRadialGradient(W/2, H/2, H*0.15, W/2, H/2, W*0.9);
+      vignetteGrad.addColorStop(0, 'rgba(0,0,0,0)');
+      vignetteGrad.addColorStop(1, 'rgba(0,0,0,0.42)');
+    }
+
     /* ── Main loop ── */
     var rafId = null;
 
-    function frame() {
-      ctx.clearRect(0, 0, W, H);
+var lastFrame = 0;
+function frame(ts) {
+  if (ts - lastFrame < 33) { rafId = requestAnimationFrame(frame); return; } // 30fps cap
+  lastFrame = ts;
+  ctx.clearRect(0, 0, W, H);
 
       var mx = mouse.x, my = mouse.y;
 
@@ -207,12 +218,11 @@
         ctx.fillRect(0, 0, W, H);
       }
 
-      /* vignette */
-      var vg = ctx.createRadialGradient(W / 2, H / 2, H * 0.15, W / 2, H / 2, W * 0.9);
-      vg.addColorStop(0, 'rgba(0,0,0,0)');
-      vg.addColorStop(1, 'rgba(0,0,0,0.42)');
-      ctx.fillStyle = vg;
-      ctx.fillRect(0, 0, W, H);
+      /* vignette — dùng cached gradient, tạo 1 lần khi resize thay vì mỗi frame */
+      if (vignetteGrad) {
+        ctx.fillStyle = vignetteGrad;
+        ctx.fillRect(0, 0, W, H);
+      }
 
       /* cursor UI */
       uiCtx.clearRect(0, 0, W, H);
@@ -242,6 +252,7 @@
       uiCv.width = W; uiCv.height = H;
 
       drawBg();
+      buildVignette();
       if (W > 0 && H > 0) initParticles();
     }
 

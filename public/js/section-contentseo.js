@@ -29,10 +29,19 @@
         Same mechanic as ab-line in section-about
   ───────────────────────────────────────── */
   const hdrLines = sec.querySelectorAll('.cs__hdr-line[data-csl]');
+  /* OPT: cache vh + rAF throttle — không đọc innerHeight mỗi scroll event */
+  var _csVh = window.innerHeight;
+  window.addEventListener('resize', function() { _csVh = window.innerHeight; }, { passive: true });
+  var _csHdrRaf = false;
   function csHdrReveal() {
-    const pt = window.innerHeight * 0.82;
-    hdrLines.forEach(function (el) {
-      if (el.getBoundingClientRect().top < pt) el.classList.add('cs-revealed');
+    if (_csHdrRaf) return;
+    _csHdrRaf = true;
+    requestAnimationFrame(function() {
+      _csHdrRaf = false;
+      const pt = _csVh * 0.82;
+      hdrLines.forEach(function (el) {
+        if (el.getBoundingClientRect().top < pt) el.classList.add('cs-revealed');
+      });
     });
   }
   if (hdrLines.length) {
@@ -204,7 +213,15 @@
     setActiveStep(stepIndex);
   }
 
-  window.addEventListener("scroll", updateProcess, { passive: true });
+  /* OPT: rAF throttle — updateProcess đọc getBoundingClientRect + offsetHeight mỗi scroll
+     → layout thrashing. Bọc trong rAF để chỉ chạy 1 lần/frame */
+  var _procRaf = false;
+  function onScrollProcess() {
+    if (_procRaf) return;
+    _procRaf = true;
+    requestAnimationFrame(function() { _procRaf = false; updateProcess(); });
+  }
+  window.addEventListener("scroll", onScrollProcess, { passive: true });
   updateProcess(); // chạy ngay khi tải để đặt trạng thái ban đầu đúng
 
   /* ─────────────────────────────────────────

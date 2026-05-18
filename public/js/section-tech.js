@@ -8,8 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
       const stage = document.getElementById("stage");
       const headingWrap = document.getElementById("headingWrap");
       const heading = document.getElementById("heading");
-      const navLeft = document.getElementById("labelLeft");
-      const navRight = document.getElementById("labelRight");
 
       /* Pre-set text panels off to the right */
       gsap.set(["#text1", "#text2", "#text3", "#text4", "#text5"], {
@@ -23,10 +21,8 @@ document.addEventListener('DOMContentLoaded', function() {
       function applyColour(isBlack) {
         if (isBlack === snapped) return;
         snapped = isBlack;
-        stage.style.backgroundColor = isBlack ? "#000000" : "#fff";
-        heading.style.color = isBlack ? "#ffffff" : "#000000";
-        navLeft.style.color = isBlack ? "#fff" : "#0f0f0e";
-        navRight.style.color = isBlack ? "#fff" : "#0f0f0e";
+        if (stage)   stage.style.backgroundColor = isBlack ? "#000000" : "#fff";
+        if (heading) heading.style.color = isBlack ? "#ffffff" : "#000000";
       }
 
       /* Sau jump: tính lại màu từ DOM ngay lập tức */
@@ -149,112 +145,44 @@ document.addEventListener('DOMContentLoaded', function() {
         tl.set(id, { zIndex: 5 }, startTime + 2.01);
       }
 
-      /* ══ SLIDE 2 ══ shrink 8.5→9.1, new enters 8.9 (overlap last 0.2 when already tiny) */
-      tl.to(
-        "#thumb2br",
-        { opacity: 1, duration: 0.4, ease: "power2.out" },
-        7.9,
-      );
-      tl.to(
-        "#text1",
-        { opacity: 0, x: 40, duration: 0.35, ease: "power2.in" },
-        8.2,
-      );
+      /* ══ SLIDE 2 ══ */
+      tl.to("#thumb2br", { opacity: 1, duration: 0.4, ease: "power2.out" }, 7.9);
+      tl.to("#text1", { opacity: 0, x: 40, duration: 0.35, ease: "power2.in" }, 8.2);
       shrinkToTL("#main1", 8.5);
       tl.to("#thumb2br", { opacity: 0, duration: 0.2 }, 8.85);
-      tl.to(
-        "#main2",
-        { x: 0, y: 0, scale: 1, opacity: 1, duration: 1.2, ease: "expo.out" },
-        8.9,
-      );
-      tl.to(
-        "#text2",
-        { opacity: 1, x: 0, duration: 0.7, ease: "power3.out" },
-        9.8,
-      );
+      tl.to("#main2", { x: 0, y: 0, scale: 1, opacity: 1, duration: 1.2, ease: "expo.out" }, 8.9);
+      tl.to("#text2", { opacity: 1, x: 0, duration: 0.7, ease: "power3.out" }, 9.8);
       fadeOut("#main1", 10.5);
-      tl.to(
-        "#inner2",
-        { scale: 1.06, duration: 1.2, ease: "power1.inOut" },
-        10.2,
-      );
+      tl.to("#inner2", { scale: 1.06, duration: 1.2, ease: "power1.inOut" }, 10.2);
 
       /* ══ SLIDE 3 ══ */
       tl.to("#thumb3br", { opacity: 1, duration: 0.4 }, 11.0);
-      tl.to(
-        "#text2",
-        { opacity: 0, x: 40, duration: 0.35, ease: "power2.in" },
-        11.3,
-      );
+      tl.to("#text2", { opacity: 0, x: 40, duration: 0.35, ease: "power2.in" }, 11.3);
       shrinkToTL("#main2", 11.6);
       tl.to("#thumb3br", { opacity: 0, duration: 0.2 }, 11.95);
-      tl.to(
-        "#main3",
-        { x: 0, y: 0, scale: 1, opacity: 1, duration: 1.2, ease: "expo.out" },
-        12.0,
-      );
-      tl.to(
-        "#text3",
-        { opacity: 1, x: 0, duration: 0.7, ease: "power3.out" },
-        12.9,
-      );
+      tl.to("#main3", { x: 0, y: 0, scale: 1, opacity: 1, duration: 1.2, ease: "expo.out" }, 12.0);
+      tl.to("#text3", { opacity: 1, x: 0, duration: 0.7, ease: "power3.out" }, 12.9);
       fadeOut("#main2", 13.6);
-      tl.to(
-        "#inner3",
-        { scale: 1.06, duration: 1.2, ease: "power1.inOut" },
-        13.3,
-      );
+      tl.to("#inner3", { scale: 1.06, duration: 1.2, ease: "power1.inOut" }, 13.3);
 
       /* ══ SLIDE 4 ══ */
       tl.to("#thumb4br", { opacity: 1, duration: 0.4 }, 14.1);
-      tl.to(
-        "#text3",
-        { opacity: 0, x: 40, duration: 0.35, ease: "power2.in" },
-        14.4,
-      );
+      tl.to("#text3", { opacity: 0, x: 40, duration: 0.35, ease: "power2.in" }, 14.4);
       shrinkToTL("#main3", 14.7);
       tl.to("#thumb4br", { opacity: 0, duration: 0.2 }, 15.05);
-      tl.to(
-        "#main4",
-        { x: 0, y: 0, scale: 1, opacity: 1, duration: 1.2, ease: "expo.out" },
-        15.1,
-      );
-      tl.to(
-        "#text4",
-        { opacity: 1, x: 0, duration: 0.7, ease: "power3.out" },
-        16.0,
-      );
+      tl.to("#main4", { x: 0, y: 0, scale: 1, opacity: 1, duration: 1.2, ease: "expo.out" }, 15.1);
+      tl.to("#text4", { opacity: 1, x: 0, duration: 0.7, ease: "power3.out" }, 16.0);
       fadeOut("#main3", 16.7);
-      tl.to(
-        "#inner4",
-        { scale: 1.06, duration: 1.2, ease: "power1.inOut" },
-        16.4,
-      );
+      tl.to("#inner4", { scale: 1.06, duration: 1.2, ease: "power1.inOut" }, 16.4);
 
       /* ══ SLIDE 5 ══ */
       tl.to("#thumb5br", { opacity: 1, duration: 0.4 }, 17.2);
-      tl.to(
-        "#text4",
-        { opacity: 0, x: 40, duration: 0.35, ease: "power2.in" },
-        17.5,
-      );
+      tl.to("#text4", { opacity: 0, x: 40, duration: 0.35, ease: "power2.in" }, 17.5);
       shrinkToTL("#main4", 17.8);
       tl.to("#thumb5br", { opacity: 0, duration: 0.2 }, 18.15);
-      tl.to(
-        "#main5",
-        { x: 0, y: 0, scale: 1, opacity: 1, duration: 1.2, ease: "expo.out" },
-        18.2,
-      );
-      tl.to(
-        "#text5",
-        { opacity: 1, x: 0, duration: 0.7, ease: "power3.out" },
-        19.1,
-      );
+      tl.to("#main5", { x: 0, y: 0, scale: 1, opacity: 1, duration: 1.2, ease: "expo.out" }, 18.2);
+      tl.to("#text5", { opacity: 1, x: 0, duration: 0.7, ease: "power3.out" }, 19.1);
       fadeOut("#main4", 19.8);
-      tl.to(
-        "#inner5",
-        { scale: 1.06, duration: 1.0, ease: "power1.inOut" },
-        19.5,
-      );
+      tl.to("#inner5", { scale: 1.06, duration: 1.0, ease: "power1.inOut" }, 19.5);
 
 }); // end DOMContentLoaded

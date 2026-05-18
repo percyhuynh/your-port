@@ -154,7 +154,9 @@
 /* ── RIGHT CONTENT ── */
 .ps-right {
   position: relative;
-  min-height: 140px;
+  /* FIX CLS: height cố định thay vì min-height — tránh layout shift khi panel
+     chuyển từ absolute → relative làm đẩy toàn bộ layout */
+  height: 280px;
   justify-self: stretch;
   align-self: center;
   text-align: right;
@@ -165,7 +167,7 @@
   opacity: 1;
 }
 .ps-panel {
-  position: absolute;
+  position: absolute; /* FIX CLS: luôn absolute, không đổi sang relative */
   inset: 0;
   opacity: 0;
   transform: translateX(32px) translateY(24px) scale(0.96);
@@ -178,7 +180,7 @@
   opacity: 1;
   transform: none;
   pointer-events: all;
-  position: relative;
+  /* FIX CLS: đã xóa position: relative — đây là thủ phạm gây CLS 1.0 */
 }
 .ps-panel p {
   font-size: 13.5px;

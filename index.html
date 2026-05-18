@@ -10,33 +10,39 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Percy Huynh</title>
+
+    <!-- Courier Prime — preload để không block render -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+      onload="this.rel = 'stylesheet'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+      />
+    </noscript>
+
     <link
       rel="icon"
       type="image/x-icon"
       href="/public/images/main-logo-1.webp"
     />
-    <!-- Preconnect để tăng tốc load font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
-    <!-- Google Fonts — gộp tất cả vào 1 request duy nhất -->
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Serif+Display:ital@0;1&family=Inter:wght@100..900&family=Playfair+Display:wght@700;900&family=Syne:wght@400;700;800&family=Syne+Mono&family=Unbounded:wght@200;300;400&display=swap"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
-    />
 
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="public/fonts/fa/css/all.min.css" />
-
-    <!-- GSAP + plugins — load 1 lần duy nhất, trước tất cả component JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.10/typed.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="public/fonts/fa/css/all.min.css"
+      media="print"
+      onload="this.media = 'all'"
+    />
+    <noscript
+      ><link rel="stylesheet" href="public/fonts/fa/css/all.min.css"
+    /></noscript>
 
     <!-- Local CSS -->
     <link rel="stylesheet" href="public/css/global.css" />
@@ -56,6 +62,7 @@
   <body>
     <!-- INTRO OVERLAY -->
     <div id="intro-overlay">
+      <!-- Percy animation — ẩn, chỉ chạy sau khi bấm Start -->
       <div id="words-wrap">
         <div id="percy-wrap">
           <span class="percy-letter">P</span>
@@ -79,7 +86,7 @@
     <!-- HEADER cố định, luôn nằm trên cùng -->
     <header>
       <a href="#" class="logo"
-        ><img src="public/images/main-logo.png" alt="HMD"
+        ><img src="public/images/main-logo.png" alt="HMD" fetchpriority="high"
       /></a>
       <ul class="navlinks">
         <li class="smart-container">
@@ -167,11 +174,12 @@
                 src="public/images/section-about-1(1).webp"
                 alt=""
                 class="ab-painting-img"
+                loading="lazy"
               />
-              <div class="ab-painting-plaque">
+              <!-- <div class="ab-painting-plaque">
                 <span class="ab-pp-title">About Me</span>
                 <span class="ab-pp-sub">Percy Huynh · Portfolio</span>
-              </div>
+              </div> -->
             </div>
             <div class="ab-spot-beam"></div>
             <div class="ab-spot-dark" id="ab-spot-dark"></div>
@@ -277,23 +285,16 @@
           <span class="sk-pill" data-val="Off-page SEO">Off-page SEO</span>
           <span class="sk-pill" data-val="Graphic Design">Graphic Design</span>
           <span class="sk-pill" data-val="UI/UX Figma">UI/UX Figma</span>
-          <span
-            class="sk-pill"
-            data-val="AI Workflow Automation (Google Apps Script/n8n)"
-            >Automation (Google Apps Script/n8n)</span
+          <span class="sk-pill" data-val="Google Apps Script/n8n"
+            >Google Apps Script/n8n</span
           >
           <span class="sk-pill" data-val="SERP Analysis">SERP Analysis</span>
           <!-- <span class="sk-pill" data-val="Content Strategy"
             >Content Strategy</span
           > -->
-          <span class="sk-pill" data-val="WordPress Implementer"
-            >WordPress Implementer</span
-          >
-
-          <span
-            class="sk-pill"
-            data-val="HTML/CSS (Bootstrap, TailwindCSS, GSAP)"
-            >HTML/CSS (Bootstrap, TailwindCSS, GSAP)</span
+          <span class="sk-pill" data-val="WordPress">WordPress</span>
+          <span class="sk-pill" data-val="Bootstrap/TailwindCSS/GSAP"
+            >Bootstrap/TailwindCSS/GSAP</span
           >
           <span class="sk-pill" data-val="E-commerce Operations"
             >E-commerce Operations</span
@@ -342,7 +343,11 @@
           <div class="brand-card">
             <div class="card-bg"></div>
             <div class="card-logo">
-              <img src="./public/images/logo-brand-1.png" alt="Brand 1" />
+              <img
+                src="./public/images/logo-brand-1.png"
+                alt="Brand 1"
+                loading="lazy"
+              />
             </div>
             <!-- <span class="card-pill always-on">Success Stories</span> -->
             <div class="card-testimonial">
@@ -357,7 +362,11 @@
           <div class="brand-card">
             <div class="card-bg"></div>
             <div class="card-logo">
-              <img src="/public/images/logo-brand-2.png" alt="Brand 2" />
+              <img
+                src="/public/images/logo-brand-2.png"
+                alt="Brand 2"
+                loading="lazy"
+              />
             </div>
             <!-- <span class="card-pill">Success Stories</span> -->
             <div class="card-testimonial">
@@ -372,7 +381,11 @@
           <div class="brand-card">
             <div class="card-bg"></div>
             <div class="card-logo">
-              <img src="/public/images/logo-brand-3.png" alt="Brand 3" />
+              <img
+                src="/public/images/logo-brand-3.png"
+                alt="Brand 3"
+                loading="lazy"
+              />
             </div>
             <!-- <span class="card-pill">Success Stories</span> -->
             <div class="card-testimonial">
@@ -387,7 +400,11 @@
           <div class="brand-card">
             <div class="card-bg"></div>
             <div class="card-logo">
-              <img src="/public/images/logo-brand-4.png" alt="Brand 4" />
+              <img
+                src="/public/images/logo-brand-4.png"
+                alt="Brand 4"
+                loading="lazy"
+              />
             </div>
             <!-- <span class="card-pill">Success Stories</span> -->
             <div class="card-testimonial">
@@ -402,7 +419,11 @@
           <div class="brand-card">
             <div class="card-bg"></div>
             <div class="card-logo">
-              <img src="/public/images/logo-brand-5.png" alt="Brand 5" />
+              <img
+                src="/public/images/logo-brand-5.png"
+                alt="Brand 5"
+                loading="lazy"
+              />
             </div>
             <!-- <span class="card-pill">Success Stories</span> -->
             <div class="card-testimonial">
@@ -417,7 +438,11 @@
           <div class="brand-card">
             <div class="card-bg"></div>
             <div class="card-logo">
-              <img src="/public/images/logo-brand-6.png" alt="Brand 6" />
+              <img
+                src="/public/images/logo-brand-6.png"
+                alt="Brand 6"
+                loading="lazy"
+              />
             </div>
             <!-- <span class="card-pill always-on">Success Stories</span> -->
             <div class="card-testimonial">
@@ -432,7 +457,11 @@
           <div class="brand-card">
             <div class="card-bg"></div>
             <div class="card-logo">
-              <img src="/public/images/logo-brand-7.png" alt="Brand 7" />
+              <img
+                src="/public/images/logo-brand-7.png"
+                alt="Brand 7"
+                loading="lazy"
+              />
             </div>
             <!-- <span class="card-pill always-on">Success Stories</span> -->
             <div class="card-testimonial">
@@ -447,7 +476,11 @@
           <div class="brand-card">
             <div class="card-bg"></div>
             <div class="card-logo">
-              <img src="/public/images/logo-brand-8.png" alt="Brand 8" />
+              <img
+                src="/public/images/logo-brand-8.png"
+                alt="Brand 8"
+                loading="lazy"
+              />
             </div>
             <!-- <span class="card-pill">Success Stories</span> -->
             <div class="card-testimonial">
@@ -542,6 +575,7 @@
                       src="./public/images/gtrip_1.webp"
                       alt="SEO Performance Chart - Google Search Console"
                       class="st__chart-render"
+                      loading="lazy"
                     />
                   </div>
                 </div>
@@ -628,6 +662,7 @@
               <img
                 src="public/images/gtrip_2.webp"
                 alt="GSC Performance Overview"
+                loading="lazy"
               />
               <div class="st__p2-overlay">
                 <span class="st__p2-overlay-tag">Google Search Console</span>
@@ -638,7 +673,11 @@
 
             <!-- Slot nhỏ 1 -->
             <div class="st__proof-slot has-image">
-              <img src="public/images/gtrip_3.webp" alt="Top Keywords" />
+              <img
+                src="public/images/gtrip_3.webp"
+                alt="Top Keywords"
+                loading="lazy"
+              />
               <div class="st__p2-overlay">
                 <span class="st__p2-overlay-tag">Keywords</span>
                 <div class="st__p2-overlay-title">Top Ranking Keywords</div>
@@ -648,7 +687,11 @@
 
             <!-- Slot nhỏ 2 -->
             <div class="st__proof-slot has-image">
-              <img src="public/images/gtrip_4.webp" alt="Top Pages" />
+              <img
+                src="public/images/gtrip_4.webp"
+                alt="Top Pages"
+                loading="lazy"
+              />
               <div class="st__p2-overlay">
                 <span class="st__p2-overlay-tag">Pages</span>
                 <div class="st__p2-overlay-title">Top Traffic Pages</div>
@@ -672,6 +715,7 @@
             <div class="st__p2-card st__p2-card--large has-image">
               <img
                 class="st__p2-img"
+                loading="lazy"
                 src="public/images/royal-1.webp"
                 alt="Project 02 Main"
               />
@@ -692,6 +736,7 @@
             <div class="st__p2-card st__p2-card--sm has-image">
               <img
                 class="st__p2-img"
+                loading="lazy"
                 src="public/images/royal-2.webp"
                 alt="Keyword Research"
               />
@@ -712,6 +757,7 @@
             <div class="st__p2-card st__p2-card--sm has-image">
               <img
                 class="st__p2-img"
+                loading="lazy"
                 src="public/images/royal-3.webp"
                 alt="Content Output"
               />
@@ -940,6 +986,7 @@
                 <div class="nfa-img-wrap" id="nfaWrap0" onclick="nfaOpen(0)">
                   <img
                     class="nfa-img"
+                    loading="lazy"
                     id="nfaImg0"
                     src="public/images/section-contentseo-1.webp"
                     alt="GTrip content SEO"
@@ -962,6 +1009,7 @@
                 <div class="nfa-img-wrap" id="nfaWrap1" onclick="nfaOpen(1)">
                   <img
                     class="nfa-img"
+                    loading="lazy"
                     id="nfaImg1"
                     src="public/images/section-contentseo-2.webp"
                     alt="Royal Helmet content SEO"
@@ -984,6 +1032,7 @@
                 <div class="nfa-img-wrap" id="nfaWrap2" onclick="nfaOpen(2)">
                   <img
                     class="nfa-img"
+                    loading="lazy"
                     id="nfaImg2"
                     src="public/images/section-contentseo-3.webp"
                     alt="Freelance content SEO"
@@ -1032,6 +1081,7 @@
                     src="public/images/section-contentseo-4.webp"
                     alt="Traffic chart proof"
                     class="cs__card-image"
+                    loading="lazy"
                     loading="lazy"
                     style="object-position: center 32%"
                   />
@@ -1098,6 +1148,7 @@
                     alt="Keyword ranking proof"
                     class="cs__card-image"
                     loading="lazy"
+                    loading="lazy"
                   />
                 </div>
                 <div class="cs__card-body">
@@ -1155,6 +1206,7 @@
                     src="public/images/section-contentseo-5.webp"
                     alt="GSC proof screenshot"
                     class="cs__card-image"
+                    loading="lazy"
                     loading="lazy"
                   />
                 </div>
@@ -1263,6 +1315,7 @@
               <img
                 src="/public/images/uiux-1.webp"
                 alt="Overhead view — eVTOL 6-rotor platform"
+                loading="lazy"
               />
               <!-- <div class="hs-card-placeholder">
           <div class="hs-placeholder-icon">
@@ -1284,6 +1337,7 @@
               <img
                 src="/public/images/uiux-2.webp"
                 alt="Axial-flux direct-drive motor — exploded"
+                loading="lazy"
               />
               <div class="hs-card-placeholder">
                 <div class="hs-placeholder-icon">
@@ -1316,6 +1370,7 @@
               <img
                 src="/public/images/uiux-3.webp"
                 alt="Rear elevation — wingspan 32 ft"
+                loading="lazy"
               />
               <div class="hs-card-placeholder">
                 <div class="hs-placeholder-icon">
@@ -1347,6 +1402,7 @@
               <img
                 src="/public/images/uiux-4.webp"
                 alt="Li-ion cell stack — 2 160-cell modules"
+                loading="lazy"
               />
               <div class="hs-card-placeholder">
                 <div class="hs-placeholder-icon">
@@ -1379,6 +1435,7 @@
               <img
                 src="/public/images/uiux-5.webp"
                 alt="200 mi range · 200 mph cruise · L/D 14:1"
+                loading="lazy"
               />
               <div class="hs-card-placeholder">
                 <div class="hs-placeholder-icon">
@@ -1411,6 +1468,7 @@
               <img
                 src="/public/images/uiux-6.webp"
                 alt="FAA Part 23 type certificate — 5 stages"
+                loading="lazy"
               />
               <div class="hs-card-placeholder">
                 <div class="hs-placeholder-icon">
@@ -1438,6 +1496,7 @@
       <!-- /.hs-section -->
 
       <!-- FIGMA EMBED -->
+      <!-- FIGMA EMBED -->
       <div class="ui-figma-block">
         <div class="ui-figma-label">
           <span class="ui-figma-tag">Prototype</span>
@@ -1446,15 +1505,26 @@
         </div>
         <h3 class="ui-figma-heading">Landingpage Royal M139</h3>
         <div class="ui-figma-frame">
-          <iframe
-            style="border: 1px solid rgba(0, 0, 0, 0.08); border-radius: 16px"
-            src="https://embed.figma.com/proto/M6eLg8jcHsc1Pr8N7xaxRh/Landingpage-royal-M139--9-2024-?node-id=185-375&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&embed-host=share"
-            allowfullscreen
-          ></iframe>
+          <div
+            class="figma-lazy"
+            data-src="https://embed.figma.com/proto/M6eLg8jcHsc1Pr8N7xaxRh/Landingpage-royal-M139--9-2024-?node-id=185-375&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&embed-host=share"
+          >
+            <div class="figma-lazy-thumb" onclick="loadFigmaIframe(this)">
+              <div class="figma-lazy-icon">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                  <circle cx="20" cy="20" r="20" fill="rgba(26,26,24,0.06)" />
+                  <path d="M15 13l14 7-14 7V13z" fill="#1a1a18" />
+                </svg>
+              </div>
+              <span class="figma-lazy-text">Click to view Figma Prototype</span>
+              <span class="figma-lazy-sub">Landingpage Royal M139</span>
+            </div>
+          </div>
         </div>
       </div>
 
       <!-- FIGMA EMBED 2 -->
+
       <div class="ui-figma-block ui-figma-block--alt">
         <div class="ui-figma-label">
           <span class="ui-figma-tag">Prototype</span>
@@ -1463,11 +1533,21 @@
         </div>
         <h3 class="ui-figma-heading">B2B Redesign</h3>
         <div class="ui-figma-frame">
-          <iframe
-            style="border: 1px solid rgba(0, 0, 0, 0.08); border-radius: 16px"
-            src="https://embed.figma.com/proto/3OipZT5zK7ZqTc5kjtv5gZ/B2B-redesign--3-5-2025-?node-id=203-3135&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&embed-host=share"
-            allowfullscreen
-          ></iframe>
+          <div
+            class="figma-lazy"
+            data-src="https://embed.figma.com/proto/3OipZT5zK7ZqTc5kjtv5gZ/B2B-redesign--3-5-2025-?node-id=203-3135&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&embed-host=share"
+          >
+            <div class="figma-lazy-thumb" onclick="loadFigmaIframe(this)">
+              <div class="figma-lazy-icon">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                  <circle cx="20" cy="20" r="20" fill="rgba(26,26,24,0.06)" />
+                  <path d="M15 13l14 7-14 7V13z" fill="#1a1a18" />
+                </svg>
+              </div>
+              <span class="figma-lazy-text">Click to view Figma Prototype</span>
+              <span class="figma-lazy-sub">B2B Redesign</span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -1476,37 +1556,73 @@
         <div class="pf-grid">
           <div class="pf-col">
             <div class="pf-card">
-              <img src="public/images/graphic-design-1.webp" alt="" />
+              <img
+                src="public/images/graphic-design-1.webp"
+                alt=""
+                loading="lazy"
+              />
             </div>
             <div class="pf-card">
-              <img src="public/images/graphic-design-2.webp" alt="" />
+              <img
+                src="public/images/graphic-design-2.webp"
+                alt=""
+                loading="lazy"
+              />
             </div>
             <div class="pf-card">
-              <img src="public/images/graphic-design-3.webp" alt="" />
+              <img
+                src="public/images/graphic-design-3.webp"
+                alt=""
+                loading="lazy"
+              />
             </div>
           </div>
 
           <div class="pf-col">
             <div class="pf-card">
-              <img src="public/images/graphic-design-4.webp" alt="" />
+              <img
+                src="public/images/graphic-design-4.webp"
+                alt=""
+                loading="lazy"
+              />
             </div>
             <div class="pf-card">
-              <img src="public/images/graphic-design-5.webp" alt="" />
+              <img
+                src="public/images/graphic-design-5.webp"
+                alt=""
+                loading="lazy"
+              />
             </div>
             <div class="pf-card">
-              <img src="public/images/graphic-design-6.webp" alt="" />
+              <img
+                src="public/images/graphic-design-6.webp"
+                alt=""
+                loading="lazy"
+              />
             </div>
           </div>
 
           <div class="pf-col">
             <div class="pf-card">
-              <img src="public/images/graphic-design-7.webp" alt="" />
+              <img
+                src="public/images/graphic-design-7.webp"
+                alt=""
+                loading="lazy"
+              />
             </div>
             <div class="pf-card">
-              <img src="public/images/graphic-design-8.webp" alt="" />
+              <img
+                src="public/images/graphic-design-8.webp"
+                alt=""
+                loading="lazy"
+              />
             </div>
             <div class="pf-card">
-              <img src="public/images/graphic-design-9.webp" alt="" />
+              <img
+                src="public/images/graphic-design-9.webp"
+                alt=""
+                loading="lazy"
+              />
             </div>
           </div>
         </div>
@@ -1539,11 +1655,19 @@
         <!-- ══ SLIDE 1 ══ -->
         <div class="main-frame" id="main1">
           <div class="img-inner" id="inner1">
-            <img src="public/images/section-tech-1.webp" alt="n8n" />
+            <img
+              src="public/images/section-tech-1.webp"
+              alt="n8n"
+              loading="lazy"
+            />
           </div>
         </div>
         <div class="thumb-frame thumb-tl" id="thumb1tl">
-          <img src="public/images/section-tech-1.webp" alt="n8n" />
+          <img
+            src="public/images/section-tech-1.webp"
+            alt="n8n"
+            loading="lazy"
+          />
         </div>
         <div class="text-panel-tech" id="text1">
           <p>
@@ -1558,7 +1682,11 @@
         <!-- ══ SLIDE 2 ══ -->
         <div class="main-frame" id="main2">
           <div class="img-inner" id="inner2">
-            <img src="public/images/section-tech-2.webp" alt="Automation" />
+            <img
+              src="public/images/section-tech-2.webp"
+              alt="Automation"
+              loading="lazy"
+            />
           </div>
         </div>
         <div class="thumb-frame thumb-br" id="thumb2br">
@@ -1580,7 +1708,11 @@
         <!-- ══ SLIDE 3 ══ -->
         <div class="main-frame" id="main3">
           <div class="img-inner" id="inner3">
-            <img src="public/images/section-tech-3.webp" alt="Aircraft" />
+            <img
+              src="public/images/section-tech-3.webp"
+              alt="Aircraft"
+              loading="lazy"
+            />
           </div>
         </div>
         <div class="thumb-frame thumb-br" id="thumb3br">
@@ -1602,7 +1734,11 @@
         <!-- ══ SLIDE 4 ══ -->
         <div class="main-frame" id="main4">
           <div class="img-inner" id="inner4">
-            <img src="public/images/section-tech-4.webp" alt="Night city" />
+            <img
+              src="public/images/section-tech-4.webp"
+              alt="Night city"
+              loading="lazy"
+            />
           </div>
         </div>
         <div class="thumb-frame thumb-br" id="thumb4br">
@@ -1639,11 +1775,6 @@
             metadata, and injects everything into CKEditor automatically.
             Reduced article upload time from ~10 minutes to under 1 minute.
           </p>
-        </div>
-
-        <div class="nav-labels">
-          <!-- <span id="labelLeft">Experience Highlights</span> -->
-          <!-- <span id="labelRight">Skip town, let's fly</span> -->
         </div>
       </div>
       <!-- </div> -->
@@ -1919,6 +2050,13 @@
     `;
       }
     </script>
+    <!-- GSAP + plugins — PHẢI đứng trước local JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.10/typed.min.js"></script>
+
+    <!-- Local JS -->
     <script src="public/js/intro.js"></script>
     <script src="public/js/banner.js"></script>
     <script src="public/js/sidenav.js"></script>

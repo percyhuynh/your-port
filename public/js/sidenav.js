@@ -237,15 +237,18 @@ function getSectionProgress(el) {
   const h = el.offsetHeight;
   return Math.min(1, Math.max(0, -top / h));
 }
+  /* OPT: cache innerHeight — đọc window.innerHeight trong scroll = layout thrashing */
+  let _vh = window.innerHeight;
+  window.addEventListener('resize', function() { _vh = window.innerHeight; }, { passive: true });
+
   function getActiveSection() {
-    const mid = window.innerHeight / 2;
+    const mid = _vh / 2;
     let best = 0, bestDist = Infinity;
     SECTIONS.forEach(({ id }, i) => {
       const el = document.getElementById(id);
       if (!el) return;
       const { top, bottom } = el.getBoundingClientRect();
-      const vh = window.innerHeight;
-      if (top < vh && bottom > 0) {
+      if (top < _vh && bottom > 0) {
         const dist = Math.abs(top - mid * 0.5);
         if (dist < bestDist) { bestDist = dist; best = i; }
       }
@@ -253,11 +256,14 @@ function getSectionProgress(el) {
     return best;
   }
 
+  /* OPT: cache section elements — getElementById trong render loop = DOM query mỗi frame */
+  const sectionEls = SECTIONS.map(({ id }) => document.getElementById(id));
+
   function render() {
     rafId = null;
     const current = getActiveSection();
     SECTIONS.forEach(({ id }, i) => {
-      const el = document.getElementById(id);
+      const el = sectionEls[i];
       const p = el ? getSectionProgress(el) : 0;
       const { dot, fill } = dotEls[i];
       const isActive = (i === current) && (p > 0.001);

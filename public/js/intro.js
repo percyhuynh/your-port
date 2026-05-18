@@ -1,3 +1,30 @@
+(function () {
+  'use strict';
+  var overlay = document.getElementById('intro-overlay');
+  var btn     = document.getElementById('intro-btn');
+  var loader  = document.getElementById('intro-loader');
+  if (!overlay || !btn) return;
+ 
+  btn.addEventListener('click', function () {
+    btn.style.pointerEvents = 'none';
+    loader.classList.add('is-active');
+ 
+    setTimeout(function () {
+      /* Fullscreen */
+      var el = document.documentElement;
+      var rq = el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen;
+      if (rq) rq.call(el).catch(function () {});
+ 
+      /* Fade out */
+      overlay.classList.add('is-hiding');
+      setTimeout(function () {
+        overlay.style.display = 'none';
+        window.dispatchEvent(new Event('intro-done'));
+      }, 650);
+    }, 2000);
+  });
+})();
+
 document.body.classList.add('intro-playing');
 
 const overlay = document.getElementById('intro-overlay');

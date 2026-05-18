@@ -57,11 +57,13 @@ new Typed('.input', {
           glow.style.background = 'transparent';
         } else {
           // ease-out → tại lp=0.3 đã mở tới ~59% → pinpoint bùng sáng rất nhanh
-          var r  = Math.round(8 + lp * 310);   // 8px → 318px
-          var rH = Math.round(r * 1.42);
+          /* OPT: bước 2px và 1 chữ số thập phân — giảm số lần browser
+             tính lại gradient mà mắt thường không nhận ra sự khác biệt */
+          var r  = Math.round((8 + lp * 310) / 2) * 2;
+          var rH = Math.round(r * 1.42 / 2) * 2;
 
-          var dc = Math.max(0.02, 0.99 - lp * 0.97).toFixed(2);
-          var dm = Math.max(0.25, 0.99 - lp * 0.58).toFixed(2);
+          var dc = Math.max(0.02, 0.99 - lp * 0.97).toFixed(1);
+          var dm = Math.max(0.25, 0.99 - lp * 0.58).toFixed(1);
 
           dark.style.background =
             'radial-gradient(ellipse ' + r + 'px ' + rH + 'px at 50% 44%,' +
@@ -101,7 +103,7 @@ new Typed('.input', {
 
   const TEXT = 'Percy Huynh';
   const FONT_SIZE = 130;
-  const DPR = Math.min(window.devicePixelRatio || 1, 2);
+  const DPR = Math.min(window.devicePixelRatio || 1, 1.5); /* OPT: 2→1.5 giảm ~44% pixel cần tính */
 
   let W = 0, H = 0;
   let srcCanvas, srcCtx;
@@ -112,6 +114,21 @@ new Typed('.input', {
   let loopT0 = null;
   let tick = 0;
   let prevRenderMX = -9999, prevRenderMY = -9999, smoothVelMag = 0, lastFrameT = 0;
+
+  /* OPT: scroll velocity tracking — skip render khi scroll quá nhanh */
+  let scrollVel = 0;
+  let lastScrollY = window.scrollY;
+  let lastScrollT = performance.now();
+  const SCROLL_VEL_THRESHOLD = 3; // px/ms — nhanh hơn ngưỡng này thì skip
+
+  window.addEventListener('scroll', function () {
+    const now = performance.now();
+    const dy = Math.abs(window.scrollY - lastScrollY);
+    const dt = Math.max(1, now - lastScrollT);
+    scrollVel = dy / dt;
+    lastScrollY = window.scrollY;
+    lastScrollT = now;
+  }, { passive: true });
 
   function setupSize() {
     const availW = wrap.clientWidth;
@@ -280,8 +297,17 @@ new Typed('.input', {
   function startLoop() {
     if (raf) return;
     loopT0 = performance.now();
+    var _lastT = 0;
     function loop(now) {
-      renderFrame(now);
+      /* OPT: skip render nếu user đang scroll nhanh hơn ngưỡng
+         — canvas bị scroll qua nhanh, mắt không thấy được anyway
+         — decay velocity mỗi frame để resume tự nhiên khi dừng scroll */
+      scrollVel *= 0.92;
+
+      if (now - _lastT >= 33 && scrollVel < SCROLL_VEL_THRESHOLD) {
+        _lastT = now;
+        renderFrame(now);
+      }
       raf = requestAnimationFrame(loop);
     }
     raf = requestAnimationFrame(loop);
