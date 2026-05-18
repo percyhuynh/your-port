@@ -20,14 +20,6 @@ new Typed('.input', {
   var beam   = screen ? screen.querySelector('.ab-spot-beam') : null;
   if (!screen || !dark || !glow || !wrap) return;
 
-  // Timeline (scroll progress):
-  // 0.00 → 0.06  : complete darkness
-  // 0.06 → 0.20  : ceiling beam fades in
-  // 0.18 → 0.86  : spotlight opens from pinpoint → full
-  // 0.86 → 0.96  : fully lit, frame scales up slightly
-  // 0.96 → 1.00  : exit buffer
-
-  // ease-out: spotlight bùng mở nhanh rồi chậm dần
   function easeOut(t) {
     return 1 - Math.pow(1 - t, 2.5);
   }
@@ -46,19 +38,14 @@ new Typed('.input', {
       onUpdate: function (self) {
         var p = Math.min(1, self.progress);
 
-        // --- PAINTING FADE-IN: 14% → 72% (đồng thời với spotlight) ---
         wrap.style.opacity = norm(p, 0.14, 0.72).toFixed(3);
 
-        // --- SPOTLIGHT: 10% → 88% ---
         var lp = norm(p, 0.10, 0.88);
 
         if (lp < 0.004) {
           dark.style.background = '#000';
           glow.style.background = 'transparent';
         } else {
-          // ease-out → tại lp=0.3 đã mở tới ~59% → pinpoint bùng sáng rất nhanh
-          /* OPT: bước 2px và 1 chữ số thập phân — giảm số lần browser
-             tính lại gradient mà mắt thường không nhận ra sự khác biệt */
           var r  = Math.round((8 + lp * 310) / 2) * 2;
           var rH = Math.round(r * 1.42 / 2) * 2;
 
@@ -81,7 +68,6 @@ new Typed('.input', {
             'transparent 68%)';
         }
 
-        // --- FRAME SCALE: 88% → 97% ---
         if (frame) {
           var scale = 1 + norm(p, 0.88, 0.97) * 0.06;
           frame.style.transform = 'scale(' + scale.toFixed(4) + ')';
@@ -99,15 +85,17 @@ new Typed('.input', {
   const wrap = document.getElementById('ph-wrap');
   const canvas = document.getElementById('ph-canvas');
   if (!wrap || !canvas) return;
-  const ctx = canvas.getContext('2d');
+
+  /* FIX: willReadFrequently — báo browser getImageData được gọi thường xuyên → nhanh hơn */
+  const ctx = canvas.getContext('2d', { willReadFrequently: true });
 
   const TEXT = 'Percy Huynh';
   const FONT_SIZE = 130;
-  const DPR = Math.min(window.devicePixelRatio || 1, 1.5); /* OPT: 2→1.5 giảm ~44% pixel cần tính */
+  const DPR = Math.min(window.devicePixelRatio || 1, 1.5);
 
   let W = 0, H = 0;
   let srcCanvas, srcCtx;
-  let srcCache, outBuf;          /* cached pixel buffers — rebuilt on resize */
+  let srcCache, outBuf;
   let mouse = { x: -9999, y: -9999 };
   let isHovering = false;
   let raf = null;
@@ -119,7 +107,7 @@ new Typed('.input', {
   let scrollVel = 0;
   let lastScrollY = window.scrollY;
   let lastScrollT = performance.now();
-  const SCROLL_VEL_THRESHOLD = 3; // px/ms — nhanh hơn ngưỡng này thì skip
+  const SCROLL_VEL_THRESHOLD = 3;
 
   window.addEventListener('scroll', function () {
     const now = performance.now();
@@ -158,7 +146,8 @@ new Typed('.input', {
     srcCanvas = document.createElement('canvas');
     srcCanvas.width = W * DPR;
     srcCanvas.height = H * DPR;
-    srcCtx = srcCanvas.getContext('2d');
+    /* FIX: willReadFrequently cho srcCtx vì getImageData được gọi thường xuyên */
+    srcCtx = srcCanvas.getContext('2d', { willReadFrequently: true });
     srcCtx.scale(DPR, DPR);
     srcCtx.font = `italic ${FONT_SIZE}px Georgia, serif`;
     srcCtx.fillStyle = '#6b1a1a';
@@ -210,8 +199,8 @@ new Typed('.input', {
       }
     }
     srcCtx.putImageData(imgData, 0, 0);
-    srcCache = srcCtx.getImageData(0, 0, sw, sh);          /* snapshot for render loop */
-    outBuf   = ctx.createImageData(sw, sh);                /* reusable output buffer   */
+    srcCache = srcCtx.getImageData(0, 0, sw, sh);
+    outBuf   = ctx.createImageData(sw, sh);
   }
 
   function initCanvas() {
@@ -222,14 +211,12 @@ new Typed('.input', {
     ctx.scale(DPR, DPR);
   }
 
-  /* ── unified render: water always on, mouse ink-bleed added when hovering ── */
   function renderFrame(now) {
     tick++;
     const t    = (now - loopT0) / 1000;
     const flow = t * 0.9;
     const AMP  = 3.0;
 
-    // Velocity tracking — normalize to 16ms (60fps) so high-refresh screens feel the same
     const dt = lastFrameT > 0 ? Math.max(4, now - lastFrameT) : 16;
     lastFrameT = now;
     if (isHovering && prevRenderMX > -999) {
@@ -243,7 +230,6 @@ new Typed('.input', {
     prevRenderMX = mouse.x;
     prevRenderMY = mouse.y;
 
-    // velBoost: 1.0 at rest → up to 2.8 when cursor moves fast (~18+ px/frame)
     const velBoost = 1 + Math.min(smoothVelMag / 18, 1.8);
     const RADIUS = 90, STRENGTH = 22 * velBoost, WAVE = 6;
 
@@ -255,7 +241,6 @@ new Typed('.input', {
       for (let x = 0; x < sw; x++) {
         const px = x / DPR, py = y / DPR;
 
-        /* water displacement — always applied */
         const w1 = Math.sin(px * 0.045 + py * 0.030 + flow * 1.10);
         const w2 = Math.sin(px * 0.028 - py * 0.050 + flow * 0.75 + 1.57);
         const w3 = Math.cos(px * 0.060 + py * 0.020 + flow * 1.40 + 3.20);
@@ -263,7 +248,6 @@ new Typed('.input', {
         let dx = (w1 * 0.55 + w3 * 0.45) * AMP * DPR;
         let dy = (w2 * 0.50 + w4 * 0.50) * AMP * DPR;
 
-        /* ink-bleed displacement — added on top when hovering */
         if (isHovering) {
           const toMX = mouse.x - px, toMY = mouse.y - py;
           const dist = Math.sqrt(toMX * toMX + toMY * toMY);
@@ -299,11 +283,7 @@ new Typed('.input', {
     loopT0 = performance.now();
     var _lastT = 0;
     function loop(now) {
-      /* OPT: skip render nếu user đang scroll nhanh hơn ngưỡng
-         — canvas bị scroll qua nhanh, mắt không thấy được anyway
-         — decay velocity mỗi frame để resume tự nhiên khi dừng scroll */
       scrollVel *= 0.92;
-
       if (now - _lastT >= 33 && scrollVel < SCROLL_VEL_THRESHOLD) {
         _lastT = now;
         renderFrame(now);
@@ -341,13 +321,28 @@ new Typed('.input', {
     }, 200);
   });
 
+  /* FIX: Page Visibility API — dừng loop khi tab bị ẩn/minimize
+     Đây là nguyên nhân chính khiến máy người dùng lag dù không dùng tab */
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) {
+      stopLoop();
+    } else {
+      // Chỉ resume nếu canvas đang trong viewport
+      const rect = wrap.getBoundingClientRect();
+      const inViewport = rect.top < window.innerHeight && rect.bottom > 0;
+      if (inViewport) startLoop();
+    }
+  });
+
   setupSize(); buildSource(); initCanvas();
 
-  /* OPT: IntersectionObserver — tắt loop khi canvas ra khỏi viewport
-     renderFrame O(W×H) chạy 60fps = 84% CPU — dừng khi không visible */
+  /* OPT: IntersectionObserver — tắt loop khi canvas ra khỏi viewport */
   new IntersectionObserver(function(entries) {
-    if (entries[0].isIntersecting) startLoop();
-    else stopLoop();
+    if (entries[0].isIntersecting) {
+      if (!document.hidden) startLoop(); // chỉ start nếu tab đang active
+    } else {
+      stopLoop();
+    }
   }, { threshold: 0.01 }).observe(wrap);
 })();
 
@@ -365,8 +360,8 @@ new Typed('.input', {
 
   function revealCheck() {
     var winH = window.innerHeight;
-    var revealPoint = winH * 0.82;   // light on when crossing upward
-    var dimPoint    = winH * 0.88;   // light off when crossing downward (scroll up)
+    var revealPoint = winH * 0.82;
+    var dimPoint    = winH * 0.88;
 
     allTargets.forEach(function (el) {
       var top = el.getBoundingClientRect().top;

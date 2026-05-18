@@ -285,6 +285,17 @@ function frame(ts) {
       }
     }, { threshold: 0.01 }).observe(section);
 
+
+    /* FIX: Page Visibility API — dừng particle loop khi tab bị ẩn
+       Tránh ngốn CPU của người dùng khi họ chuyển sang tab khác */
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) {
+        if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+      } else {
+        if (!rafId) rafId = requestAnimationFrame(frame);
+      }
+    });
+
     /* Khởi động ngay nếu đang visible */
     rafId = requestAnimationFrame(frame);
 

@@ -13,6 +13,7 @@
   overflow: hidden;
   background: #0a0000;
   color: #fff;
+  cursor: none;
 }
 
 .bg {
@@ -131,3 +132,7 @@
   color: rgba(255, 255, 255, 0.55);
   font-family: "Courier Prime", monospace;
 }
+
+body.reveal-on * { cursor: none !important; }
+body.reveal-on header *,
+body.reveal-on .back-to-top { cursor: auto !important; }

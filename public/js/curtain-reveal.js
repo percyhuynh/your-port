@@ -19,6 +19,7 @@ gsap.registerPlugin(ScrollTrigger);
     gsap.killTweensOf(reveal);
     reveal.style.opacity       = '0';
     reveal.style.pointerEvents = 'none';
+    document.body.classList.remove('reveal-on');
   }
 
   /* ── ScrollTrigger curtain ── */
@@ -37,6 +38,7 @@ gsap.registerPlugin(ScrollTrigger);
         const visible = self.progress > 0;
         reveal.style.opacity       = visible ? '1' : '0';
         reveal.style.pointerEvents = visible ? 'all' : 'none';
+        document.body.classList.toggle('reveal-on', visible);
       },
       onLeaveBack() {
         /* Scroll ngược ra khỏi vùng trigger → hide ngay */
