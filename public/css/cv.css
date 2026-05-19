@@ -1,0 +1,433 @@
+/* ═══════════════════════════════════════
+   Percy Huynh CV — style.css
+   ═══════════════════════════════════════ */
+
+/* ── VARIABLES ── */
+:root {
+  --red: #6b1a1a;
+  --bg: #1c1c1c;
+  --border: #333;
+  --white: #f0ede8;
+  --muted: #999;
+  --accent: #c0392b;
+  --text: #dedad4;
+  --text-dim: #aaa8a2;
+}
+
+/* ── RESET ── */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ── BASE ── */
+body {
+  font-family: "Courier Prime", monospace;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+/* ── LANG BAR ── */
+.lang-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #141414;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 28px;
+  gap: 0;
+}
+
+.lang-switcher {
+  display: flex;
+  align-items: center;
+  background: #262626;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  overflow: hidden;
+  gap: 0;
+}
+
+.lang-btn {
+  font-family: "Courier Prime", monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 7px 22px;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: #666;
+  transition:
+    background 0.2s,
+    color 0.2s;
+  line-height: 1;
+}
+
+.lang-btn:first-child {
+  border-right: 1px solid #3a3a3a;
+}
+
+.lang-btn.active {
+  background: var(--red);
+  color: var(--white);
+}
+
+.lang-btn:not(.active):hover {
+  background: #303030;
+  color: #ccc;
+}
+
+/* ── PAGE ── */
+.page {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 36px 36px 64px;
+}
+
+/* ── HEADER ── */
+header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 20px;
+  margin-bottom: 34px;
+}
+
+h1 {
+  font-size: clamp(50px, 10vw, 100px);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--red);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  /* justify: kéo giãn đều 2 đầu như text-align justify nhưng cho 1 dòng */
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+h1 span {
+  display: block;
+  width: 100%;
+  text-align: justify;
+  text-align-last: justify;
+}
+
+.header-sub {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+}
+
+.tag-badge {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border: 1.5px solid var(--border);
+  color: var(--muted);
+  padding: 4px 10px;
+  display: inline-block;
+  font-weight: 700;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.contact-list {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
+}
+
+.contact-list li {
+  font-size: 12px;
+  color: var(--muted);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-align: center;
+}
+
+.contact-list .clabel {
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #555;
+}
+
+.contact-list a {
+  color: #bbb;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.contact-list a:hover {
+  color: var(--accent);
+}
+.contact-list span.val {
+  color: #bbb;
+}
+
+/* ── SECTION HEADINGS (h2) ── */
+h2 {
+  font-size: 19px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  color: var(--red);
+  border-bottom: 1px solid var(--red);
+  padding-bottom: 5px;
+  margin-bottom: 18px;
+}
+
+section {
+  margin-bottom: 34px;
+}
+
+/* ── SUMMARY ── */
+.summary p {
+  font-size: 14px;
+  line-height: 1.85;
+  color: var(--text);
+  text-align: justify;
+}
+
+/* ── WORK EXPERIENCE ── */
+.job {
+  margin-bottom: 26px;
+  padding-bottom: 26px;
+  border-bottom: 1px solid var(--border);
+}
+.job:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.job-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+h3 {
+  font-size: 15px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--white);
+}
+
+.job-meta {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  text-align: right;
+  line-height: 1.5;
+}
+.job-meta strong {
+  color: #aaa;
+  font-size: 11.5px;
+}
+
+.job ul {
+  list-style: none;
+  margin: 0 0 12px 0;
+}
+.job ul li {
+  padding-left: 16px;
+  position: relative;
+  margin-bottom: 6px;
+  font-size: 15px;
+  color: var(--text);
+  text-align: justify;
+}
+.job ul li::before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: #fff;
+  font-size: 9px;
+  top: 3px;
+}
+
+.achievement {
+  background: #251515;
+  border-left: 3px solid var(--red);
+  padding: 10px 14px;
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--text);
+  text-align: justify;
+}
+.achievement strong {
+  color: var(--accent);
+}
+
+/* ── TWO-COLUMN BOTTOM ── */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px 36px;
+  align-items: start;
+}
+
+.skills-full {
+  grid-column: span 2;
+}
+
+/* ── EDUCATION ── */
+.edu-degree {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--white);
+}
+.edu-school {
+  font-size: 14px;
+  color: var(--muted);
+  margin-top: 3px;
+}
+.edu-year {
+  font-size: 13px;
+  color: #444;
+  margin-top: 4px;
+}
+
+/* ── SKILLS ── */
+.skills-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px 20px;
+}
+
+.skills-list li {
+  font-size: 14.5px;
+  color: var(--text);
+  padding-left: 14px;
+  position: relative;
+  line-height: 1.65;
+  margin-bottom: 5px;
+}
+.skills-list li::before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: #fff;
+  font-size: 9px;
+  top: 4px;
+}
+
+/* ── CERTIFICATIONS ── */
+.cert-list {
+  list-style: none;
+}
+.cert-list li {
+  font-size: 14.5px;
+  color: var(--text);
+  padding-left: 13px;
+  position: relative;
+  margin-bottom: 7px;
+}
+.cert-list li::before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: #fff;
+  font-size: 9px;
+  top: 3px;
+}
+
+/* ── FOOTER ── */
+footer {
+  margin-top: 40px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  font-size: 11px;
+  color: #3a3a3a;
+  letter-spacing: 0.1em;
+}
+
+/* ── LANGUAGE VISIBILITY ── */
+[data-lang] {
+  display: none;
+}
+body.en [data-lang="en"] {
+  display: block;
+}
+body.vn [data-lang="vn"] {
+  display: block;
+}
+
+[data-li] {
+  display: none;
+}
+body.en [data-li="en"] {
+  display: list-item;
+}
+body.vn [data-li="vn"] {
+  display: list-item;
+}
+
+[data-i] {
+  display: none;
+}
+body.en [data-i="en"] {
+  display: inline;
+}
+body.vn [data-i="vn"] {
+  display: inline;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 580px) {
+  .page {
+    padding: 20px 16px 48px;
+  }
+  .header-sub {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .contact-list {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  .contact-list li {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    text-align: left;
+  }
+  .two-col {
+    grid-template-columns: 1fr;
+  }
+  .skills-list {
+    grid-template-columns: 1fr;
+  }
+  .job-header {
+    flex-direction: column;
+  }
+  .job-meta {
+    text-align: left;
+  }
+}
