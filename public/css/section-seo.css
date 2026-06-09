@@ -13,6 +13,7 @@ html {
    SEO-STRATEGY – scoped styles (prefix: st__)
 ═══════════════════════════════════════════════ */
 #seo-trangy {
+  --strgba: rgba(26, 26, 24, 0.04);
   --st-cream: #fff;
   --st-red: #6b1a1a;
   --st-black: #0d0d0d;
@@ -21,6 +22,7 @@ html {
   --st-border: rgba(0, 0, 0, 0.08);
   /* ─── PADDING ĐIỀU CHỈNH ─── */
   --st-pad-x: 120px;
+
   /* ──────────────────────────────────────────────────────────────── */
   font-family: "Courier Prime", monospace;
   background: #fff;
@@ -38,7 +40,7 @@ html {
   left: 50%;
   margin-left: -50vw !important;
   margin-right: -50vw !important;
-  background: transparent;
+  background: #fff;
 }
 
 /* ─── 1. HERO ─── */
@@ -57,7 +59,7 @@ html {
   position: absolute;
   font-family: "Courier Prime", monospace;
   font-size: clamp(160px, 26vw, 360px);
-  color: rgba(232, 0, 13, 0.045);
+  color: rgba(107, 26, 26, 0.045);
   line-height: 1;
   top: 50%;
   left: 50%;
@@ -625,15 +627,15 @@ html {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  border: 1.5px dashed rgba(232, 0, 13, 0.25);
+  border: 1.5px dashed rgba(107, 26, 26, 0.25);
   border-radius: 16px;
-  background: rgba(232, 0, 13, 0.02);
+  background: rgba(107, 26, 26, 0.02);
 }
 .st__p2-placeholder-icon {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: rgba(232, 0, 13, 0.12);
+  background: rgba(107, 26, 26, 0.12);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -644,7 +646,7 @@ html {
   font-weight: 600;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: rgba(232, 0, 13, 0.5);
+  color: rgba(107, 26, 26, 0.5);
 }
 /* Ẩn placeholder khi có ảnh */
 .st__p2-card.has-image .st__p2-placeholder {
@@ -669,11 +671,11 @@ html {
   letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--st-red);
-  background: rgba(232, 0, 13, 0.15);
+  background: rgba(107, 26, 26, 0.15);
   padding: 3px 10px;
   border-radius: 100px;
   align-self: flex-start;
-  border: 1px solid rgba(232, 0, 13, 0.3);
+  border: 1px solid rgba(107, 26, 26, 0.3);
 }
 .st__p2-overlay-title {
   font-family: "Courier Prime", monospace;
@@ -705,7 +707,7 @@ html {
   transform: translateY(30px);
 }
 .st__p2-metric {
-  background: var(--st-cream);
+  background: var(--strgba);
   padding: 28px 24px;
   display: flex;
   flex-direction: column;
@@ -736,18 +738,17 @@ html {
 
 /* Coming-soon badge at bottom */
 .st__proj2-footer {
-  margin-top: 40px;
+  margin-top: 25px;
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 32px;
-  border-top: 1px solid var(--st-border);
-  padding-top: 24px;
+  padding-top: 4px;
   opacity: 0;
 }
 .st__proj2-footnote {
   flex: 1;
-  font-size: 12px;
+  font-size: 16px;
   color: var(--st-muted);
   font-style: italic;
   line-height: 1.6;
@@ -760,23 +761,21 @@ html {
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: var(--st-red);
-  border: 1px solid rgba(232, 0, 13, 0.3);
+  color: var(--st-black);
+  border: 1px solid var(--st-black);
   padding: 10px 20px;
   border-radius: 100px;
-  transition:
-    background 0.4s ease,
-    color 0.4s ease,
-    border-color 0.4s ease;
-  cursor: pointer;
   text-decoration: none;
   overflow: hidden;
   position: relative;
+  outline: none;
+  transition:
+    background 0.4s ease,
+    color 0.4s ease;
 }
 .st__proj2-cta:hover {
-  background: var(--st-red);
+  background: var(--st-black);
   color: #fff;
-  border-color: var(--st-red);
 }
 
 /* cta slide animation — khớp với .cta-btn trong section-work.css */
@@ -866,78 +865,156 @@ html {
   margin: 0;
   padding: 0;
 }
+/* ──────────────────────────────────────────────────────────
+   NFA — Full-screen panel layout
+   Each project occupies 100vh; GSAP scroll entrance
+────────────────────────────────────────────────────────── */
 .nfa-root {
   width: 100%;
-  min-height: 100vh;
   background: none;
-  padding: 320px 0;
   font-family: "Courier Prime", monospace;
-  overflow: hidden;
+  overflow: clip;
+}
+
+/* Heading panel */
+.nfa-heading-panel {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 0 1vw;
+}
+.nfa-heading-eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(204, 201, 176, 0.45);
+  margin-bottom: 24px;
 }
 .nfa-heading {
-  font-size: clamp(32px, 4vw, 52px);
+  font-size: clamp(40px, 5.5vw, 76px);
   font-weight: 700;
-  color: #ffffff;
-  letter-spacing: -1px;
-  line-height: 1.08;
+  color: #fff;
+  letter-spacing: -2px;
+  line-height: 1;
   font-family: "Courier Prime", monospace;
-  margin-bottom: 30px;
-  opacity: 0;
-  transform: translateY(30px);
 }
+
+/* Panels: flex column so each stacks vertically */
 .nfa-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 0 32px;
-  align-items: stretch;
-}
-.nfa-col {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  opacity: 0;
-  visibility: hidden;
+}
+
+/* Each project panel */
+.nfa-panel {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 36% 1fr;
+  gap: 0 9vw;
+  align-items: center;
+  padding: 6vh 1vw;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  overflow: visible;
+}
+/* Even panel: flip — visual left, text right */
+.nfa-panel:nth-child(2n) {
+  grid-template-columns: 1fr 36%;
+}
+.nfa-panel:nth-child(2n) .nfa-panel-left {
+  order: 2;
+  text-align: right;
+  align-items: flex-end;
+  padding-right: 2vw;
+}
+.nfa-panel:nth-child(2n) .nfa-panel-right {
+  order: 1;
+}
+
+/* Left: text info */
+.nfa-panel-left {
+  display: flex;
+  flex-direction: column;
+}
+.nfa-panel-num {
+  font-size: clamp(32px, 5.5vw, 58px);
+  font-weight: 700;
+  font-family: "Courier Prime", monospace;
+  color: #6b1a1a;
+  line-height: 0.85;
+  letter-spacing: -6px;
+  margin-bottom: 8px;
+  user-select: none;
+  will-change: transform;
 }
 .nfa-meta {
   padding-top: 14px;
-  border-top: 1px solid #ccc9b0;
-  margin-bottom: 10px;
+  border-top: 1px solid rgba(204, 201, 176, 0.22);
+  margin-bottom: 16px;
 }
-
 .nfa-date {
-  font-size: 12px;
-  color: #888;
-  letter-spacing: 0.03em;
+  font-size: 11px;
+  color: rgba(204, 201, 176, 0.5);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 .nfa-title-text {
-  font-size: clamp(13px, 1.2vw, 15px);
+  font-size: clamp(14px, 1.25vw, 17px);
   font-weight: 400;
-  color: #d4d4d4;
-  line-height: 1.45;
-  margin-bottom: 20px;
-  min-height: 9em; /* GIÃN TEXT VÀ KHUNG ẢNH */
+  color: rgba(212, 212, 212, 0.72);
+  line-height: 1.65;
+  max-width: 38ch;
 }
+
+/* Right: visual */
+.nfa-panel-right {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+/* Thin wrapper — only controls layout width, no overflow clip */
+.nfa-widget-scale {
+  width: 100%;
+  position: relative;
+}
+
+/* Royal Helmet photo wrap */
 .nfa-img-area {
   width: 100%;
-  padding-bottom: 8px;
-  margin-top: auto;
 }
 .nfa-img-wrap {
   width: 100%;
   overflow: hidden;
-  border-radius: 10px;
+  border-radius: 14px;
   position: relative;
-  cursor: zoom-in;
-  transform-origin: bottom center;
+  transform-origin: center center;
 }
-.nfa-col:nth-child(1) .nfa-img-wrap {
-  aspect-ratio: 16/15;
-}
-.nfa-col:nth-child(2) .nfa-img-wrap {
-  aspect-ratio: 16/14;
-}
-.nfa-col:nth-child(3) .nfa-img-wrap {
-  aspect-ratio: 16/13;
+/* Responsive */
+@media (max-width: 860px) {
+  .nfa-heading-panel {
+    min-height: auto;
+    padding: 80px 6vw;
+  }
+  .nfa-panel {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    padding: 64px 6vw 80px;
+    gap: 36px 0;
+  }
+  .nfa-panel:nth-child(2n) {
+    grid-template-columns: 1fr;
+  }
+  .nfa-panel:nth-child(2n) .nfa-panel-left,
+  .nfa-panel:nth-child(2n) .nfa-panel-right {
+    order: unset;
+  }
+  .nfa-panel-num {
+    display: none;
+  }
+  .nfa-title-text {
+    max-width: none;
+  }
 }
 
 .nfa-img {

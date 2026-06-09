@@ -246,71 +246,83 @@ gsap.registerPlugin(ScrollTrigger);
     },
   ];
 
-  gsap.to("#nfaHeading", {
-    opacity: 1,
-    y: 0,
-    duration: 1,
-    ease: "power3.out",
-    delay: 0.1,
+  // ── NFA: Full-screen panel ScrollTrigger animations ────────
+
+  // Initial hidden states
+  gsap.set("#nfaHeading",          { opacity: 0, y: 64 });
+  gsap.set(".nfa-heading-eyebrow", { opacity: 0, y: 18 });
+  gsap.set(".nfa-panel-left",      { opacity: 0 });
+  gsap.set(".nfa-panel-right",     { opacity: 0 });
+
+  // Heading panel entrance
+  ScrollTrigger.create({
+    trigger: ".nfa-heading-panel",
+    start: "top 78%",
+    once: true,
+    onEnter() {
+      gsap.to(".nfa-heading-eyebrow", {
+        opacity: 1, y: 0, duration: 0.7, ease: "power3.out",
+      });
+      gsap.to("#nfaHeading", {
+        opacity: 1, y: 0, duration: 1.1, ease: "power4.out", delay: 0.14,
+      });
+    },
   });
 
-  const cols = ["#nfaCol0", "#nfaCol1", "#nfaCol2"];
-
-  cols.forEach((sel, i) => {
-    const el = document.querySelector(sel);
-    const img = el.querySelector("img");
-
-    function revealCol() {
-      gsap.set(el, { visibility: "visible" });
-      gsap.fromTo(
-        el,
-        { opacity: 0, x: 90, y: 70, scale: 0.88 },
-        {
-          opacity: 1,
-          x: 0,
-          y: 0,
-          scale: 1,
-          duration: 1.1,
-          ease: "power4.out",
-          delay: 0.25 + i * 0.15,
-          scrollTrigger: {
-            trigger: "#nfaGrid",
-            start: "top 85%",
-            once: true,
-          },
-        },
-      );
-    }
-
-    if (img.complete) {
-      revealCol();
-    } else {
-      img.onload = revealCol;
-    }
-  });
-
+  // Each project panel: text ← left, visual ← right (even panels flip)
   [0, 1, 2].forEach((i) => {
-    const wrap = document.getElementById("nfaWrap" + i);
-    const img = document.getElementById("nfaImg" + i);
+    const panel = document.getElementById("nfaCol" + i);
+    if (!panel) return;
+    const left  = panel.querySelector(".nfa-panel-left");
+    const right = panel.querySelector(".nfa-panel-right");
+    const isEven = i === 1; // 2nd panel flipped
 
-    wrap.addEventListener("mouseenter", () => {
-      gsap.to(wrap, {
-        scaleY: 1.07,
-        transformOrigin: "bottom center",
-        duration: 0.5,
-        ease: "power3.out",
-      });
-      gsap.to(img, { scale: 1.06, duration: 0.55, ease: "power3.out" });
+    gsap.set(left,  { x: isEven ?  72 : -72 });
+    gsap.set(right, { x: isEven ? -72 :  72, scale: 0.97 });
+
+    ScrollTrigger.create({
+      trigger: panel,
+      start: "top 74%",
+      once: true,
+      onEnter() {
+        gsap.to(left, {
+          opacity: 1, x: 0,
+          duration: 1.05, ease: "power3.out",
+        });
+        gsap.to(right, {
+          opacity: 1, x: 0, scale: 1,
+          duration: 1.1,  ease: "power3.out", delay: 0.14,
+        });
+      },
     });
-    wrap.addEventListener("mouseleave", () => {
-      gsap.to(wrap, {
-        scaleY: 1,
-        duration: 0.55,
-        ease: "power3.inOut",
+
+    // Parallax on large number
+    const num = panel.querySelector(".nfa-panel-num");
+    if (num) {
+      gsap.to(num, {
+        yPercent: -22,
+        ease: "none",
+        scrollTrigger: {
+          trigger: panel,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1.8,
+        },
       });
-      gsap.to(img, { scale: 1, duration: 0.55, ease: "power3.inOut" });
-    });
+    }
   });
+
+  // Hover zoom for Royal Helmet image only
+  const wrap1 = document.getElementById("nfaWrap1");
+  const img1  = document.getElementById("nfaImg1");
+  if (wrap1 && img1) {
+    wrap1.addEventListener("mouseenter", () => {
+      gsap.to(img1, { scale: 1.05, duration: 0.55, ease: "power3.out" });
+    });
+    wrap1.addEventListener("mouseleave", () => {
+      gsap.to(img1, { scale: 1, duration: 0.55, ease: "power3.inOut" });
+    });
+  }
 
   let lbOpen = false;
   function nfaOpen(i) {

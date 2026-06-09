@@ -30,50 +30,65 @@ new Typed('.input', {
 
   if (typeof ScrollTrigger !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger);
+
+    /* Throttle: chỉ update DOM khi progress thay đổi đủ nhiều
+       tránh set inline style radial-gradient mỗi pixel scroll */
+    var _rafPending = false;
+    var _lastP = -1;
+
     ScrollTrigger.create({
       trigger: screen,
       start: 'top top',
       end: 'bottom bottom',
-      scrub: 1.5,
+      scrub: 2.5,
       onUpdate: function (self) {
         var p = Math.min(1, self.progress);
-
-        wrap.style.opacity = norm(p, 0.14, 0.72).toFixed(3);
-
-        var lp = norm(p, 0.10, 0.88);
-
-        if (lp < 0.004) {
-          dark.style.background = '#000';
-          glow.style.background = 'transparent';
-        } else {
-          var r  = Math.round((8 + lp * 310) / 2) * 2;
-          var rH = Math.round(r * 1.42 / 2) * 2;
-
-          var dc = Math.max(0.02, 0.99 - lp * 0.97).toFixed(1);
-          var dm = Math.max(0.25, 0.99 - lp * 0.58).toFixed(1);
-
-          dark.style.background =
-            'radial-gradient(ellipse ' + r + 'px ' + rH + 'px at 50% 44%,' +
-            'rgba(0,0,0,' + dc + ') 0%,' +
-            'rgba(0,0,0,' + dm + ') 45%,' +
-            'rgba(0,0,0,0.97) 70%,' +
-            'rgba(0,0,0,1) 100%)';
-
-          var gA  = (lp * 0.14).toFixed(3);
-          var gA2 = (lp * 0.055).toFixed(3);
-          glow.style.background =
-            'radial-gradient(ellipse ' + Math.round(r * 0.68) + 'px ' + Math.round(rH * 0.68) + 'px at 50% 44%,' +
-            'rgba(255,222,125,' + gA + ') 0%,' +
-            'rgba(255,195,75,' + gA2 + ') 42%,' +
-            'transparent 68%)';
-        }
-
-        if (frame) {
-          var scale = 1 + norm(p, 0.88, 0.97) * 0.06;
-          frame.style.transform = 'scale(' + scale.toFixed(4) + ')';
-        }
+        /* Skip nếu thay đổi < 0.002 (không đáng vẽ lại) */
+        if (Math.abs(p - _lastP) < 0.002) return;
+        _lastP = p;
+        if (_rafPending) return;
+        _rafPending = true;
+        requestAnimationFrame(function () {
+          _rafPending = false;
+          applySpotlight(_lastP);
+        });
       }
     });
+
+    function applySpotlight(p) {
+      wrap.style.opacity = norm(p, 0.14, 0.72).toFixed(3);
+      var lp = norm(p, 0.10, 0.88);
+
+      if (lp < 0.004) {
+        dark.style.background = '#000';
+        glow.style.background = 'transparent';
+      } else {
+        var r  = Math.round((8 + lp * 310) / 2) * 2;
+        var rH = Math.round(r * 1.42 / 2) * 2;
+        var dc = Math.max(0.02, 0.99 - lp * 0.97).toFixed(1);
+        var dm = Math.max(0.25, 0.99 - lp * 0.58).toFixed(1);
+
+        dark.style.background =
+          'radial-gradient(ellipse ' + r + 'px ' + rH + 'px at 50% 44%,' +
+          'rgba(0,0,0,' + dc + ') 0%,' +
+          'rgba(0,0,0,' + dm + ') 45%,' +
+          'rgba(0,0,0,0.97) 70%,' +
+          'rgba(0,0,0,1) 100%)';
+
+        var gA  = (lp * 0.14).toFixed(3);
+        var gA2 = (lp * 0.055).toFixed(3);
+        glow.style.background =
+          'radial-gradient(ellipse ' + Math.round(r * 0.68) + 'px ' + Math.round(rH * 0.68) + 'px at 50% 44%,' +
+          'rgba(255,222,125,' + gA + ') 0%,' +
+          'rgba(255,195,75,' + gA2 + ') 42%,' +
+          'transparent 68%)';
+      }
+
+      if (frame) {
+        var scale = 1 + norm(p, 0.88, 0.97) * 0.06;
+        frame.style.transform = 'scale(' + scale.toFixed(4) + ')';
+      }
+    }
   }
 })();
 
@@ -284,7 +299,8 @@ new Typed('.input', {
     var _lastT = 0;
     function loop(now) {
       scrollVel *= 0.92;
-      if (now - _lastT >= 33 && scrollVel < SCROLL_VEL_THRESHOLD) {
+      var targetInterval = isHovering ? 33 : 66;
+      if (now - _lastT >= targetInterval && scrollVel < SCROLL_VEL_THRESHOLD) {
         _lastT = now;
         renderFrame(now);
       }
@@ -297,10 +313,18 @@ new Typed('.input', {
     if (raf) { cancelAnimationFrame(raf); raf = null; }
   }
 
-  canvas.addEventListener('mouseenter', () => { isHovering = true; });
-  canvas.addEventListener('mousemove', e => {
+  let canvasRect = { left: 0, top: 0 };
+  function updateCanvasRect() {
     const r = canvas.getBoundingClientRect();
-    mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
+    canvasRect.left = r.left; canvasRect.top = r.top;
+  }
+  window.addEventListener('scroll', updateCanvasRect, { passive: true });
+  window.addEventListener('resize', updateCanvasRect, { passive: true });
+
+  canvas.addEventListener('mouseenter', () => { updateCanvasRect(); isHovering = true; });
+  canvas.addEventListener('mousemove', e => {
+    mouse.x = e.clientX - canvasRect.left;
+    mouse.y = e.clientY - canvasRect.top;
   });
   canvas.addEventListener('mouseleave', () => { isHovering = false; mouse.x = -9999; mouse.y = -9999; });
   canvas.addEventListener('touchmove', e => {
@@ -358,24 +382,25 @@ new Typed('.input', {
   var allTargets = Array.from(lines);
   if (roleWrap) allTargets.unshift(roleWrap);
 
+  var rafPending = false;
   function revealCheck() {
     var winH = window.innerHeight;
     var revealPoint = winH * 0.82;
     var dimPoint    = winH * 0.88;
-
     allTargets.forEach(function (el) {
       var top = el.getBoundingClientRect().top;
       if (top < revealPoint)  el.classList.add('ab-revealed');
       if (top > dimPoint)     el.classList.remove('ab-revealed');
     });
-
     if (actions) {
       var lastTop = lines[lines.length - 1].getBoundingClientRect().top;
       if (lastTop < winH * 0.9)  actions.classList.add('ab-revealed');
       if (lastTop > winH * 0.95) actions.classList.remove('ab-revealed');
     }
+    rafPending = false;
   }
-
-  window.addEventListener('scroll', revealCheck, { passive: true });
+  window.addEventListener('scroll', function () {
+    if (!rafPending) { rafPending = true; requestAnimationFrame(revealCheck); }
+  }, { passive: true });
   revealCheck();
 })();

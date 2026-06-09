@@ -57,6 +57,94 @@
     <link rel="stylesheet" href="public/css/section-others.css" />
     <link rel="stylesheet" href="public/css/section-about.css" />
     <link rel="stylesheet" href="public/css/reveal.css" />
+
+    <!-- Tailwind CDN — Preflight disabled để không break style cũ -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { corePlugins: { preflight: false } };
+    </script>
+    <style>
+      /* ============================================================
+       GLASS BEAM BUTTON — rotating conic-gradient border
+       ============================================================ */
+      @keyframes glass-spin {
+        to {
+          transform: rotate(1turn);
+        }
+      }
+
+      /* [opt-6] prefers-reduced-motion: tắt toàn bộ animation */
+      @media (prefers-reduced-motion: reduce) {
+        .glass-beam {
+          animation: none !important;
+        }
+      }
+
+      /* [opt-3] contain: layout paint — wrapper tự giới hạn repaint.
+       padding: 1.5px TẠO VÙNG VIỀN cho beam lộ ra —
+       button chỉ phủ phần content area bên trong padding,
+       vòng 1.5px padding ring không bị button che */
+      .glass-btn-wrap {
+        display: inline-flex;
+        position: relative;
+        padding: 1.5px;
+        overflow: hidden;
+        border-radius: var(--glass-r, 30px);
+        contain: layout paint;
+        vertical-align: middle;
+        flex-shrink: 0;
+      }
+
+      /* Beam: inset -150% mỗi chiều => tâm xoay đúng giữa wrapper;
+       [opt-2] will-change: transform đẩy rotation lên GPU compositor */
+      .glass-beam {
+        position: absolute;
+        width: 400%;
+        height: 400%;
+        top: -150%;
+        left: -150%;
+        background: conic-gradient(
+          from 0deg,
+          transparent 0deg,
+          transparent 260deg,
+          rgba(232, 213, 176, 0.08) 280deg,
+          rgba(232, 213, 176, 0.55) 315deg,
+          rgba(247, 244, 239, 0.9) 345deg,
+          rgba(247, 244, 239, 1) 354deg,
+          rgba(247, 244, 239, 0.45) 358deg,
+          transparent 360deg
+        );
+        will-change: transform;
+        animation: glass-spin 4s linear infinite;
+        pointer-events: none;
+      }
+
+      /* Button thật: flex:1 lấp đầy content area (bên trong padding 1.5px);
+       border-radius khớp với wrapper trừ padding để corner sát đều;
+       backdrop-filter tạo hiệu ứng glass mờ */
+      .glass-btn-wrap > a {
+        position: relative;
+        z-index: 1;
+        flex: 1;
+        background: rgba(0, 0, 0, 0.82) !important;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        color: #e8d5b0 !important;
+        border-color: transparent !important;
+        border-radius: var(--glass-mask-r, 28.5px) !important;
+      }
+      .glass-btn-wrap > a:hover {
+        background: rgba(18, 14, 9, 0.92) !important;
+        color: #f7f4ef !important;
+        border-color: transparent !important;
+      }
+      .glass-btn-wrap > .ab-btn {
+        color: #fff !important;
+      }
+      .glass-btn-wrap > .ab-btn:hover {
+        color: #fff !important;
+      }
+    </style>
   </head>
 
   <body>
@@ -146,13 +234,7 @@
     <!-- BANNER WRAPPER: tạo không gian scroll cho hiệu ứng thu nhỏ -->
     <div class="banner-scroll-wrapper">
       <div class="hero-header" id="heroHeader">
-        <section class="banner">
-          <picture>
-            <source media="(max-width: 767px)" srcset="banner-mobile.webp" />
-            <source media="(max-width: 1024px)" srcset="banner-tablet.webp" />
-            <img src="" alt="Banner" class="hero-img" />
-          </picture>
-        </section>
+        <section class="banner"></section>
       </div>
     </div>
 
@@ -209,10 +291,11 @@
           <!-- <span class="ab-line" data-ab></span> -->
           <span class="ab-spacer"></span>
           <span class="ab-line" data-ab
-            >With 3+ years in Content SEO and 1+ year in hands-on SEO execution,
-            I have worked across B2B, B2C, travel, sports, and e-commerce,
-            building growth systems through SEO strategy, technical
-            optimization, UX-driven content, and AI-powered automation.</span
+            >With nearly 2 years of hands-on SEO experience and 3+ years in
+            Content SEO, I have worked across retail, B2B, travel,
+            healthcare,... building growth systems through SEO strategy,
+            technical optimization, UX-driven content, and AI-powered
+            automation.</span
           >
           <!-- <span class="ab-line" data-ab></span> -->
           <span class="ab-spacer"></span>
@@ -293,8 +376,8 @@
             >Content Strategy</span
           > -->
           <span class="sk-pill" data-val="WordPress">WordPress</span>
-          <span class="sk-pill" data-val="Bootstrap/TailwindCSS/GSAP"
-            >Bootstrap/TailwindCSS/GSAP</span
+          <span class="sk-pill" data-val="GSAP/TailwindCSS/Bootstrap"
+            >GSAP/TailwindCSS/Bootstrap</span
           >
           <span class="sk-pill" data-val="E-commerce Operations"
             >E-commerce Operations</span
@@ -313,7 +396,20 @@
         </div>
       </div>
 
-      <!-- ── 4. GRADIENT BRIDGE đen → kem ── -->
+      <!-- ── 4. CANVAS TRIO ── -->
+      <div id="cv-trio">
+        <div class="cv-cell">
+          <canvas id="cv1-canvas"></canvas>
+        </div>
+        <div class="cv-cell">
+          <canvas id="cv2-canvas"></canvas>
+        </div>
+        <div class="cv-cell" id="cv3-root">
+          <canvas id="cv3-canvas"></canvas>
+        </div>
+      </div>
+
+      <!-- ── 5. GRADIENT BRIDGE đen → kem ── -->
       <div class="ab-bridge"></div>
 
       <!-- ── 5. CANVAS (giữ nguyên, k đụng CSS) ── -->
@@ -805,6 +901,96 @@
               <div class="st__p2-metric-label">Rank #1 Keywords</div>
               <div class="st__p2-metric-desc">Incl. "nón bảo hiểm 3/4"</div>
             </div>
+            <!-- Top Keywords Table — font từ global CSS, không cần inline style -->
+            <div class="col-span-full" style="background: #fff">
+              <div
+                class="px-5 py-3 border-b border-black/[0.06] text-[16px] font-bold tracking-[0.22em] uppercase text-[#0d0d0d]"
+              >
+                Top Keywords
+              </div>
+              <div
+                class="grid grid-cols-[28px_1fr_auto_52px] gap-x-4 px-5 py-2 border-b border-black/[0.06] text-[14px] tracking-widest uppercase text-[#0d0d0d]"
+              >
+                <span>#</span><span>Keywords</span><span>Landing Page</span
+                ><span class="text-right">Rank</span>
+              </div>
+              <div class="divide-y divide-[#0d0d0d] text-[11px]">
+                <!-- shared row classes: grid grid-cols-[28px_1fr_auto_52px] gap-x-4 items-center px-5 py-3 -->
+                <div
+                  class="grid grid-cols-[28px_1fr_auto_52px] gap-x-4 items-center px-5 py-3"
+                >
+                  <span class="text-[#0d0d0d]">1</span>
+                  <span class="text-[13px] text-[#0d0d0d] font-medium"
+                    >mũ bảo hiểm chính hãng</span
+                  >
+                  <span class="text-[12px] text-[#6b1a1a]"
+                    >royalhelmet.com.vn</span
+                  >
+                  <span class="text-right"
+                    ><span
+                      class="font-bold bg-[#6b1a1a] text-white px-2 py-0.5 rounded"
+                      >#1</span
+                    ></span
+                  >
+                </div>
+                <div
+                  class="grid grid-cols-[28px_1fr_auto_52px] gap-x-4 items-center px-5 py-3"
+                >
+                  <span class="text-[#0d0d0d]">2</span>
+                  <span class="text-[13px] text-[#0d0d0d] font-medium"
+                    >mũ bảo hiểm cao cấp</span
+                  >
+                  <span class="text-[12px] text-[#6b1a1a]"
+                    >royalhelmet.com.vn</span
+                  >
+                  <span class="text-right"
+                    ><span
+                      class="font-bold bg-[#6b1a1a] text-white px-2 py-0.5 rounded"
+                      >#1</span
+                    ></span
+                  >
+                </div>
+                <div
+                  class="grid grid-cols-[28px_1fr_auto_52px] gap-x-4 items-center px-5 py-3"
+                >
+                  <span class="text-[#0d0d0d]">3</span>
+                  <span class="text-[13px] text-[#0d0d0d] font-medium"
+                    >mũ bảo hiểm royal chính hãng</span
+                  >
+                  <span class="text-[12px] text-[#6b1a1a]"
+                    >royalhelmet.com.vn</span
+                  >
+                  <span class="text-right"
+                    ><span
+                      class="font-bold bg-[#6b1a1a] text-white px-2 py-0.5 rounded"
+                      >#1</span
+                    ></span
+                  >
+                </div>
+                <div
+                  class="grid grid-cols-[28px_1fr_auto_52px] gap-x-4 items-center px-5 py-3"
+                >
+                  <span class="text-[#0d0d0d]"> 4</span>
+                  <span class="text-[13px] text-[#0d0d0d] font-medium"
+                    >mũ bảo hiểm 3/4</span
+                  >
+                  <span class="text-[12px] text-[#6b1a1a]"
+                    >https://royalhelmet.com.vn/mu-bao-hiem-3-4-dau</span
+                  >
+                  <span class="text-right"
+                    ><span
+                      class="font-bold bg-[#6b1a1a] text-white px-2 py-0.5 rounded"
+                      >#1</span
+                    ></span
+                  >
+                </div>
+                <div class="px-5 py-2">
+                  <span class="text-[15px] text-[#0d0d0d] tracking-[0.3em]"
+                    >· · ·</span
+                  >
+                </div>
+              </div>
+            </div>
           </div>
 
           <!-- Footer -->
@@ -821,12 +1007,8 @@
               class="st__proj2-cta"
             >
               <div class="cta-track">
-                <span class="cta-line cta-line-a"
-                  >&nbsp;View full report Keyword Royal Helmet</span
-                >
-                <span class="cta-line cta-line-b"
-                  >&nbsp;View full report Keyword Royal Helmet</span
-                >
+                <span class="cta-line cta-line-a">View full report Keyword Royal Helmet</span>
+                <span class="cta-line cta-line-b">View full report Keyword Royal Helmet</span>
               </div>
             </a>
           </div>
@@ -968,75 +1150,274 @@
         <!-- <h2 class="sr-only">News from above</h2> -->
 
         <div class="nfa-root" id="nfaRoot">
-          <div class="nfa-heading" id="nfaHeading">
-            Featured SEO Content Projects
+          <!-- ── Heading panel ── -->
+          <div class="nfa-heading-panel" id="nfaHeadingPanel">
+            <div>
+              <p class="nfa-heading-eyebrow">Content SEO &middot; 3 Projects</p>
+              <h2 class="nfa-heading" id="nfaHeading">
+                Featured<br />SEO&nbsp;Content<br />Projects
+              </h2>
+            </div>
           </div>
+
+          <!-- ── Project panels ── -->
           <div class="nfa-grid" id="nfaGrid">
-            <div class="nfa-col" id="nfaCol0">
-              <div class="nfa-meta">
-                <div class="nfa-date">GTrip</div>
+            <!-- 01 GTrip -->
+            <div class="nfa-panel nfa-col" id="nfaCol0">
+              <div class="nfa-panel-left">
+                <span class="nfa-panel-num" aria-hidden="true">01 GTrip</span>
+
+                <p class="nfa-title-text">
+                  Planned keyword strategy, built detailed outlines, and
+                  delivered full English blog content targeting global
+                  audiences. Focused on search intent mapping, topic clusters,
+                  and scalable inbound content system.
+                </p>
               </div>
-              <div class="nfa-title-text">
-                Planned keyword strategy, built detailed outlines, and delivered
-                full English blog content targeting global audiences. Focused on
-                search intent mapping, topic clusters, and scalable inbound
-                content system.
-              </div>
-              <div class="nfa-img-area">
-                <div class="nfa-img-wrap" id="nfaWrap0" onclick="nfaOpen(0)">
-                  <img
-                    class="nfa-img"
-                    loading="lazy"
-                    id="nfaImg0"
-                    src="public/images/section-contentseo-1.webp"
-                    alt="GTrip content SEO"
-                  />
+              <div class="nfa-panel-right">
+                <div id="nfaWrap0" class="nfa-widget-scale">
+                  <div id="gtrip-seo-widget" class="flex flex-col items-center">
+                    <div id="gtrip-seo-canvas-wrap" class="relative">
+                      <canvas id="gtrip-seo-canvas" class="block"></canvas>
+                      <div
+                        id="gtrip-seo-links"
+                        class="absolute top-0 left-0"
+                      ></div>
+                    </div>
+                    <div
+                      id="gtrip-seo-legend"
+                      class="flex items-center justify-center gap-5 mt-4 flex-wrap"
+                    >
+                      <span
+                        class="flex items-center gap-[6px] text-[11px]"
+                        style="
+                          color: rgba(255, 255, 255, 0.45);
+                          font-family: &quot;Courier Prime&quot;, monospace;
+                        "
+                      >
+                        <span
+                          class="inline-block w-[38px] h-[16px] rounded-[3px]"
+                          style="
+                            border: 1px solid rgba(200, 190, 175, 0.6);
+                            background: rgba(255, 255, 255, 0.92);
+                          "
+                        ></span>
+                        Pillar Page
+                      </span>
+                      <span
+                        class="flex items-center gap-[6px] text-[11px]"
+                        style="
+                          color: rgba(255, 255, 255, 0.45);
+                          font-family: &quot;Courier Prime&quot;, monospace;
+                        "
+                      >
+                        <span
+                          class="inline-block w-[38px] h-[16px] rounded-[3px]"
+                          style="
+                            border: 1px dashed rgba(200, 190, 175, 0.6);
+                            background: rgba(255, 255, 255, 0.92);
+                          "
+                        ></span>
+                        Cluster Page
+                      </span>
+                      <span
+                        class="flex items-center text-[11px]"
+                        style="
+                          color: rgba(255, 255, 255, 0.45);
+                          font-family: &quot;Courier Prime&quot;, monospace;
+                        "
+                      >
+                        <span
+                          class="inline-block w-8 h-[1.5px] align-middle"
+                          style="background: rgba(255, 255, 255, 0.45)"
+                        ></span>
+                        <span
+                          class="inline-block align-middle mr-[6px]"
+                          style="
+                            width: 0;
+                            height: 0;
+                            border-top: 4px solid transparent;
+                            border-bottom: 4px solid transparent;
+                            border-left: 7px solid rgba(255, 255, 255, 0.45);
+                          "
+                        ></span>
+                        Internal Link
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div class="nfa-col" id="nfaCol1">
-              <div class="nfa-meta">
-                <div class="nfa-date">Royal Helmet</div>
+            <!-- 02 Royal Helmet -->
+            <div class="nfa-panel nfa-col" id="nfaCol1">
+              <div class="nfa-panel-left">
+                <span class="nfa-panel-num" aria-hidden="true"
+                  >02 Royal Helmet</span
+                >
+
+                <p class="nfa-title-text">
+                  Developed keyword strategy, wrote SEO blog content, and
+                  designed supporting visuals to enhance on-page engagement.
+                  Aligned content with product pages to improve discoverability
+                  and conversion.
+                </p>
               </div>
-              <div class="nfa-title-text">
-                Developed keyword strategy, wrote SEO blog content, and designed
-                supporting visuals to enhance on-page engagement. Aligned
-                content with product pages to improve discoverability and
-                conversion.
-              </div>
-              <div class="nfa-img-area">
-                <div class="nfa-img-wrap" id="nfaWrap1" onclick="nfaOpen(1)">
-                  <img
-                    class="nfa-img"
-                    loading="lazy"
-                    id="nfaImg1"
-                    src="public/images/section-contentseo-2.webp"
-                    alt="Royal Helmet content SEO"
-                  />
+              <div class="nfa-panel-right">
+                <div id="nfaWrap1" class="nfa-widget-scale">
+                  <div
+                    id="rh-seo-widget"
+                    class="flex flex-col items-center pt-3 px-2 pb-2"
+                  >
+                    <div id="rh-seo-canvas-wrap" class="relative">
+                      <canvas
+                        id="rh-seo-canvas"
+                        class="block max-w-full"
+                      ></canvas>
+                      <div
+                        id="rh-seo-links"
+                        class="absolute top-0 left-0"
+                        style="pointer-events: none"
+                      ></div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div class="nfa-col" id="nfaCol2">
-              <div class="nfa-meta">
-                <div class="nfa-date">Freelance Content SEO</div>
+            <!-- 03 Freelance -->
+            <div class="nfa-panel nfa-col" id="nfaCol2">
+              <div class="nfa-panel-left">
+                <span class="nfa-panel-num" aria-hidden="true"
+                  >03 Freelance</span
+                >
+                <p class="nfa-title-text">
+                  Produced SEO-driven content across diverse industries
+                  including beauty, investment, pharmaceuticals, healthcare
+                  knowledge, and sports. Adapted tone, structure, and keyword
+                  strategy based on each niche and target audience.
+                </p>
               </div>
-              <div class="nfa-title-text">
-                Freelance Content SEO Produced SEO-driven content across diverse
-                industries including beauty, investment, pharmaceuticals,
-                healthcare knowledge, and sports. Adapted tone, structure, and
-                keyword strategy based on each niche and target audience.
-              </div>
-              <div class="nfa-img-area">
-                <div class="nfa-img-wrap" id="nfaWrap2" onclick="nfaOpen(2)">
-                  <img
-                    class="nfa-img"
-                    loading="lazy"
-                    id="nfaImg2"
-                    src="public/images/section-contentseo-3.webp"
-                    alt="Freelance content SEO"
-                  />
+              <div class="nfa-panel-right">
+                <div id="nfaWrap2" class="nfa-widget-scale">
+                  <div id="fseo-widget" class="flex flex-col items-center">
+                    <div id="fseo-canvas-wrap" class="relative">
+                      <canvas id="fseo-canvas" class="block"></canvas>
+                      <div id="fseo-links" class="absolute top-0 left-0"></div>
+                    </div>
+                    <div id="fseo-bottom" class="w-[640px] max-w-full mt-4">
+                      <div
+                        class="border border-[rgba(255,255,255,0.28)] rounded-md px-[14px] py-[10px] mb-[10px]"
+                      >
+                        <div
+                          class="text-[10px] font-bold tracking-[0.1em] mb-2"
+                          style="
+                            color: rgba(255, 255, 255, 0.65);
+                            font-family: &quot;Courier Prime&quot;, monospace;
+                          "
+                        >
+                          CONTENT TYPES
+                        </div>
+                        <div class="flex justify-between gap-[6px]">
+                          <span
+                            class="rounded-[20px] px-2 py-[3px] text-[10px] flex-1 text-center whitespace-nowrap"
+                            style="
+                              background: #fff;
+                              color: #000;
+                              font-family: &quot;Courier Prime&quot;, monospace;
+                            "
+                            >Blog Posts</span
+                          >
+                          <span
+                            class="rounded-[20px] px-2 py-[3px] text-[10px] flex-1 text-center whitespace-nowrap"
+                            style="
+                              background: #fff;
+                              color: #000;
+                              font-family: &quot;Courier Prime&quot;, monospace;
+                            "
+                            >Guides</span
+                          >
+                          <span
+                            class="rounded-[20px] px-2 py-[3px] text-[10px] flex-1 text-center whitespace-nowrap"
+                            style="
+                              background: #fff;
+                              color: #000;
+                              font-family: &quot;Courier Prime&quot;, monospace;
+                            "
+                            >Product Pages</span
+                          >
+                          <span
+                            class="rounded-[20px] px-2 py-[3px] text-[10px] flex-1 text-center whitespace-nowrap"
+                            style="
+                              background: #fff;
+                              color: #000;
+                              font-family: &quot;Courier Prime&quot;, monospace;
+                            "
+                            >Landing Pages</span
+                          >
+                          <span
+                            class="rounded-[20px] px-2 py-[3px] text-[10px] flex-1 text-center whitespace-nowrap"
+                            style="
+                              background: #fff;
+                              color: #000;
+                              font-family: &quot;Courier Prime&quot;, monospace;
+                            "
+                            >News/Updates</span
+                          >
+                        </div>
+                      </div>
+                      <div
+                        class="border border-[rgba(255,255,255,0.28)] rounded-md px-[14px] py-[10px]"
+                      >
+                        <div
+                          class="text-[10px] font-bold tracking-[0.1em] mb-2"
+                          style="
+                            color: rgba(255, 255, 255, 0.65);
+                            font-family: &quot;Courier Prime&quot;, monospace;
+                          "
+                        >
+                          KEY FOCUS AREAS
+                        </div>
+                        <div class="flex justify-between gap-[6px]">
+                          <span
+                            class="bg-white text-black rounded-[20px] px-2 py-[3px] text-[10px] flex-1 text-center whitespace-nowrap"
+                            style="
+                              font-family: &quot;Courier Prime&quot;, monospace;
+                            "
+                            >Keyword Research</span
+                          >
+                          <span
+                            class="bg-white text-black rounded-[20px] px-2 py-[3px] text-[10px] flex-1 text-center whitespace-nowrap"
+                            style="
+                              font-family: &quot;Courier Prime&quot;, monospace;
+                            "
+                            >Search Intent</span
+                          >
+                          <span
+                            class="bg-white text-black rounded-[20px] px-2 py-[3px] text-[10px] flex-1 text-center whitespace-nowrap"
+                            style="
+                              font-family: &quot;Courier Prime&quot;, monospace;
+                            "
+                            >Content Structure</span
+                          >
+                          <span
+                            class="bg-white text-black rounded-[20px] px-2 py-[3px] text-[10px] flex-1 text-center whitespace-nowrap"
+                            style="
+                              font-family: &quot;Courier Prime&quot;, monospace;
+                            "
+                            >On-Page SEO</span
+                          >
+                          <span
+                            class="bg-white text-black rounded-[20px] px-2 py-[3px] text-[10px] flex-1 text-center whitespace-nowrap"
+                            style="
+                              font-family: &quot;Courier Prime&quot;, monospace;
+                            "
+                            >Internal Linking</span
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -2027,7 +2408,7 @@
         /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
           navigator.userAgent,
         ) ||
-        window.innerWidth < 1024
+        window.innerWidth < 768
       ) {
         document.documentElement.innerHTML = `
       <html><head><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -2036,9 +2417,9 @@
         body { background:#000; display:flex; align-items:center; 
                justify-content:center; height:100vh; 
                font-family:'Courier Prime',monospace; }
-        .msg { text-align:center; color:#6b1a1a; padding:40px; }
+        .msg { text-align:center; color:#E8D5B0; padding:40px; }
         .msg h2 { font-size:1.1rem; font-weight:400; letter-spacing:0.25em; 
-                  text-transform:uppercase; margin-bottom:20px; color:#6b1a1a; }
+                  text-transform:uppercase; margin-bottom:20px; color:#E8D5B0; }
         .msg p { font-size:0.72rem; color:rgba(255,255,255,0.3); 
                  letter-spacing:0.08em; line-height:2; }
       </style></head>
@@ -2046,8 +2427,8 @@
         <h2>Desktop Only</h2>
         <p>This portfolio is optimized<br>for desktop viewing.<br><br>
         Please visit on a larger screen.</p>
-      </div></body></html>
-    `;
+      </div>
+      `;
       }
     </script>
     <!-- GSAP + plugins — PHẢI đứng trước local JS -->
@@ -2061,6 +2442,7 @@
     <script src="public/js/banner.js"></script>
     <script src="public/js/sidenav.js"></script>
     <script src="public/js/section-about.js"></script>
+    <script src="public/js/cv-trio.js"></script>
     <script src="public/js/section-work.js"></script>
     <script src="public/js/section-seo.js"></script>
     <script src="public/js/section-contentseo.js"></script>
@@ -2068,5 +2450,103 @@
     <script src="public/js/section-tech.js"></script>
     <script src="public/js/section-others.js"></script>
     <script src="public/js/curtain-reveal.js"></script>
+
+    <script>
+      /* ============================================================
+       GLASS BEAM BUTTON — IIFE
+       Tự động bọc wrapper + setup animation lifecycle
+       ============================================================ */
+      (function () {
+        "use strict";
+
+        /* ── 1. Wrap target buttons ──────────────────────────────── */
+        var beams = [];
+
+        [
+          { track: ".ab-btn-track", btn: ".ab-btn" },
+          { track: ".cta-track", btn: ".st__proj2-cta" },
+        ].forEach(function (cfg) {
+          document.querySelectorAll(cfg.track).forEach(function (trackEl) {
+            var btnEl = trackEl.closest(cfg.btn);
+            /* Bỏ qua nếu chưa tìm thấy hoặc đã được wrap */
+            if (!btnEl || btnEl.closest(".glass-btn-wrap")) return;
+
+            /* Đọc border-radius trước khi thay đổi DOM */
+            var r = parseFloat(getComputedStyle(btnEl).borderRadius) || 30;
+
+            /* Wrapper: clip beam, cung cấp stacking context */
+            var wrap = document.createElement("div");
+            wrap.className = "glass-btn-wrap";
+            wrap.style.setProperty("--glass-r", r + "px");
+            wrap.style.setProperty("--glass-mask-r", r - 1.5 + "px");
+
+            /* Beam: div xoay conic-gradient — nằm dưới button trong stacking */
+            var beam = document.createElement("div");
+            beam.className = "glass-beam";
+
+            /* Chèn wrapper vào vị trí cũ của button, rồi đưa button vào trong.
+             padding:1.5px của wrapper tạo ring viền — không cần mask div */
+            btnEl.parentNode.insertBefore(wrap, btnEl);
+            wrap.appendChild(beam);
+            wrap.appendChild(btnEl);
+
+            beams.push(beam);
+          });
+        });
+
+        if (!beams.length) return;
+
+        /* ── 2. Khoá kích thước wrapper sau paint đầu — tránh CLS ──
+         [opt-1] width/height cố định ngay sau layout lần đầu */
+        requestAnimationFrame(function () {
+          document.querySelectorAll(".glass-btn-wrap").forEach(function (w) {
+            w.style.width = w.offsetWidth + "px";
+            w.style.height = w.offsetHeight + "px";
+          });
+        });
+
+        /* ── 3. Quản lý trạng thái animation (tab + viewport) ────── */
+        var tabVisible = !document.hidden;
+
+        /* Áp dụng play/pause dựa trên cả 2 điều kiện */
+        function setPlay(beam, inView) {
+          beam.style.animationPlayState =
+            tabVisible && inView ? "running" : "paused";
+        }
+
+        /* [opt-4] Page Visibility API — tắt toàn bộ khi ẩn tab;
+         không dùng setInterval hay scroll event */
+        document.addEventListener("visibilitychange", function () {
+          tabVisible = !document.hidden;
+          beams.forEach(function (b) {
+            setPlay(
+              b,
+              b._inView !== false,
+            ); /* _inView set bởi IO trên wrapper */
+          });
+        });
+
+        /* [opt-5] IntersectionObserver quan sát WRAPPER (không phải beam).
+         Beam có width:400%/top:-150% nên bounding rect của nó nằm
+         ngoài viewport → IO sẽ báo không intersecting → animation bị
+         paused ngay lập tức. Wrapper mới là element thật trong viewport. */
+        var io = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              var beam = entry.target._beam;
+              beam._inView = entry.isIntersecting;
+              setPlay(beam, entry.isIntersecting);
+            });
+          },
+          { threshold: 0.1 },
+        );
+
+        beams.forEach(function (b) {
+          var wrap = b.parentElement;
+          wrap._beam = b;
+          io.observe(wrap);
+        });
+      })();
+    </script>
   </body>
 </html>

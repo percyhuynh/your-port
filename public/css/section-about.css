@@ -322,7 +322,7 @@
 ══════════════════════════════════════════════════ */
 #sk-root {
   margin-top: 0;
-  padding: 56px 40px 60px;
+  padding: 56px 30px 60px;
   background: #0a0a0a;
   border: none;
   border-radius: 0;
@@ -341,7 +341,8 @@
   font-weight: 400;
   font-size: clamp(1.2rem, 2vw, 1.5rem);
   letter-spacing: 0.02em;
-  color: rgba(255, 255, 255, 0.55);
+  color: #fff;
+  /* color: rgba(255, 255, 255, 0.55); */
   line-height: 1.2;
 }
 
@@ -359,7 +360,8 @@
   border-radius: 100px;
   border: 1px solid rgba(255, 255, 255, 0.14);
   background: transparent;
-  color: rgba(255, 255, 255, 0.5);
+  color: #fff;
+  /* rgba(255, 255, 255, 0.5); */
   font-family: "Courier Prime", monospace;
   font-size: clamp(0.72rem, 0.9vw, 0.9rem);
   font-weight: 400;
@@ -514,5 +516,36 @@
   #sk-root .sk-pill {
     font-size: 0.7rem;
     padding: 8px 8px;
+  }
+}
+
+/* ══════════════════════════════════════════════════
+   CANVAS TRIO  (#cv-trio)
+══════════════════════════════════════════════════ */
+#cv-trio {
+  padding: 56px 30px 60px;
+  background: #000000;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.cv-cell {
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #000;
+}
+
+.cv-cell canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 768px) {
+  #cv-trio {
+    padding: 44px 24px 48px;
+    gap: 12px;
   }
 }

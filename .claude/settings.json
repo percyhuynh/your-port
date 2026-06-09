@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"g:\\\\workspace\\\\your-port\" -Recurse -Include \"*.html\", \"*.css\", \"*.js\", \"*.jsx\", \"*.ts\", \"*.tsx\")",
+      "Bash(Select-Object -ExpandProperty FullName)",
+      "Bash(Sort-Object)",
+      "Bash(dir \"g:\\\\workspace\\\\your-port\")",
+      "Bash(git checkout *)",
+      "Bash(sed -n '1253,1260p' g:/workspace/your-port/index.html)",
+      "Bash(sed -n '1413,1420p' g:/workspace/your-port/index.html)",
+      "Bash(head -703 g:/workspace/your-port/public/js/section-contentseo.js)",
+      "Read(//tmp/**)",
+      "Bash(head -711 g:/workspace/your-port/public/js/section-contentseo.js > /tmp/contentseo_prefix.js && echo \"File prefix saved, $\\(wc -l < /tmp/contentseo_prefix.js\\) lines\")",
+      "Bash(python3 /tmp/build_contentseo.py)",
+      "Bash(node --check g:/workspace/your-port/public/js/section-contentseo.js)",
+      "Bash(node --check \"g:/workspace/your-port/public/js/section-seo.js\")",
+      "Bash(node --check \"g:/workspace/your-port/public/js/section-contentseo.js\")",
+      "Bash(node --check --input-type=script)",
+      "Bash(sed -n '2481,2577p' \"g:/workspace/your-port/index.html\")",
+      "Bash(node --check /tmp/test_script.js)",
+      "Bash(sed -n '2482,2576p' \"g:/workspace/your-port/index.html\")",
+      "Bash(node --check /tmp/test_script2.js)",
+      "Read(//c/Users/Glodival/Downloads/**)"
+    ],
+    "additionalDirectories": [
+      "\\tmp"
+    ]
+  }
+}

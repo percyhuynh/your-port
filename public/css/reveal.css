@@ -19,7 +19,7 @@
 .bg {
   position: absolute;
   inset: 0%;
-  background-image: url(../images/baner-end-1.webp);
+  background-image: url(../images/banner-end-1.webp);
   background-size: cover;
   background-position: center top;
 }
