@@ -20,7 +20,9 @@
       "Bash(node --check /tmp/test_script.js)",
       "Bash(sed -n '2482,2576p' \"g:/workspace/your-port/index.html\")",
       "Bash(node --check /tmp/test_script2.js)",
-      "Read(//c/Users/Glodival/Downloads/**)"
+      "Read(//c/Users/Glodival/Downloads/**)",
+      "Bash(awk -F: '{print $1}')",
+      "Bash(awk '$1 > 1')"
     ],
     "additionalDirectories": [
       "\\tmp"

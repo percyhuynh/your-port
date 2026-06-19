@@ -971,12 +971,14 @@ html {
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
+  min-width: 0; /* allow 1fr column to shrink below canvas intrinsic width */
 }
 
 /* Thin wrapper — only controls layout width, no overflow clip */
 .nfa-widget-scale {
   width: 100%;
   position: relative;
+  min-width: 0; /* prevent flex item from forcing grid column to expand */
 }
 
 /* Royal Helmet photo wrap */

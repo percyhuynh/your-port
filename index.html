@@ -10,6 +10,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Percy Huynh</title>
+    <meta
+      name="description"
+      content="SEO Specialist & Frontend Developer based in HCMC - building with AI Automation, UI/UX, and modern web tech."
+    />
 
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://percyhuynh.io.vn/" />
@@ -25,6 +29,21 @@
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-HQSC2NGYD7"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-HQSC2NGYD7");
+    </script>
 
     <!-- Courier Prime — preload để không block render -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -42,11 +61,7 @@
       />
     </noscript>
 
-    <link
-      rel="icon"
-      type="image/x-icon"
-      href="/public/images/main-logo-1.webp"
-    />
+    <link rel="icon" type="image/webp" href="/public/images/main-logo-1.webp" />
 
     <!-- Font Awesome -->
     <link
@@ -336,6 +351,12 @@
                 href="https://percyhuynh.io.vn/cv/"
                 target="_blank"
                 class="ab-btn ab-btn-primary"
+                onclick="
+                  gtag('event', 'click', {
+                    event_category: 'button',
+                    event_label: 'cv',
+                  })
+                "
               >
                 <div class="ab-btn-track">
                   <span class="ab-btn-line ab-btn-line-a">CV</span>
@@ -346,6 +367,12 @@
                 href="https://zalo.me/0397425548"
                 class="ab-btn"
                 target="_blank"
+                onclick="
+                  gtag('event', 'click', {
+                    event_category: 'button',
+                    event_label: 'contact',
+                  })
+                "
               >
                 <div class="ab-btn-track">
                   <span class="ab-btn-line ab-btn-line-a">Contact</span>
@@ -1482,7 +1509,6 @@
                     alt="Traffic chart proof"
                     class="cs__card-image"
                     loading="lazy"
-                    loading="lazy"
                     style="object-position: center 32%"
                   />
                 </div>
@@ -1548,7 +1574,6 @@
                     alt="Keyword ranking proof"
                     class="cs__card-image"
                     loading="lazy"
-                    loading="lazy"
                   />
                 </div>
                 <div class="cs__card-body">
@@ -1598,7 +1623,7 @@
               <article class="cs__proof-card">
                 <div
                   class="cs__card-image-wrap"
-                  data-src="section-contentseo-5.webp"
+                  data-src="public/images/section-contentseo-5.webp"
                   data-title="Scaled a Finance Blog from 0 to 50,000 Monthly Pageviews"
                   data-tag="Content Strategy · Finance"
                 >
@@ -1606,7 +1631,6 @@
                     src="public/images/section-contentseo-5.webp"
                     alt="GSC proof screenshot"
                     class="cs__card-image"
-                    loading="lazy"
                     loading="lazy"
                   />
                 </div>
