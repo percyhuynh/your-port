@@ -1,0 +1,294 @@
+<title>Ink Fill Reveal</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap">
+<style>
+/* Layout: long paper page. Two blocks (drawing, giant word) each hold two stacked SVG layers:
+   a line version underneath and a filled version on top, revealed through a displaced, thresholded mask. */
+:root{
+  --paper:#f7f4ef; --bone:#e8e2d8; --ink:#1a1a18; --wine:#6b1a1a; --mute:#5c5a4e;
+  --mono:"Courier Prime","Courier New",monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--mono);margin:0;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1100px;margin-inline:auto}
+.head{padding-block:56px 32px;max-width:62ch}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin:0 0 14px}
+h1{font-size:clamp(32px,6vw,60px);line-height:1.02;margin:0 0 16px;font-weight:700;letter-spacing:-.02em;text-wrap:balance}
+.head p{font-size:15px;line-height:1.6;color:var(--mute);margin:0}
+
+.plate{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 220px;border:1px solid var(--ink);margin-block:48px}
+.plate .art{position:relative;border-right:1px solid var(--ink);overflow:hidden}
+.plate .art svg{display:block;width:100%;height:auto}
+.plate aside{display:flex;flex-direction:column;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.plate aside div{padding:14px 14px;border-bottom:1px solid var(--ink);min-height:48px}
+.plate aside div:last-child{border-bottom:0;margin-top:auto;color:var(--mute)}
+.plate aside b{display:block;font-size:11px;color:var(--mute);font-weight:400;margin-bottom:4px}
+@media (max-width:720px){
+  .plate{grid-template-columns:minmax(0,1fr)}
+  .plate .art{border-right:0;border-bottom:1px solid var(--ink)}
+  .plate aside{display:grid;grid-template-columns:1fr 1fr}
+  .plate aside div{border-right:1px solid var(--ink)}
+}
+
+.blk{margin-block:48px;border:1px solid var(--ink)}
+.blk svg{display:block;width:100%;height:auto}
+.note{margin:0;padding:8px 12px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);border-top:1px solid var(--ink)}
+.word{position:relative;margin-block:72px;border-block:1px solid var(--ink);padding-block:28px}
+.word svg{display:block;width:100%;height:auto}
+.rule{height:10px;margin-top:14px;background:repeating-linear-gradient(90deg,var(--mute) 0 1px,transparent 1px 8px);opacity:.5}
+
+.spec{margin-block:56px 96px;max-width:70ch}
+.spec h2{font-size:20px;margin:0 0 14px}
+.spec p{font-size:14px;line-height:1.65;color:var(--mute);margin:0 0 16px}
+.tbl{overflow-x:auto;border:1px solid var(--ink)}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--bone);white-space:nowrap}
+th{font-weight:700;border-bottom:1px solid var(--ink)}
+td:last-child{color:var(--mute);white-space:normal}
+tr:last-child td{border-bottom:0}
+.hud{position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:max(12px,env(safe-area-inset-bottom,0px));
+  background:var(--paper);border:1px solid var(--ink);padding:6px 10px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;z-index:5}
+</style>
+
+<!-- one shared filter, referenced by both masks. Region in user space so the frayed edge is never clipped. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="inkEdge" filterUnits="userSpaceOnUse" x="-300" y="-300" width="1600" height="1900">
+      <feTurbulence type="fractalNoise" baseFrequency="0.045 0.055" numOctaves="4" seed="5" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="100" xChannelSelector="R" yChannelSelector="G"/>
+      <feGaussianBlur stdDeviation="1.8" result="blurred"/>
+      <feComponentTransfer in="blurred"><feFuncA type="linear" slope="2.2" intercept="-0.6"/></feComponentTransfer>
+    </filter>
+  </defs>
+</svg>
+
+<div class="wrap">
+  <header class="head">
+    <p class="eyebrow">Front-end / scroll fill</p>
+    <h1>Khung thô có sẵn, mực đổ vào thành hình hoàn chỉnh.</h1>
+    <p>Mỗi khối có hai lớp cùng toạ độ: bản nét thô hiện ngay từ đầu, bản hoàn chỉnh nằm trên và chỉ lộ ra qua mask mực khi scroll. Mép mực rách, có quầng mờ ở phía trước.</p>
+  </header>
+
+  <section class="plate" aria-label="Bản vẽ tháp">
+    <div class="art" id="artA"></div>
+    <aside>
+      <div><b>Plate</b>T-01</div>
+      <div><b>Fill</b><span id="pa">0%</span></div>
+      <div><b>Direction</b>Top to bottom</div>
+      <div>Scroll xuống để đổ mực</div>
+    </aside>
+  </section>
+
+  <section class="blk" aria-label="Mặt bằng"><div id="artB"></div></section>
+  <section class="blk" aria-label="Dashboard mẫu"><div id="artC"></div><p class="note">Số trong thẻ là dữ liệu mẫu cho demo.</p></section>
+
+  <section class="word" aria-label="Chữ lớn">
+    <div id="artD"></div>
+    <div class="rule"></div>
+  </section>
+
+  <section class="spec">
+    <h2>Thông số của mask</h2>
+    <p>Các giá trị dưới đây đọc được từ DOM của site tham chiếu qua REA. Mình dùng lại đúng số, còn code và hình là bản tự dựng.</p>
+    <div class="tbl"><table>
+      <thead><tr><th>Thành phần</th><th>Giá trị</th><th>Vai trò</th></tr></thead>
+      <tbody>
+        <tr><td>feTurbulence</td><td>fractalNoise, 0.045 0.055, 4 octaves, seed 5</td><td>Tạo nhiễu để mép rách</td></tr>
+        <tr><td>feDisplacementMap</td><td>scale 100, kênh R và G</td><td>Đẩy mép path lệch theo nhiễu</td></tr>
+        <tr><td>feGaussianBlur</td><td>stdDeviation 1.8</td><td>Làm mềm trước khi cắt ngưỡng</td></tr>
+        <tr><td>feFuncA</td><td>linear, slope 2.2, intercept -0.6</td><td>Cắt ngưỡng alpha, tạo viền mực đặc</td></tr>
+        <tr><td>Path mask</td><td>Q cong, mép chạy từ 0 đến hết khối</td><td>Scrub theo scroll</td></tr>
+        <tr><td>Quầng mờ (thêm)</td><td>Path thứ hai, xám 47%, đi trước mép 5%</td><td>Vệt mực ướt phía trước, mình thêm theo ảnh tham chiếu</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+</div>
+<div class="hud" id="hud">fill 0%</div>
+
+<script>
+(function(){
+'use strict';
+var NS='http://www.w3.org/2000/svg';
+var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+var INK='#1a1a18', WINE='#6b1a1a', BONE='#e8e2d8', PAPER='#f7f4ef', MUTE='#5c5a4e', GREY='#b9b2a3', SKEL='#ddd6c9';
+var FONT='Courier Prime, Courier New, monospace';
+
+function el(n,a,p){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;}
+function txt(p,s,a){var t=el('text',a,p);t.textContent=s;return t;}
+
+/* ===== 1. TOWER: wireframe underneath, rendered tower on top (same coordinates) ===== */
+function tower(g,top){
+  var defs=el('defs',{},g);
+  if(top){
+    var hp=el('pattern',{id:'hatch',width:5,height:5,patternUnits:'userSpaceOnUse',patternTransform:'rotate(35)'},defs);
+    el('rect',{width:5,height:5,fill:'#262622'},hp); el('line',{x1:0,y1:0,x2:0,y2:5,stroke:'#4a4a44','stroke-width':1.2},hp);
+    var dp=el('pattern',{id:'dots',width:9,height:9,patternUnits:'userSpaceOnUse'},defs);
+    el('rect',{width:9,height:9,fill:'#e4ddd0'},dp); el('circle',{cx:3,cy:3,r:.9,fill:'#9b9486'},dp); el('circle',{cx:7,cy:7,r:.6,fill:'#b5ae9f'},dp);
+  }
+  function S(w){return top?'none':INK;}
+  function R(x,y,w,h,fill){return el('rect',{x:x,y:y,width:w,height:h,fill:top?fill:'none',stroke:top?INK:INK,'stroke-width':top?1:1.3},g);}
+  // sun
+  el('circle',{cx:700,cy:250,r:150,fill:top?WINE:'none',stroke:top?'none':WINE,'stroke-width':1.6},g);
+  // thin construction frames
+  [[600,60,640],[640,100,680],[700,140,720]].forEach(function(f){el('line',{x1:f[0],y1:f[1],x2:f[0],y2:f[2],stroke:INK,'stroke-width':1.3},g);});
+  el('polygon',{points:'640,40 840,170 840,420 640,300',fill:'none',stroke:INK,'stroke-width':1.2},g);
+  // left bay: concrete panels with diagonal joints
+  for(var i=0;i<10;i++){
+    var y=100+i*62; R(330,y,92,62,top?'url(#dots)':0);
+    if(!top) el('line',{x1:330,y1:y,x2:422,y2:y+62,stroke:INK,'stroke-width':.7,opacity:.5},g);
+  }
+  // fins
+  for(var j=0;j<13;j++){
+    var x=432+j*18, dy=Math.abs(6-j)*3;
+    R(x,120+dy,12,640-dy,top?'url(#hatch)':0);
+  }
+  // floor lines across the fins (wireframe only)
+  if(!top) for(var k=0;k<20;k++){var yy=140+k*31; el('line',{x1:432,y1:yy,x2:666,y2:yy,stroke:INK,'stroke-width':.6,opacity:.55},g);}
+  // side slab in perspective
+  el('polygon',{points:'666,126 790,160 790,800 666,760',fill:top?'#8d8678':'none',stroke:INK,'stroke-width':top?1:1.2},g);
+  if(!top) for(var m=0;m<7;m++){var xx=680+m*16; el('line',{x1:xx,y1:130+m*3,x2:xx,y2:765+m*5,stroke:INK,'stroke-width':.7,opacity:.6},g);}
+  // podium, slab, steps
+  R(0,780,790,90,top?BONE:0); R(90,720,520,60,top?'#d3ccbe':0); R(0,870,1000,30,top?PAPER:0);
+  for(var s=0;s<8;s++) R(560+s*20,862-s*8,300-s*30,8,top?BONE:0);
+  el('line',{x1:0,y1:900,x2:1000,y2:900,stroke:INK,'stroke-width':1.8},g);
+}
+
+/* ===== 2. FLOOR PLAN: thin grey outlines underneath, black walls and red room on top ===== */
+function plan(g,top){
+  var line=top?INK:'#7d7a6c', sw=top?1.5:1.2;
+  function R(x,y,w,h,o){o=o||{};return el('rect',{x:x,y:y,width:w,height:h,rx:o.rx||0,fill:o.fill||'none',stroke:o.stroke||line,'stroke-width':o.sw||sw},g);}
+  // red room (top only)
+  if(top) el('rect',{x:128,y:98,width:352,height:188,fill:'#a2301c'},g);
+  // walls: outlines below, solid ink above
+  [[100,70,800,14],[100,626,800,14],[100,70,14,570],[886,70,14,570],[493,70,14,230],[100,300,800,14],[100,430,800,14]].forEach(function(w){
+    if(top) el('rect',{x:w[0],y:w[1],width:w[2],height:w[3],fill:INK},g); else R(w[0],w[1],w[2],w[3],{stroke:'#7d7a6c'});
+  });
+  // doors
+  [[420,300],[540,300]].forEach(function(d){el('path',{d:'M '+d[0]+' '+d[1]+' h 48 M '+d[0]+' '+d[1]+' a 48 48 0 0 1 48 -48',fill:'none',stroke:top?PAPER:'#7d7a6c','stroke-width':1.4},g);});
+  // meeting tables and chairs, both rooms
+  [0,400].forEach(function(dx,r){
+    var fs=(top&&r===0)?PAPER:line;
+    R(190+dx,148,210,84,{stroke:fs});
+    for(var i=0;i<5;i++){ R(196+dx+i*42,124,30,22,{rx:8,stroke:fs}); R(196+dx+i*42,234,30,22,{rx:8,stroke:fs}); }
+    R(162+dx,176,24,28,{rx:8,stroke:fs}); R(404+dx,176,24,28,{rx:8,stroke:fs});
+  });
+  // lounge
+  R(170,500,170,52,{rx:10}); R(130,505,28,42,{rx:8}); R(352,505,28,42,{rx:8}); R(210,572,84,44);
+  // dimensions
+  var dc=top?INK:'#7d7a6c';
+  el('line',{x1:100,y1:22,x2:900,y2:22,stroke:dc,'stroke-width':1},g);
+  el('line',{x1:100,y1:48,x2:900,y2:48,stroke:dc,'stroke-width':1},g);
+  [100,493,507,900].forEach(function(x){el('line',{x1:x,y1:14,x2:x,y2:56,stroke:dc,'stroke-width':1},g);});
+  txt(g,'14600',{x:500,y:16,'text-anchor':'middle','font-size':13,fill:dc,'font-family':FONT});
+  txt(g,'7000',{x:300,y:42,'text-anchor':'middle','font-size':13,fill:dc,'font-family':FONT});
+  txt(g,'600',{x:500,y:42,'text-anchor':'middle','font-size':11,fill:dc,'font-family':FONT});
+  txt(g,'7000',{x:700,y:42,'text-anchor':'middle','font-size':13,fill:dc,'font-family':FONT});
+  el('line',{x1:60,y1:70,x2:60,y2:640,stroke:dc,'stroke-width':1},g);
+  var t=txt(g,'12500',{x:0,y:0,'text-anchor':'middle','font-size':13,fill:dc,'font-family':FONT,transform:'translate(48 470) rotate(-90)'},g);
+}
+
+/* ===== 3. DASHBOARD: grey skeleton underneath, real content on top ===== */
+function dash(g,top){
+  var cards=[['SECTIONS','6',WINE],['EFFECTS','3',INK],['FPS','60',MUTE],['PAGE KB','148','#8d8678']];
+  cards.forEach(function(c,i){
+    var x=40+i*235, y=30, w=215, h=110;
+    if(!top){
+      el('rect',{x:x,y:y,width:w,height:h,fill:SKEL,stroke:GREY,'stroke-width':1.2},g);
+      el('rect',{x:x+20,y:y+22,width:80,height:10,fill:'#cbc4b5'},g);
+      el('rect',{x:x+20,y:y+62,width:64,height:28,fill:'#cbc4b5'},g);
+    }else{
+      el('rect',{x:x,y:y,width:w,height:h,fill:PAPER,stroke:INK,'stroke-width':2},g);
+      el('rect',{x:x+6,y:y+h,width:w-12,height:9,fill:INK},g);
+      txt(g,c[0],{x:x+20,y:y+34,'font-size':14,'letter-spacing':'.1em',fill:MUTE,'font-family':FONT});
+      el('rect',{x:x+w-34,y:y+20,width:14,height:14,fill:c[2]},g);
+      txt(g,c[1],{x:x+20,y:y+88,'font-size':46,'font-weight':700,fill:INK,'font-family':FONT});
+    }
+  });
+  if(!top){
+    el('rect',{x:40,y:170,width:920,height:170,fill:SKEL,stroke:GREY,'stroke-width':1.2},g);
+    el('rect',{x:70,y:196,width:170,height:12,fill:'#cbc4b5'}, g);
+    el('rect',{x:70,y:222,width:260,height:10,fill:'#d3ccbe'}, g);
+    el('rect',{x:70,y:292,width:260,height:22,fill:'#cbc4b5'}, g);
+    el('rect',{x:850,y:292,width:80,height:22,fill:'#cbc4b5'}, g);
+    el('rect',{x:40,y:360,width:920,height:140,fill:SKEL,stroke:GREY,'stroke-width':1.2},g);
+    [0,1,2].forEach(function(i){el('rect',{x:70,y:384+i*34,width:340,height:14,fill:'#cbc4b5'},g);el('rect',{x:850,y:384+i*34,width:80,height:14,fill:'#cbc4b5'},g);});
+  }else{
+    el('rect',{x:40,y:170,width:920,height:170,fill:PAPER,stroke:INK,'stroke-width':2},g);
+    txt(g,'WELCOME BACK, PERCY',{x:70,y:208,'font-size':20,'font-weight':700,fill:INK,'font-family':FONT});
+    txt(g,'3 sections need your attention today.',{x:70,y:236,'font-size':15,fill:MUTE,'font-family':FONT});
+    el('rect',{x:70,y:280,width:300,height:44,fill:INK},g);
+    txt(g,'OPEN SECTION',{x:92,y:308,'font-size':14,'letter-spacing':'.1em',fill:PAPER,'font-family':FONT});
+    el('rect',{x:40,y:360,width:920,height:140,fill:PAPER,stroke:INK,'stroke-width':2},g);
+    [['Hero scroll fill','DONE'],['Silhouette text flow','DONE'],['Mobile pass','TODO']].forEach(function(r,i){
+      txt(g,r[0],{x:70,y:396+i*34,'font-size':15,fill:INK,'font-family':FONT});
+      txt(g,r[1],{x:930,y:396+i*34,'text-anchor':'end','font-size':13,'letter-spacing':'.1em',fill:r[1]==='DONE'?INK:WINE,'font-family':FONT});
+    });
+  }
+}
+
+/* ===== 4. GIANT WORD ===== */
+function word(g,top){
+  var t=el('text',{x:500,y:195,'text-anchor':'middle','font-family':FONT,'font-weight':700,'font-size':215,textLength:960,lengthAdjust:'spacingAndGlyphs',fill:top?INK:'none',stroke:INK,'stroke-width':top?0:1.5},g);
+  t.textContent='FRONT-END';
+  if(!top){
+    [0,250,500,750,1000].forEach(function(x){el('line',{x1:x,y1:6,x2:x,y2:30,stroke:INK,'stroke-width':1.2},g);});
+    el('rect',{x:742,y:96,width:12,height:12,fill:WINE},g);
+  }
+}
+
+/* ===== reveal block: base layer, then top layer through a mask with a wet halo ===== */
+function build(host,w,h,dir,draw,id){
+  var svg=el('svg',{viewBox:'0 0 '+w+' '+h,preserveAspectRatio:'xMidYMid meet'});
+  host.appendChild(svg);
+  var base=el('g',{},svg); draw(base,false);
+  var mask=el('mask',{id:id,maskUnits:'userSpaceOnUse',x:-300,y:-300,width:w+600,height:h+600},el('defs',{},svg));
+  var halo=el('path',{fill:'#808080',filter:'url(#inkEdge)'},mask);
+  var path=el('path',{fill:'white',filter:'url(#inkEdge)'},mask);
+  var top=el('g',{mask:'url(#'+id+')'},svg); draw(top,true);
+  return {w:w,h:h,dir:dir,path:path,halo:halo,host:host};
+}
+function pathFor(b,e,bow){
+  var w=b.w,h=b.h;
+  if(b.dir==='down'){var Y=e*h, C=Y+bow*h; return 'M 0 '+Y+' Q '+(w/2)+' '+C+' '+w+' '+Y+' L '+w+' 0 L 0 0 Z';}
+  var X=e*w, Cx=X+bow*w; return 'M '+X+' 0 Q '+Cx+' '+(h/2)+' '+X+' '+h+' L 0 '+h+' L 0 0 Z';
+}
+function setFill(b,p){
+  if(p<=0.001){ b.path.setAttribute('d','M 0 0 L 0 0 Z'); b.halo.setAttribute('d','M 0 0 L 0 0 Z'); return; }
+  var e=p*1.1;                       // overshoot so the displaced edge always clears the block
+  b.path.setAttribute('d',pathFor(b,e,.12));
+  b.halo.setAttribute('d',pathFor(b,Math.min(e+.05,1.2),.14));
+}
+
+var blocks=[
+  build(document.getElementById('artA'),1000,920,'down',tower,'mA'),
+  build(document.getElementById('artB'),1000,670,'right',plan,'mB'),
+  build(document.getElementById('artC'),1000,520,'down',dash,'mC'),
+  build(document.getElementById('artD'),1000,230,'right',word,'mD')
+];
+var cur=[0,0,0,0], pa=document.getElementById('pa'), hud=document.getElementById('hud');
+
+function targetFor(b){
+  var r=b.host.getBoundingClientRect(), vh=innerHeight;
+  var start=vh*.8, span=Math.min(r.height*.85,vh*.75);
+  return Math.max(0,Math.min(1,(start-r.top)/span));
+}
+var last=performance.now(), EASE=.22;
+function frame(now){
+  var dt=Math.min((now-last)/1000,.1); last=now;
+  var k=1-Math.exp(-dt/EASE);
+  blocks.forEach(function(b,i){
+    var t=reduce?1:targetFor(b);
+    cur[i]+=(t-cur[i])*k;
+    if(Math.abs(t-cur[i])<.0005)cur[i]=t;
+    setFill(b,cur[i]);
+  });
+  var q=cur.map(function(v){return Math.round(v*100);});
+  pa.textContent=q[0]+'%';
+  hud.textContent='tower '+q[0]+'  plan '+q[1]+'  ui '+q[2]+'  word '+q[3];
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(function(t){last=t;frame(t);});
+})();
+</script>

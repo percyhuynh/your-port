@@ -1,0 +1,311 @@
+<title>Warp Fill Chapter</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap">
+<style>
+/* Layout: one tall track, one sticky stage. A single number p (0 to 3) is derived from scroll and drives four things:
+   the card folding into an hourglass, the WebGL ink blot, the countdown digits and the chapter copy. */
+:root{
+  --paper:#f7f4ef; --bone:#e8e2d8; --ink:#1a1a18; --wine:#6b1a1a; --mute:#5c5a4e;
+  --blot:#d9b8ae;
+  --mono:"Courier Prime","Courier New",monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{background:var(--ink);color:var(--paper);font-family:var(--mono);margin:0}
+.intro{background:var(--paper);color:var(--ink);padding:56px max(16px,env(safe-area-inset-right,0px)) 40px max(16px,env(safe-area-inset-left,0px))}
+.intro>div{max-width:62ch;margin-inline:auto}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin:0 0 14px}
+h1{font-size:clamp(32px,6vw,58px);line-height:1.02;margin:0 0 16px;font-weight:700;letter-spacing:-.02em;text-wrap:balance}
+.intro p{font-size:15px;line-height:1.6;color:var(--mute);margin:0}
+
+.track{position:relative;height:520vh}
+.stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:var(--ink)}
+#ink{position:absolute;inset:0;width:100%;height:100%;display:block}
+.fb{position:absolute;inset:0;background:var(--blot);clip-path:circle(0% at 50% 50%);display:none}
+.digits{position:absolute;left:0;right:0;top:50%;transform:translateY(-54%);text-align:center;
+  font-weight:700;font-size:min(16vw,300px);line-height:1;letter-spacing:-.04em;color:rgba(107,26,26,.24);opacity:0;
+  font-variant-numeric:tabular-nums;white-space:nowrap;pointer-events:none}
+.cardwrap{position:absolute;left:50%;top:50%;width:clamp(248px,30vw,340px);transform:translate(-50%,-50%);perspective:900px}
+.card{position:relative;background:var(--paper);color:var(--ink);border:1px solid var(--ink);padding:20px 20px 0;
+  box-shadow:0 10px 0 var(--paper);will-change:transform,clip-path;transform-style:preserve-3d}
+.icon{width:44px;height:44px;background:var(--wine);display:grid;place-items:center;margin-bottom:12px}
+.icon svg{width:26px;height:26px}
+.card .who{font-size:12px;color:var(--mute);letter-spacing:.06em;margin:0 0 6px}
+.card h3{font-size:clamp(19px,2.2vw,24px);line-height:1.12;margin:0 0 14px;font-weight:700;letter-spacing:-.01em}
+.card .sub{font-size:12.5px;line-height:1.5;color:var(--mute);margin:0 0 20px}
+.pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.pills span{border:1px solid var(--ink);padding:3px 8px;font-size:11px}
+.card .base{border-top:1px solid var(--bone);margin:0 -20px;padding:9px 20px;font-size:10.5px;color:var(--mute);letter-spacing:.04em}
+.quest{position:absolute;left:0;right:0;top:clamp(36px,7vh,80px);margin:0;text-align:center;font-size:clamp(26px,5.4vw,76px);
+  line-height:1.02;font-weight:700;letter-spacing:-.02em;color:var(--wine);padding-inline:16px;opacity:0;text-wrap:balance}
+.cols{position:absolute;left:max(16px,env(safe-area-inset-left,0px));right:max(16px,env(safe-area-inset-right,0px));
+  bottom:max(28px,env(safe-area-inset-bottom,0px));display:flex;justify-content:space-between;gap:32px;
+  border-top:1px solid rgba(26,26,24,.5);padding-top:18px;opacity:0;color:var(--ink)}
+.cols p{margin:0;max-width:42ch;font-size:clamp(12px,1.25vw,15px);line-height:1.55}
+.cols p:first-child{font-weight:700;color:var(--wine)}
+.tag{position:absolute;top:max(14px,env(safe-area-inset-top,0px));left:max(16px,env(safe-area-inset-left,0px));right:max(16px,env(safe-area-inset-right,0px));
+  display:flex;justify-content:space-between;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--paper);mix-blend-mode:difference;pointer-events:none}
+.hud{position:absolute;right:max(12px,env(safe-area-inset-right,0px));bottom:max(10px,env(safe-area-inset-bottom,0px));font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);opacity:.9}
+@media (max-width:640px){.cols{flex-direction:column;gap:10px}}
+.content{position:absolute;inset:0;opacity:var(--afade,1);pointer-events:none}
+body{overflow-x:clip}
+
+/* sheet: normal flow, pulled up over the pinned stage by one viewport. Two numbers (rot, off) come from where it sits. */
+.sheetwrap{position:relative;z-index:5;margin-top:-100vh;overflow-x:clip;padding-bottom:12vh}
+.sheet{position:relative;min-height:170vh;background:var(--paper);color:var(--ink);border-radius:6px;
+  padding:clamp(56px,9vh,96px) clamp(16px,3vw,48px) 14vh;
+  transform:rotate(calc(var(--s5rot,0) * 7deg)) scale(calc(1 - var(--s5off,0) * .16));transform-origin:50%;will-change:transform}
+@media (max-width:768px){.sheet{transform:rotate(calc(var(--s5rot,0) * 3.2deg)) scale(calc(1 - var(--s5off,0) * .12));transform-origin:50% 40vh}}
+.stag{position:absolute;top:18px;left:clamp(16px,3vw,48px);right:clamp(16px,3vw,48px);display:flex;justify-content:space-between;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.shead{font-size:clamp(30px,6.4vw,92px);line-height:.98;margin:clamp(24px,5vh,56px) 0 18px;font-weight:700;letter-spacing:-.03em;text-wrap:balance;max-width:16ch}
+.ssub{font-size:clamp(13px,1.4vw,16px);color:var(--mute);margin:0 0 clamp(40px,10vh,96px);max-width:48ch;line-height:1.5}
+.row{--rp:0;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:start;
+  border-top:1px solid rgba(26,26,24,.3);padding:22px 0 64px;margin-left:var(--ind,0);
+  opacity:calc(.3 + var(--rp) * .7);transform:translateY(calc((1 - var(--rp)) * 24px))}
+.row .lab{font-size:12px;color:var(--mute);letter-spacing:.06em;text-transform:uppercase;margin:0 0 6px}
+.row h3{font-size:clamp(17px,1.9vw,24px);line-height:1.15;margin:0 0 56px;font-weight:700}
+.row .num{font-size:12px;color:var(--mute)}
+.row .pic{justify-self:center;width:var(--pw,60%);aspect-ratio:3/2;border:1px solid var(--ink);
+  background:repeating-linear-gradient(135deg,var(--bone) 0 6px,var(--paper) 6px 12px)}
+.row p{font-size:clamp(12px,1.2vw,15px);line-height:1.5;color:var(--mute);margin:0;max-width:38ch}
+@media (max-width:640px){.row{grid-template-columns:1fr;gap:14px;margin-left:0!important}.row h3{margin-bottom:8px}.row .pic{justify-self:start;width:70%}}
+.gap{height:24vh;background:var(--ink)}
+
+.spec{background:var(--paper);color:var(--ink);padding:56px max(16px,env(safe-area-inset-right,0px)) 96px max(16px,env(safe-area-inset-left,0px))}
+.spec>div{max-width:72ch;margin-inline:auto}
+.spec h2{font-size:20px;margin:0 0 14px}
+.spec p{font-size:14px;line-height:1.65;color:var(--mute);margin:0 0 16px}
+.tbl{overflow-x:auto;border:1px solid var(--ink)}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--bone);white-space:nowrap}
+th{font-weight:700;border-bottom:1px solid var(--ink)}
+td:last-child{color:var(--mute);white-space:normal}
+tr:last-child td{border-bottom:0}
+</style>
+
+<header class="intro"><div>
+  <p class="eyebrow">Front-end / chapter transition</p>
+  <h1>Vệt mực mở ra thành nền của chương sau.</h1>
+  <p>Một con số scroll điều khiển cả thẻ gập thành đồng hồ cát, vệt mực loang từ tâm, đồng hồ đếm ngược và dòng chữ chương mới. Mọi thứ nối nhau nên chuyển cảnh không có điểm cắt.</p>
+</div></header>
+
+<section class="track" id="track">
+  <div class="stage" id="stage">
+    <canvas id="ink" aria-hidden="true"></canvas>
+    <div class="fb" id="fb"></div>
+    <div class="content">
+    <div class="digits" id="digits" aria-hidden="true">47:59:59</div>
+    <div class="cardwrap" id="cardwrap">
+      <article class="card" id="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="#f7f4ef" stroke-width="2"><path d="M3 18 L12 5 L21 18 Z"/><path d="M3 21 H21"/></svg></div>
+        <p class="who">Front-end Lab</p>
+        <h3>Scroll xuống 10 phút. Không tab khác, không điện thoại. Chỉ có trang này.</h3>
+        <p class="sub">Không âm thanh, không thông báo. Mười phút nhìn một hiệu ứng lâu hơn bạn nghĩ.</p>
+        <div class="pills"><span>A 0:18</span><span>B 0:18</span><span>C 0:18</span><span>+12</span></div>
+        <div class="base">Đo được thì mới tin.</div>
+      </article>
+    </div>
+    <h2 class="quest" id="quest">Chương mới.<br>Đồng hồ đang chạy.</h2>
+    <div class="cols" id="cols">
+      <p>Bây giờ có đồng hồ. Bốn mươi tám giờ để làm xong, vì "để sau" là cách mọi thứ chết.</p>
+      <p>Một số p chạy từ 0 đến 3. Từ 1,9 đến 2,6 vệt mực loang từ tâm, rồi nền đổi màu và chữ của chương mới hiện ra.</p>
+    </div>
+    </div>
+    <div class="tag"><span>About Timer</span><span>Chapter 02</span></div>
+    <div class="hud" id="hud">p 0.00</div>
+  </div>
+</section>
+
+<div class="sheetwrap" id="sheetwrap">
+  <section class="sheet" id="sheet" aria-label="Chương 03">
+    <div class="stag" id="stag"><span>About Journey</span><span>Chapter 03</span></div>
+    <h2 class="shead">Nó bắt đầu từ một hiệu ứng. Hiếm khi dừng ở đó.</h2>
+    <p class="ssub">Không hứa gì. Chỉ là những gì hay xảy ra khi bạn cuộn xuống.</p>
+    <div id="rows">
+      <article class="row" style="--ind:0;--pw:62%"><div><p class="lab">Hiệu ứng 01</p><h3>Silhouette Text Flow</h3><span class="num">01</span></div><div class="pic"></div><p>Chữ hai cột trượt lên và bị đẩy sang hai bên theo viền thật của nhân vật 3D đang xoay.</p></article>
+      <article class="row" style="--ind:4%;--pw:48%"><div><p class="lab">Hiệu ứng 02</p><h3>Ink Mask Reveal</h3><span class="num">02</span></div><div class="pic"></div><p>Khung nét thô có sẵn, bản hoàn chỉnh loang vào qua mask có viền nhiễu khi scroll.</p></article>
+      <article class="row" style="--ind:10%;--pw:34%"><div><p class="lab">Hiệu ứng 03</p><h3>Warp Fill</h3><span class="num">03</span></div><div class="pic"></div><p>Vệt mực WebGL mở từ tâm thành màu nền của chương sau.</p></article>
+    </div>
+  </section>
+</div>
+<div class="gap"></div>
+
+<section class="spec"><div>
+  <h2>Thông số của hiệu ứng</h2>
+  <p>Các giá trị lấy từ script của site tham chiếu qua REA. Mình dùng lại số, còn shader và code là bản tự viết.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Thành phần</th><th>Giá trị</th><th>Vai trò</th></tr></thead>
+    <tbody>
+      <tr><td>Fragment shader</td><td>Một canvas WebGL phủ toàn màn hình</td><td>Tính vùng mực cho từng pixel</td></tr>
+      <tr><td>Tiến độ</td><td>smoothstep(1,9 ; 2,6 ; p)</td><td>p là số liên tục theo scroll, thay đổi theo chương</td></tr>
+      <tr><td>Tâm loang</td><td>(0,5 ; 0,5)</td><td>Mực lan từ giữa</td></tr>
+      <tr><td>Phạm vi</td><td>reach = progress x 1,35 trừ 0,05</td><td>Vượt 1 để phủ cả góc xa nhất</td></tr>
+      <tr><td>Nhiễu</td><td>fbm 5 lớp, domain warp, lớp ridged, scale 8,5</td><td>Viền méo như vệt mực, có ngón</td></tr>
+      <tr><td>Biên độ nhiễu</td><td>0,82 desktop, 0,45 mobile</td><td>Mobile ít méo để chạy nhẹ</td></tr>
+      <tr><td>Settle</td><td>giảm dần từ progress 0,4 đến 1</td><td>Cuối cùng nền phẳng, không lỗ</td></tr>
+      <tr><td>Mép</td><td>edge 0,01</td><td>Khử răng cưa mép mực</td></tr>
+      <tr><td>Màu</td><td>gradient tâm sáng, giữa, rìa đậm, hợp dần về một màu</td><td>Khi đầy màn thì thành màu nền</td></tr>
+      <tr><td>Sheet rise (chương sau)</td><td>rotate = rot x 7 độ, scale = 1 trừ off x 0,16 (mobile 3,2 độ và 0,12)</td><td>Tấm trắng cuộn tự nhiên lên che nền, nghiêng rồi phẳng dần</td></tr>
+      <tr><td>Hai số của sheet</td><td>s = clamp((vh trừ top) / vh), a = clamp((vh trừ bottom) / vh), off = clamp(1 trừ s cộng a), rot = 1 trừ s trừ a</td><td>Vào: nghiêng và nhỏ rồi phẳng. Ra: nghiêng ngược và nhỏ dần</td></tr>
+      <tr><td>Nền chương cũ</td><td>opacity = clamp(top / (vh x 0,7))</td><td>Chữ của chương cũ mờ dần khi sheet che lên</td></tr>
+      <tr><td>Thời gian</td><td>uTime chạy khi đang loang</td><td>Viền tiếp tục trôi nhẹ</td></tr>
+    </tbody>
+  </table></div>
+</div></section>
+
+<script>
+(function(){
+'use strict';
+var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+var mobile=matchMedia('(max-width:640px)').matches;
+var track=document.getElementById('track'), canvas=document.getElementById('ink'), fb=document.getElementById('fb');
+var card=document.getElementById('card'), wrap=document.getElementById('cardwrap'), digits=document.getElementById('digits');
+var quest=document.getElementById('quest'), cols=document.getElementById('cols'), hud=document.getElementById('hud');
+
+function hex(h){var n=parseInt(h.slice(1),16);return [(n>>16&255)/255,(n>>8&255)/255,(n&255)/255];}
+function mix(a,b,t){return [a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t,a[2]+(b[2]-a[2])*t];}
+function sstep(a,b,x){var t=Math.min(1,Math.max(0,(x-a)/(b-a)));return t*t*(3-2*t);}
+function lerp(a,b,t){return a+(b-a)*t;}
+
+/* ---- palette: wine at the rim, warm blush at the centre, one flat colour at the end ---- */
+var BASE=hex('#d9b8ae'), BRIGHT0=hex('#f3e2da'), DEEP0=hex('#6b1a1a');
+var BACKDROP=hex('#1a1a18');
+
+/* ---- ink shader (own implementation) ---- */
+var VS='attribute vec2 aPos;void main(){gl_Position=vec4(aPos,0.0,1.0);}';
+var FS=[
+'precision highp float;',
+'uniform vec2 uRes,uOrigin;uniform float uP,uAmp,uScale,uEdge,uTime;',
+'uniform vec3 uBright,uBase,uDeep;',
+'float h(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}',
+'float vn(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.0-2.0*f);',
+' return mix(mix(h(i),h(i+vec2(1.0,0.0)),f.x),mix(h(i+vec2(0.0,1.0)),h(i+vec2(1.0,1.0)),f.x),f.y);}',
+'float fbm(vec2 p){float v=0.0,a=0.5;for(int i=0;i<5;i++){v+=a*vn(p);p=p*2.03+vec2(11.3,7.7);a*=0.5;}return v/0.969;}',
+'void main(){',
+' vec2 uv=vec2(gl_FragCoord.x/uRes.x,1.0-gl_FragCoord.y/uRes.y);',
+' float asp=uRes.x/uRes.y;',
+' vec2 dl=uv-uOrigin;dl.x*=asp;float dist=length(dl);',
+' float md=0.0;',
+' for(int i=0;i<4;i++){vec2 c=vec2(mod(float(i),2.0),floor(float(i)/2.0));vec2 q=c-uOrigin;q.x*=asp;md=max(md,length(q));}',
+' float d=dist/max(md,0.001);',
+' vec2 wq=uv*2.2;',
+' vec2 warp=vec2(fbm(wq+uTime*0.24),fbm(wq+31.7-uTime*0.2))-0.5;',
+' vec2 s=uv+warp*0.4;',
+' float sc=uScale*0.5;',
+' float nz=fbm(s*sc+uTime*0.14);',
+' nz=nz*0.6+fbm(s*sc*2.3-uTime*0.09)*0.4;',
+' float ridge=1.0-abs(nz*2.0-1.0);',
+' float lobe=fbm(s*(sc*0.3)+7.0+uTime*0.06);',
+' float field=(nz-0.5)*1.4+(ridge-0.5)*0.6+(lobe-0.5)*1.9;',
+' float reach=uP*1.35-0.05;',
+' float settle=1.0-smoothstep(0.4,1.0,uP);',
+' float rim=clamp(d*1.8,0.0,1.0);',
+' float cover=(reach-d)+field*uAmp*max(reach,0.0)*settle*rim;',
+' float aa=max(uEdge,0.004);',
+' float alpha=smoothstep(-aa,aa,cover);',
+' float mottle=fbm(uv*7.0+3.0)*0.08*step(0.0,cover);',
+' float gt=clamp(length((uv-uOrigin)*uRes)/(max(uRes.x,uRes.y)*0.6),0.0,1.0);',
+' vec3 col=gt<0.5?mix(uBright,uBase,gt*2.0):mix(uBase,uDeep,(gt-0.5)*2.0);',
+' col*=1.0-mottle;',
+' gl_FragColor=vec4(col*alpha,alpha);',
+'}'].join('\n');
+
+var gl=null,U={},ok=false;
+try{
+  gl=canvas.getContext('webgl',{alpha:true,antialias:false,premultipliedAlpha:true});
+  if(!gl)throw 0;
+  var sh=function(t,src){var s=gl.createShader(t);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(s));return s;};
+  var pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,VS));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,FS));gl.linkProgram(pr);
+  if(!gl.getProgramParameter(pr,gl.LINK_STATUS))throw 0;
+  gl.useProgram(pr);
+  var bf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,bf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+  var loc=gl.getAttribLocation(pr,'aPos');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+  ['uRes','uOrigin','uP','uAmp','uScale','uEdge','uTime','uBright','uBase','uDeep'].forEach(function(n){U[n]=gl.getUniformLocation(pr,n);});
+  ok=true;
+}catch(e){ ok=false; canvas.style.display='none'; fb.style.display='block'; }
+
+function sizeCanvas(){
+  var k=Math.min(devicePixelRatio||1,mobile?1.25:1.75);
+  canvas.width=Math.floor(canvas.clientWidth*k); canvas.height=Math.floor(canvas.clientHeight*k);
+}
+function drawInk(p,t){
+  if(!ok){ fb.style.clipPath='circle('+(p*120).toFixed(1)+'% at 50% 50%)'; return; }
+  var tint=sstep(.5,.96,p);
+  gl.viewport(0,0,canvas.width,canvas.height);
+  gl.clearColor(0,0,0,0); gl.clear(gl.COLOR_BUFFER_BIT);
+  gl.uniform2f(U.uRes,canvas.width,canvas.height); gl.uniform2f(U.uOrigin,.5,.5);
+  gl.uniform1f(U.uP,p); gl.uniform1f(U.uAmp,mobile?.45:.82); gl.uniform1f(U.uScale,8.5); gl.uniform1f(U.uEdge,.01); gl.uniform1f(U.uTime,t);
+  gl.uniform3fv(U.uBright,mix(BRIGHT0,BASE,tint)); gl.uniform3fv(U.uBase,BASE); gl.uniform3fv(U.uDeep,mix(DEEP0,BASE,tint));
+  gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+}
+
+/* ---- card: rectangle to hourglass, same six points ---- */
+var RECT=[[0,0],[100,0],[100,50],[100,100],[0,100],[0,50]], GLASS=[[0,0],[100,0],[50,50],[100,100],[0,100],[50,50]];
+function clipAt(m){
+  return 'polygon('+RECT.map(function(a,i){var b=GLASS[i];return lerp(a[0],b[0],m).toFixed(2)+'% '+lerp(a[1],b[1],m).toFixed(2)+'%';}).join(',')+')';
+}
+
+/* ---- countdown ---- */
+var left=47*3600+59*60+59;
+function fmt(n){return (n<10?'0':'')+n;}
+function tick(){left=left>0?left-1:0;digits.textContent=fmt(Math.floor(left/3600))+':'+fmt(Math.floor(left/60)%60)+':'+fmt(left%60);}
+if(!reduce) setInterval(tick,1000);
+
+/* ---- sheet rise: two numbers from the sheet's own position, no scroll listener maths beyond that ---- */
+var sw=document.getElementById('sheetwrap'), sheet=document.getElementById('sheet'), stage=document.getElementById('stage'), stag=document.getElementById('stag');
+var rowEls=[].slice.call(document.querySelectorAll('.row'));
+function cl(x){return Math.min(1,Math.max(0,x));}
+function sheetUpdate(){
+  var r=sw.getBoundingClientRect(), t=innerHeight, n=r.top, i=r.bottom;
+  var a=cl((t-i)/t), sIn=cl((t-n)/t);
+  var off=reduce?0:Math.min(1,1-sIn+a), rot=reduce?0:1-sIn-a;
+  sheet.style.setProperty('--s5off',off.toFixed(4)); sheet.style.setProperty('--s5rot',rot.toFixed(4));
+  stage.style.setProperty('--afade',cl(n/(t*.7)).toFixed(3));
+  stag.style.opacity=cl((.8-a)/.2).toFixed(3);
+  rowEls.forEach(function(el){var top=el.getBoundingClientRect().top; el.style.setProperty('--rp',cl((t*.9-top)/(t*.45)).toFixed(3));});
+}
+
+/* ---- progress ---- */
+var P=0, cur=0, tAnim=0, last=performance.now(), idleUntil=0;
+function target(){
+  var r=track.getBoundingClientRect(), span=r.height-innerHeight*2;
+  return Math.min(3,Math.max(0,-r.top/span*3));
+}
+function frame(now){
+  var dt=Math.min((now-last)/1000,.05); last=now;
+  var k=1-Math.exp(-dt/.12);
+  var tg=target();
+  cur+= (tg-cur)*k; if(Math.abs(tg-cur)<.0004)cur=tg;
+  var p=cur;
+  var inkP=sstep(1.9,2.6,p);
+
+  // card: fold, tilt, spin, shrink, fade
+  var m=sstep(.9,1.9,p), spin=sstep(1.9,2.6,p), fade=1-sstep(2.55,2.9,p);
+  card.style.clipPath=clipAt(m);
+  var rotY=Math.sin(m*Math.PI)*16+spin*540, rotZ=m*8*(1-spin), sc=lerp(1,.5,m)*lerp(1,.8,spin);
+  card.style.transform='rotateY('+rotY.toFixed(1)+'deg) rotateZ('+rotZ.toFixed(1)+'deg) scale('+sc.toFixed(3)+')';
+  card.style.boxShadow=m>.02?'none':'0 10px 0 #f7f4ef';
+  wrap.style.opacity=fade.toFixed(3);
+
+  // ink: time only moves while the blot is spreading, so the rim keeps drifting
+  var spreading=inkP>.001&&inkP<.995;
+  if(spreading||Math.abs(tg-cur)>.001) idleUntil=now+400;
+  if(!reduce&&now<idleUntil&&spreading) tAnim+=dt*1.7;
+  drawInk(inkP,tAnim);
+
+  // digits, headline, columns
+  digits.style.opacity=(sstep(1.95,2.4,p)*.9).toFixed(3);
+  var q=sstep(2.5,2.9,p);
+  quest.style.opacity=q.toFixed(3); quest.style.transform='translateY('+((1-q)*24).toFixed(1)+'px)';
+  var c=sstep(2.65,3,p);
+  cols.style.opacity=c.toFixed(3); cols.style.transform='translateY('+((1-c)*18).toFixed(1)+'px)';
+
+  hud.textContent='p '+p.toFixed(2)+'  ink '+Math.round(inkP*100)+'%';
+  sheetUpdate();
+  requestAnimationFrame(frame);
+}
+addEventListener('resize',sizeCanvas);
+sizeCanvas();
+requestAnimationFrame(function(t){last=t;frame(t);});
+})();
+</script>

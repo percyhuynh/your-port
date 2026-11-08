@@ -1,0 +1,270 @@
+<title>Silhouette Flow</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap">
+<style>
+/* Layout: sticky full-height stage. Native scroll drives one eased number; that number moves
+   the text column up and turns the figure. Each line is pushed sideways by the figure's live outline. */
+:root{
+  --paper:#f7f4ef; --bone:#e8e2d8; --ink:#1a1a18; --wine:#6b1a1a; --mute:#5c5a4e;
+  --mono:"Courier Prime","Courier New",monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--mono);margin:0;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.head{max-width:62ch;padding-block:56px 40px}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin:0 0 14px}
+h1{font-size:clamp(34px,6vw,64px);line-height:1.02;margin:0 0 18px;font-weight:700;letter-spacing:-.02em;text-wrap:balance}
+.head p{font-size:15px;line-height:1.6;color:var(--mute);margin:0}
+.head b{color:var(--wine);font-weight:700}
+
+.track{position:relative}
+.stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;
+  margin-inline:calc(max(16px,env(safe-area-inset-left,0px)) * -1) calc(max(16px,env(safe-area-inset-right,0px)) * -1);
+  background:var(--paper)}
+canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+#dbg{pointer-events:none}
+.col{position:absolute;left:0;top:0;width:100%;will-change:transform;font-size:clamp(11px,1.35vw,16px)}
+.line{position:absolute;left:0;width:100%;white-space:nowrap;font-size:inherit;
+  line-height:20px;height:20px;will-change:transform;color:var(--ink)}
+.line[data-side="l"]{text-align:right}
+.line[data-side="r"]{text-align:left}
+.line.hot{color:var(--wine);font-weight:700}
+.line.dim{color:var(--mute)}
+.hud{position:absolute;left:max(16px,env(safe-area-inset-left,0px));bottom:max(14px,env(safe-area-inset-bottom,0px));
+  font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);display:flex;gap:14px;align-items:center;z-index:2;
+  background:var(--paper);padding:6px 8px;border:1px solid var(--bone)}
+.hud label{display:flex;gap:6px;align-items:center;cursor:pointer}
+.hud input{accent-color:var(--wine)}
+.hud:focus-within{outline:2px solid var(--wine)}
+.foot{max-width:62ch;padding-block:40px 80px;font-size:13px;line-height:1.6;color:var(--mute)}
+.foot code{color:var(--ink)}
+@media (prefers-reduced-motion:reduce){.col,.line{will-change:auto}}
+</style>
+
+<header class="head">
+  <p class="eyebrow">Front-end / scroll-driven layout</p>
+  <h1>Chữ né người, theo từng frame.</h1>
+  <p>Scroll để xoay nhân vật. Mỗi dòng bị đẩy ngang theo <b>viền thật</b> của model đang quay, đo lại từ GPU, không phải một hộp cố định.</p>
+</header>
+
+<section class="track" id="track">
+  <div class="stage" id="stage">
+    <canvas id="gl" aria-hidden="true"></canvas>
+    <canvas id="dbg" aria-hidden="true"></canvas>
+    <div class="col" id="col"></div>
+    <div class="hud"><label for="showSil"><input type="checkbox" id="showSil"> Show silhouette</label><span id="readout">0%</span></div>
+  </div>
+</section>
+
+<footer class="foot">
+  Rebuild thử của cơ chế: virtual progress (một số duy nhất, ease theo thời gian) + render target nhỏ để lấy viền trái/phải mỗi hàng + <code>translate3d</code> từng dòng.
+  Model và code là bản tự dựng, nội dung dòng chữ là nội dung mẫu.
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.159.0/build/three.min.js"></script>
+<script>
+(function(){
+'use strict';
+var LINES=[
+ ['Front-end','hot'],['HTML, đúng ngữ nghĩa trước','dim'],
+ ['Tailwind CSS cho gọn code',''],['Next.js khi cần Rendering',''],
+ ['WordPress khi cần CMS',''],['GSAP cho chuyển động',''],
+ ['ScrollTrigger gắn với scroll',''],['Một con số điều khiển tất cả',''],
+ ['Ease theo thời gian, không theo frame',''],['60Hz hay 120Hz đều như nhau',''],
+ ['Transform, không đụng layout',''],['Compositor lo phần còn lại',''],
+ ['Đo một lần, tính toán sau đó',''],['Không đo layout mỗi frame',''],
+ ['Homepage UI cho gstay.vn','hot'],['Homepage UI cho gtrip.vn','hot'],
+ ['Chữ thật, không phải ảnh',''],['Đọc được bằng Screen reader',''],
+ ['Giảm chuyển động khi được yêu cầu',''],['Mobile cũng phải chạy',''],
+ ['Contrast kiểm trước khi build',''],['Paper, Bone, Ink, Wine, Mute',''],
+ ['Font Courier Prime',''],['Không card bo tròn kiểu mẫu',''],
+ ['Viền của model là dữ liệu',''],['48 x 160 pixel là đủ',''],
+ ['Đọc lại GPU vài lần mỗi giây',''],['Làm mượt giữa hai lần đọc',''],
+ ['Dòng trái đẩy sang trái',''],['Dòng phải đẩy sang phải',''],
+ ['Khoảng hở cố định quanh người',''],['Hàng trống thì chữ khép lại',''],
+ ['Xoay 360 độ theo scroll','hot'],['Đứng yên thì vẫn nhích nhẹ',''],
+ ['Scroll ngược thì xoay ngược',''],['Không giật, không trễ',''],
+ ['Lazy load phần nặng',''],['Core Web Vitals vẫn xanh',''],
+ ['Đo bằng số, không đoán',''],['Cuối trang, tới đây thôi','dim']
+];
+var ROW=30, GAP=22, MINW=40, SIL_H=160, SIL_MS=110, TURNS=1.5;
+var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+var stage=document.getElementById('stage'), col=document.getElementById('col'),
+    track=document.getElementById('track'), glc=document.getElementById('gl'),
+    dbg=document.getElementById('dbg'), showSil=document.getElementById('showSil'),
+    readout=document.getElementById('readout');
+var dctx=dbg.getContext('2d');
+
+/* ---- lines: rebuilt on resize so each row fits the space beside the figure ---- */
+var els=[];
+function buildRows(cap){
+  col.textContent=''; els=[];
+  LINES.forEach(function(l){
+    var words=l[0].split(' '), rows=[], cur='';
+    words.forEach(function(w){
+      if(cur&&(cur+' '+w).length>cap){rows.push(cur);cur=w;} else cur=cur?cur+' '+w:w;
+    });
+    if(cur)rows.push(cur);
+    rows.forEach(function(t){
+      var d=document.createElement('div');
+      d.className='line'+(l[1]?' '+l[1]:'');
+      d.dataset.side=els.length%2?'r':'l';
+      d.textContent=t; col.appendChild(d); els.push(d);
+    });
+  });
+}
+buildRows(40);
+
+/* ---- three scene: own figure built from primitives ---- */
+var renderer=new THREE.WebGLRenderer({canvas:glc,antialias:true,alpha:true});
+renderer.setClearColor(0x000000,0);
+var scene=new THREE.Scene();
+var camera=new THREE.PerspectiveCamera(30,1,0.1,50);
+camera.position.set(0,0.95,9); camera.lookAt(0,0.95,0);
+scene.add(new THREE.HemisphereLight(0xf7f4ef,0x5c5a4e,1.0));
+var key=new THREE.DirectionalLight(0xffffff,1.6); key.position.set(3,4,5); scene.add(key);
+
+var figure=new THREE.Group(); scene.add(figure);
+var matBody=new THREE.MeshStandardMaterial({color:0x1a1a18,roughness:.85,metalness:0});
+var matAcc=new THREE.MeshStandardMaterial({color:0x6b1a1a,roughness:.7});
+function add(geo,mat,x,y,z,rx,ry,rz){var m=new THREE.Mesh(geo,mat);m.position.set(x,y,z);
+  if(rx)m.rotation.x=rx; if(ry)m.rotation.y=ry; if(rz)m.rotation.z=rz; figure.add(m); return m;}
+add(new THREE.SphereGeometry(.3,32,24),matBody,0,1.78,0);                 // head
+add(new THREE.BoxGeometry(.72,.08,.42),matAcc,0,1.98,.18);                // cap brim, forward
+add(new THREE.CylinderGeometry(.1,.12,.16,16),matBody,0,1.5,0);           // neck
+add(new THREE.CapsuleGeometry(.36,.95,8,24),matBody,0,.85,0);             // torso
+add(new THREE.CapsuleGeometry(.14,.95,8,16),matBody,-.2,-.2,0);           // leg L
+add(new THREE.CapsuleGeometry(.14,.95,8,16),matBody,.2,-.2,.1,-.25);      // leg R, stepping
+add(new THREE.CapsuleGeometry(.1,.85,8,16),matBody,-.52,.95,0,0,0,.12);   // arm L, hanging
+add(new THREE.CapsuleGeometry(.1,.55,8,16),matBody,.58,1.15,.05,0,0,-1.0); // arm R upper, raised out
+add(new THREE.CapsuleGeometry(.09,.5,8,16),matBody,.98,1.5,.1,0,0,.5);    // arm R fore
+add(new THREE.BoxGeometry(.7,.46,.05),matAcc,1.28,1.62,.1,0,0,.35);       // laptop in hand
+figure.position.y=-.1;
+
+/* silhouette target: small, aspect matched, black override material */
+var rt=null, silW=0, silPix=null;
+var silMat=new THREE.MeshBasicMaterial({color:0x000000});
+var silTarget=new Float32Array(SIL_H*2).fill(.5), sil=new Float32Array(SIL_H*2).fill(.5);
+
+var W=0,H=0,travel=0,colTop=0,dpr=1;
+function resize(){
+  W=stage.clientWidth; H=stage.clientHeight; dpr=Math.min(devicePixelRatio||1,2);
+  renderer.setPixelRatio(dpr); renderer.setSize(W,H,false);
+  dbg.width=W*dpr; dbg.height=H*dpr; dctx.setTransform(dpr,0,0,dpr,0,0);
+  camera.aspect=W/H;
+  /* narrow screens: back the camera off so the whole body incl. the raised arm stays inside ~46% of the width */
+  var FW=.46, R=1.65;
+  var zFit=(2*R/FW)/(2*Math.tan(camera.fov*Math.PI/360)*camera.aspect);
+  camera.position.z=camera.aspect<1.2?Math.max(9,zFit):9;
+  camera.updateProjectionMatrix();
+  silW=Math.max(8,Math.round(SIL_H*W/H));
+  if(rt)rt.dispose();
+  rt=new THREE.WebGLRenderTarget(silW,SIL_H,{depthBuffer:true,format:THREE.RGBAFormat});
+  silPix=new Uint8Array(silW*SIL_H*4);
+  ROW=W<700?26:30;
+  var b=bounds();
+  var fs=parseFloat(getComputedStyle(col).fontSize)||14;
+  var cx=document.createElement('canvas').getContext('2d');
+  cx.font=fs+'px "Courier Prime","Courier New",monospace';
+  var charW=cx.measureText('M').width||fs*.6;
+  var side=Math.min(b.minL*W,(1-b.maxR)*W)-GAP;
+  buildRows(Math.max(8,Math.min(40,Math.floor(side/charW))));
+  colTop=H; var n=els.length;
+  els.forEach(function(el,i){el.style.top=(colTop+i*ROW)+'px';});
+  travel=colTop+n*ROW-H*.15;
+  track.style.height=(travel+H)+'px';
+  lastX=new Array(n).fill(NaN);
+  readSil();
+}
+
+function readSil(){
+  var old=renderer.getRenderTarget(); scene.overrideMaterial=silMat;
+  renderer.setRenderTarget(rt); renderer.clear(); renderer.render(scene,camera);
+  renderer.readRenderTargetPixels(rt,0,0,silW,SIL_H,silPix);
+  renderer.setRenderTarget(old); scene.overrideMaterial=null;
+  for(var y=0;y<SIL_H;y++){
+    var src=(SIL_H-1-y)*silW*4, l=-1, r=-1;
+    for(var x=0;x<silW;x++){ if(silPix[src+x*4+3]>8){ if(l<0)l=x; r=x; } }
+    if(l<0){silTarget[y*2]=.5; silTarget[y*2+1]=.5;}
+    else{silTarget[y*2]=l/silW; silTarget[y*2+1]=(r+1)/silW;}
+  }
+}
+
+/* widest outline over a full turn, so the row length stays valid at every angle */
+function bounds(){
+  var y0=figure.rotation.y, minL=1, maxR=0;
+  for(var a=0;a<8;a++){
+    figure.rotation.y=a*Math.PI/4; readSil();
+    for(var y=0;y<SIL_H;y++){
+      var l=silTarget[y*2], r=silTarget[y*2+1];
+      if(r>l+1e-4){ if(l<minL)minL=l; if(r>maxR)maxR=r; }
+    }
+  }
+  figure.rotation.y=y0;
+  if(minL>maxR){minL=.35;maxR=.65;}
+  return {minL:minL,maxR:maxR};
+}
+var lastX=[];
+function shape(cur){
+  for(var i=0;i<els.length;i++){
+    var el=els[i], mid=colTop+i*ROW+10-cur;
+    if(mid<-60||mid>H+60) continue;
+    var r0=((mid-12)/H*SIL_H)|0, r1=((mid+12)/H*SIL_H)|0;
+    r0=r0<0?0:r0>=SIL_H?SIL_H-1:r0; r1=r1<0?0:r1>=SIL_H?SIL_H-1:r1;
+    var x, l=1e9, r=-1e9;
+    for(var q=r0;q<=r1;q++){ if(sil[q*2]<l)l=sil[q*2]; if(sil[q*2+1]>r)r=sil[q*2+1]; }
+    if(el.dataset.side==='l'){
+      x=-Math.max(0,Math.min(W-(l*W-GAP),W-MINW));
+    }else{
+      x=Math.max(0,Math.min(r*W+GAP,W-MINW));
+    }
+    if(!(Math.abs(x-lastX[i])<.1)){ lastX[i]=x; el.style.transform='translate3d('+x.toFixed(1)+'px,0,0)'; }
+  }
+}
+
+function drawDebug(cur){
+  dctx.clearRect(0,0,W,H);
+  if(!showSil.checked) return;
+  dctx.fillStyle='rgba(107,26,26,.18)';
+  var rh=H/SIL_H;
+  for(var y=0;y<SIL_H;y++){
+    var l=sil[y*2]*W, r=sil[y*2+1]*W;
+    if(r-l>1) dctx.fillRect(l,y*rh,r-l,rh+.5);
+  }
+}
+
+/* ---- loop ---- */
+var current=0, spin=0, last=performance.now(), silT=0, EASE=.16;
+function target(){
+  var top=track.getBoundingClientRect().top;
+  var p=Math.max(0,Math.min(1,-top/travel));
+  return p*travel;
+}
+function frame(now){
+  var dt=Math.min((now-last)/1000,.1); last=now;
+  var tg=target();
+  var k=1-Math.exp(-dt/EASE);
+  var step=(tg-current)*k;
+  current+=step;
+  col.style.transform='translate3d(0,'+(-current).toFixed(2)+'px,0)';
+  spin+=step*(Math.PI*2*TURNS/travel);
+  if(!reduce) spin+=dt*.12;
+  figure.rotation.y=spin;
+
+  silT+=dt*1000;
+  if(silT>=SIL_MS){ silT=0; readSil(); }
+  var sk=1-Math.exp(-dt/.08);
+  for(var i=0;i<sil.length;i++) sil[i]+=(silTarget[i]-sil[i])*sk;
+
+  renderer.setRenderTarget(null); renderer.render(scene,camera);
+  shape(current); drawDebug(current);
+  readout.textContent=Math.round(Math.max(0,Math.min(1,current/travel))*100)+'%';
+  requestAnimationFrame(frame);
+}
+addEventListener('resize',resize);
+if(document.fonts&&document.fonts.ready) document.fonts.ready.then(resize);
+resize(); requestAnimationFrame(function(t){last=t;frame(t);});
+})();
+</script>
